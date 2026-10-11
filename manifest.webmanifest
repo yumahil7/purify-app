@@ -1,0 +1,20 @@
+{
+  "name": "Purify - 정화의 길",
+  "short_name": "Purify",
+  "description": "말씀과 함께 건강하게 먹고 움직이는 습관을 만드는 앱",
+  "lang": "ko",
+  "dir": "ltr",
+  "start_url": "./",
+  "scope": "./",
+  "id": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#0a1628",
+  "background_color": "#0a1628",
+  "categories": ["health", "lifestyle", "fitness"],
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any" },
+    { "src": "icons/icon-512-maskable.png", "sizes": "512x512", "type": "image/png", "purpose": "maskable" }
+  ]
+}

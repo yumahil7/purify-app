@@ -1,0 +1,1102 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
+<meta name="theme-color" content="#0a1628">
+<meta name="description" content="말씀과 함께 건강하게 먹고 움직이는 습관을 만드는 앱">
+<meta name="mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+<meta name="apple-mobile-web-app-title" content="Purify">
+<meta name="application-name" content="Purify">
+<meta name="format-detection" content="telephone=no">
+<link rel="manifest" href="manifest.webmanifest">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon.png">
+<link rel="icon" type="image/png" sizes="192x192" href="icons/icon-192.png">
+<link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
+<title>Purify - 정화의 길</title>
+<style>
+  :root { --p:#d4af77; --p2:#c9a227; --t:#f5f0e8; --m:#a8b0c0; --card:rgba(255,255,255,.055); --line:rgba(212,175,119,.18); }
+  * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
+  html, body { height:100%; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Segoe UI",sans-serif; background:#07111f; color:var(--t); font-size:16px; line-height:1.55; }
+  .app { max-width:480px; margin:0 auto; height:100vh; height:100dvh; background:linear-gradient(180deg,#0a1628 0%,#10233b 55%,#163252 100%); position:relative; overflow:hidden; }
+  .app::before { content:''; position:absolute; left:50%; top:0; width:1px; height:100%; background:linear-gradient(transparent,rgba(212,175,119,.22),transparent); pointer-events:none; }
+  .view { display:none; flex-direction:column; height:100%; position:relative; z-index:1; }
+  .view.on { display:flex; }
+  .top { display:flex; align-items:center; gap:8px; padding:calc(8px + env(safe-area-inset-top)) 10px 8px; min-height:60px; }
+  .brand { flex:1; text-align:center; color:var(--p); font-weight:700; letter-spacing:3px; font-size:15px; }
+  .iconbtn { width:48px; height:48px; border-radius:24px; border:none; background:transparent; color:var(--p); font-size:28px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-family:inherit; }
+  .iconbtn.sm { font-size:20px; }
+  .iconbtn.hide { visibility:hidden; }
+  .dots { flex:1; display:flex; justify-content:center; gap:7px; }
+  .dot { width:8px; height:8px; border-radius:4px; background:rgba(255,255,255,.18); transition:all .25s; }
+  .dot.done { background:rgba(212,175,119,.55); }
+  .dot.on { background:var(--p); width:22px; }
+  .body { flex:1; overflow-y:auto; padding:6px 20px 28px; -webkit-overflow-scrolling:touch; }
+  .foot { padding:10px 20px calc(16px + env(safe-area-inset-bottom)); }
+  h1 { font-size:27px; color:var(--p); line-height:1.35; margin:6px 0 10px; font-weight:700; }
+  h2 { font-size:23px; color:var(--p); margin:4px 0 6px; line-height:1.35; }
+  h3 { font-size:17.5px; color:var(--t); margin-bottom:6px; }
+  .lead { color:var(--m); font-size:15.5px; margin-bottom:18px; }
+  .btn { display:block; width:100%; min-height:56px; padding:14px; border:none; border-radius:16px; background:linear-gradient(135deg,var(--p2),var(--p)); color:#0a1628; font-weight:700; font-size:17px; cursor:pointer; margin-top:10px; font-family:inherit; }
+  .btn:disabled { opacity:.4; }
+  .btn.sec { background:transparent; color:var(--p); border:1.5px solid rgba(212,175,119,.6); }
+  .btn.ghost { background:rgba(255,255,255,.05); color:var(--t); border:1px solid var(--line); font-weight:600; }
+  .btn.sm { min-height:48px; font-size:15.5px; padding:10px; }
+  .opt { display:block; width:100%; min-height:64px; text-align:left; padding:14px 16px; margin-bottom:12px; border-radius:16px; border:1.5px solid var(--line); background:var(--card); color:var(--t); font-size:17px; cursor:pointer; font-family:inherit; line-height:1.45; }
+  .opt small { display:block; color:var(--m); font-size:14px; margin-top:3px; }
+  .opt.sel { border-color:var(--p); background:rgba(212,175,119,.14); box-shadow:0 0 0 1px var(--p) inset; }
+  .opt.dis { opacity:.5; }
+  .seg { display:flex; gap:10px; } .seg .opt { flex:1; text-align:center; margin-bottom:0; }
+  label.f { display:block; font-size:14.5px; color:var(--m); margin:16px 0 6px; }
+  .inp { width:100%; min-height:54px; padding:12px 14px; border-radius:14px; background:rgba(255,255,255,.06); color:#fff; border:1.5px solid var(--line); font-size:17px; font-family:inherit; }
+  .inp:focus { outline:none; border-color:var(--p); }
+  textarea.inp { min-height:96px; line-height:1.5; resize:vertical; }
+  select.inp { appearance:none; }
+  .unit { position:relative; } .unit .inp { padding-right:48px; } .unit span { position:absolute; right:16px; top:50%; transform:translateY(-50%); color:var(--m); pointer-events:none; }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:20px; padding:18px 16px; margin-bottom:14px; }
+  .card.hl { border-color:rgba(212,175,119,.55); background:rgba(212,175,119,.08); }
+  .verse { font-size:17px; line-height:1.75; }
+  .ref { color:var(--p); font-size:14px; margin-top:6px; }
+  .explain { background:rgba(255,255,255,.05); border-radius:14px; padding:12px 14px; margin-top:8px; font-size:15.5px; color:#e8e2d6; }
+  .apply { margin-top:12px; font-size:15.5px; } .apply b { color:var(--p); }
+  .warn { background:rgba(220,80,60,.13); border:1px solid rgba(230,100,80,.55); color:#ffcabf; border-radius:16px; padding:12px 14px; font-size:15px; margin:10px 0; }
+  .good { background:rgba(120,200,150,.1); border:1px solid rgba(120,200,150,.4); color:#d3efdf; border-radius:16px; padding:12px 14px; font-size:15px; margin:10px 0; }
+  .muted { color:var(--m); font-size:14.5px; }
+  .row { display:flex; gap:10px; align-items:center; }
+  .row > .btn { margin-top:0; }
+  .grow { flex:1; min-width:0; }
+  .stats { display:flex; gap:10px; margin:6px 0; }
+  .stat { flex:1; text-align:center; background:rgba(255,255,255,.045); border-radius:16px; padding:12px 4px; }
+  .stat b { display:block; font-size:21px; color:var(--p); line-height:1.3; }
+  .stat span { font-size:12.5px; color:var(--m); }
+  .bar { height:10px; background:rgba(255,255,255,.1); border-radius:5px; overflow:hidden; margin:8px 0; }
+  .bar i { display:block; height:100%; background:linear-gradient(90deg,var(--p2),var(--p)); transition:width .3s; }
+  .item { display:flex; align-items:center; gap:12px; padding:12px 0; border-top:1px solid rgba(255,255,255,.07); }
+  .item:first-of-type { border-top:none; }
+  .item .txt { flex:1; min-width:0; }
+  .item .txt b { font-size:16px; }
+  .item .txt div { font-size:14.5px; color:#ddd5c6; }
+  .item .txt small { color:var(--m); font-size:13px; }
+  .ic { font-size:28px; width:36px; text-align:center; flex:none; }
+  .tick { flex:none; width:54px; height:54px; border-radius:27px; border:2px solid rgba(212,175,119,.6); background:transparent; color:var(--p); font-size:22px; cursor:pointer; font-family:inherit; }
+  .tick.on { background:var(--p); color:#0a1628; border-color:var(--p); }
+  .chip { display:inline-block; min-height:46px; padding:10px 14px; margin:0 6px 8px 0; border-radius:23px; border:1px solid var(--line); background:rgba(255,255,255,.05); color:var(--t); font-size:15px; cursor:pointer; font-family:inherit; }
+  .chk { display:flex; align-items:center; gap:14px; min-height:56px; padding:6px 0; border-top:1px solid rgba(255,255,255,.07); font-size:16px; cursor:pointer; }
+  .chk:first-of-type { border-top:none; }
+  .chk input { width:26px; height:26px; accent-color:#d4af77; flex:none; }
+  .nav { display:flex; height:calc(68px + env(safe-area-inset-bottom)); padding-bottom:env(safe-area-inset-bottom); background:rgba(8,18,34,.97); border-top:1px solid rgba(212,175,119,.25); }
+  .nav button { flex:1; border:none; background:transparent; color:var(--m); font-size:13px; cursor:pointer; font-family:inherit; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; }
+  .nav button i { font-style:normal; font-size:22px; line-height:1; }
+  .nav button.on { color:var(--p); font-weight:700; }
+  .screen { display:none; } .screen.on { display:block; }
+  .toast { position:absolute; left:50%; bottom:96px; transform:translateX(-50%); background:rgba(10,22,40,.97); border:1px solid var(--p); padding:12px 16px; border-radius:16px; z-index:200; opacity:0; transition:opacity .25s; pointer-events:none; width:max-content; max-width:300px; text-align:center; font-size:15px; }
+  .toast.show { opacity:1; }
+  details > summary { cursor:pointer; color:var(--p); min-height:48px; display:flex; align-items:center; font-weight:600; list-style:none; font-size:15.5px; }
+  details > summary::-webkit-details-marker { display:none; }
+  details > summary::after { content:'›'; margin-left:auto; font-size:22px; transition:transform .2s; }
+  details[open] > summary::after { transform:rotate(90deg); }
+  ul.l { margin:6px 0 4px 20px; } ul.l li { margin:4px 0; }
+  .badge { display:inline-block; background:linear-gradient(135deg,var(--p2),var(--p)); color:#0a1628; font-size:12.5px; font-weight:700; padding:3px 10px; border-radius:20px; margin-left:6px; vertical-align:middle; }
+  .tag { display:inline-block; font-size:12.5px; color:var(--p); border:1px solid rgba(212,175,119,.45); padding:2px 9px; border-radius:20px; margin:6px 4px 0 0; }
+  .hero { text-align:center; padding-top:9vh; }
+  .hero .mark { font-size:56px; color:var(--p); margin-bottom:6px; }
+  .hero p { font-size:17.5px; line-height:1.8; margin:14px 0; }
+  .timer { font-size:42px; font-weight:300; letter-spacing:2px; text-align:center; color:var(--p); font-variant-numeric:tabular-nums; margin:4px 0; }
+  .sec-title { display:flex; align-items:center; justify-content:space-between; gap:8px; margin-bottom:4px; }
+  .sec-title h3 { margin:0; }
+  .link { background:none; border:none; color:var(--p); font-size:15px; cursor:pointer; min-height:44px; padding:0 4px; font-family:inherit; }
+  .ringwrap { display:flex; align-items:center; gap:16px; }
+  .prayer { background:rgba(212,175,119,.08); border-left:3px solid var(--p); border-radius:10px; padding:12px 14px; margin-top:10px; font-size:15.5px; line-height:1.7; }
+  .share-pre { white-space:pre-wrap; font-size:14px; background:rgba(0,0,0,.25); border-radius:14px; padding:12px; color:#e8e2d6; max-height:240px; overflow:auto; }
+  .member { border-top:1px solid rgba(255,255,255,.07); padding:10px 0; }
+  .member .inp { margin-top:8px; min-height:48px; font-size:15.5px; }
+</style>
+</head>
+<body>
+<div class="app">
+
+  <div id="ob" class="view">
+    <div class="top">
+      <button class="iconbtn" id="obBack" onclick="obPrev()" aria-label="뒤로">‹</button>
+      <div class="dots" id="obDots"></div>
+      <div style="width:48px"></div>
+    </div>
+    <div class="body" id="obBody"></div>
+    <div class="foot"><button class="btn" id="obNext" onclick="obNextStep()">다음</button></div>
+  </div>
+
+  <div id="main" class="view">
+    <div class="top">
+      <button class="iconbtn hide" id="mainBack" onclick="goBack()" aria-label="뒤로">‹</button>
+      <div class="brand">PURIFY</div>
+      <button class="iconbtn sm" onclick="shareToday()" aria-label="오늘 요약 공유">⤴</button>
+    </div>
+    <div class="body" id="mainBody">
+      <div class="screen" id="s-today"></div>
+      <div class="screen" id="s-history"></div>
+      <div class="screen" id="s-word"></div>
+      <div class="screen" id="s-seek"></div>
+      <div class="screen" id="s-me"></div>
+    </div>
+    <nav class="nav">
+      <button data-tab="today" onclick="showTab('today')"><i>☀</i>오늘</button>
+      <button data-tab="history" onclick="showTab('history')"><i>📈</i>기록</button>
+      <button data-tab="word" onclick="showTab('word')"><i>📖</i>말씀</button>
+      <button data-tab="me" onclick="showTab('me')"><i>👤</i>나</button>
+    </nav>
+  </div>
+
+  <div id="toast" class="toast"></div>
+</div>
+<script>
+'use strict';
+// ===================== 데이터 =====================
+// 말씀: 개역한글(저작권 보호기간 만료) 본문 · e: 쉽게 풀어보기 · a: 오늘의 실천
+const VERSES = [
+  { t:'그런즉 너희가 먹든지 마시든지 무엇을 하든지 다 하나님의 영광을 위하여 하라', r:'고린도전서 10:31', e:'먹고 마시는 평범한 일상도 의미 있게 살 수 있다는 말이에요. 식사는 감사하며 누리는 선물이에요.', a:'오늘 한 끼는 휴대폰을 내려놓고 천천히, 감사하며 먹어 보세요.' },
+  { t:'너희 몸은 너희가 하나님께로부터 받은 바 너희 가운데 계신 성령의 전인 줄을 알지 못하느냐 너희는 너희의 것이 아니라 값으로 산 것이 되었으니 그런즉 너희 몸으로 하나님께 영광을 돌리라', r:'고린도전서 6:19-20', e:'내 몸은 아주 귀하게 맡겨진 선물이라는 뜻이에요. 몸을 아끼고 돌보는 것 자체가 소중한 일이에요.', a:'내 몸을 위해 오늘 물 한 잔을 더 마셔요.' },
+  { t:'그런즉 누구든지 그리스도 안에 있으면 새로운 피조물이라 이전 것은 지나갔으니 보라 새 것이 되었도다', r:'고린도후서 5:17', e:'누구든지 새롭게 시작할 수 있다는 말이에요. 지난 실패가 나를 정의하지 않아요.', a:'오늘을 새 출발의 첫날로 정하고, 작은 목표 하나를 적어 보세요.' },
+  { t:'예수께서 대답하여 가라사대 진실로 진실로 네게 이르노니 사람이 거듭나지 아니하면 하나님 나라를 볼 수 없느니라', r:'요한복음 3:3', e:'“거듭난다”는 건 마음이 새롭게 태어나는 것을 말해요. 몸의 습관이 바뀌듯 마음도 새로워질 수 있어요.', a:'오늘 바꾸고 싶은 습관 하나를 정해 보세요.' },
+  { t:'내가 내 몸을 쳐 복종하게 함은 내가 남에게 전파한 후에 자기가 도리어 버림이 될까 두려워함이로다', r:'고린도전서 9:27', e:'바울은 운동선수처럼 자기 몸을 훈련했어요. 절제는 벌이 아니라 목표를 향한 연습이에요.', a:'오늘의 운동 하나를 끝까지 해 봐요.' },
+  { t:'오직 성령의 열매는 사랑과 희락과 화평과 오래 참음과 자비와 양선과 충성과 온유와 절제니 이같은 것을 금지할 법이 없느니라', r:'갈라디아서 5:22-23', e:'사랑, 기쁨, 평화… 그리고 절제. 좋은 열매는 억지로 짜내는 게 아니라 천천히 자라나는 거예요.', a:'작은 절제 하나만 해 봐요. 예: 야식 대신 따뜻한 차.' },
+  { t:'금식할 때에 너희는 외식하는 자들과 같이 슬픈 기색을 내지 말라 저희는 금식하는 것을 사람에게 보이려고 얼굴을 흉하게 하느니라', r:'마태복음 6:16', e:'절제나 금식을 남에게 보여 주려고 하지 말라는 말이에요. 조용히, 나를 위해 하면 충분해요.', a:'오늘의 노력은 자랑 대신 조용히 기록만 해 봐요.' },
+  { t:'너는 금식할 때에 머리에 기름을 바르고 얼굴을 씻으라 이는 금식하는 자로 사람에게 보이지 않고 오직 은밀한 중에 계신 네 아버지께 보이게 하려 함이라 은밀한 중에 보시는 네 아버지께서 갚으시리라', r:'마태복음 6:17-18', e:'힘든 티를 내기보다 단정하게 하루를 보내라는 뜻이에요. 아무도 몰라도 그 노력은 의미가 있어요.', a:'아침에 세수하고 거울 속 나에게 한 번 웃어 주세요.' },
+  { t:'나의 기뻐하는 금식은 흉악의 결박을 풀어 주며 멍에의 줄을 끌러 주며 압제 당하는 자를 자유케 하며 모든 멍에를 꺾는 것이 아니겠느냐', r:'이사야 58:6', e:'진짜 금식은 굶는 것 자체보다, 나와 이웃을 묶고 있는 것을 풀어 주는 데 있다고 말해요.', a:'오늘 아낀 간식비로 누군가에게 작은 친절을 베풀어 보세요.' },
+  { t:'여호와의 말씀에 너희는 이제라도 금식하며 울며 애통하고 마음을 다하여 내게로 돌아오라 하셨나니', r:'요엘 2:12', e:'“이제라도” — 늦었다고 생각할 때가 다시 시작할 때라는 따뜻한 초대예요.', a:'어제 못 했어도 괜찮아요. 오늘 다시 시작해요.' },
+  { t:'예수께서 대답하여 가라사대 기록되었으되 사람이 떡으로만 살 것이 아니요 하나님의 입으로 나오는 모든 말씀으로 살 것이라 하였느니라 하시니', r:'마태복음 4:4', e:'사람은 밥만으로 사는 게 아니라 마음을 채워 주는 말로도 산다는 뜻이에요.', a:'배고픔이 몰려올 때 이 구절을 한 번 소리 내어 읽어 보세요.' },
+  { t:'내게 능력 주시는 자 안에서 내가 모든 것을 할 수 있느니라', r:'빌립보서 4:13', e:'혼자 힘으로 버거울 때 힘을 주시는 분이 함께한다는 고백이에요.', a:'미뤄 둔 일 하나를 오늘 시도해 보세요.' },
+  { t:'오직 여호와를 앙망하는 자는 새 힘을 얻으리니 독수리가 날개치며 올라감 같을 것이요 달음박질하여도 곤비치 아니하겠고 걸어가도 피곤치 아니하리로다', r:'이사야 40:31', e:'지치고 피곤할 때에도 다시 새 힘을 얻을 수 있다는 약속이에요.', a:'잠깐 멈추고 깊게 세 번 숨 쉬어 보세요.' },
+  { t:'그러므로 형제들아 내가 하나님의 모든 자비하심으로 너희를 권하노니 너희 몸을 하나님이 기뻐하시는 거룩한 산 제사로 드리라 이는 너희의 드릴 영적 예배니라', r:'로마서 12:1', e:'몸으로 살아가는 하루하루가 그대로 예배가 될 수 있다는 말이에요.', a:'오늘 걷는 시간을 감사하는 시간으로 삼아 보세요.' },
+  { t:'자기의 마음을 제어하지 아니하는 자는 성읍이 무너지고 성벽이 없는 것 같으니라', r:'잠언 25:28', e:'마음을 지키지 못하면 성벽 없는 도시처럼 쉽게 흔들린다는 비유예요.', a:'충동이 올 때 딱 10분만 기다려 보세요.' },
+  { t:'노하기를 더디하는 자는 용사보다 낫고 자기의 마음을 다스리는 자는 성을 빼앗는 자보다 나으니라', r:'잠언 16:32', e:'자기 마음을 다스리는 사람이 진짜 강한 사람이라는 지혜예요.', a:'스트레스를 받을 때 먹기 전에 물 한 잔부터.' },
+  { t:'시험에 들지 않게 깨어 기도하라 마음에는 원이로되 육신이 약하도다', r:'마태복음 26:41', e:'마음은 원해도 몸은 약하다는 걸 예수님도 아셨어요. 그래서 미리 깨어 있으라고 하셨죠.', a:'유혹이 큰 시간(예: 밤 10시)을 미리 계획해 두세요.' },
+  { t:'항상 기뻐하라 쉬지 말고 기도하라 범사에 감사하라 이것이 그리스도 예수 안에서 너희를 향하신 하나님의 뜻이니라', r:'데살로니가전서 5:16-18', e:'기뻐하고, 대화하듯 자주 기도하고, 작은 것에도 감사하라는 말이에요.', a:'잠들기 전 감사한 일 세 가지를 적어 보세요.' },
+  { t:'아무 것도 염려하지 말고 다만 모든 일에 기도와 간구로 너희 구할 것을 감사함으로 하나님께 아뢰라', r:'빌립보서 4:6', e:'걱정을 혼자 꽉 붙들고 있지 말고 털어놓으라는 초대예요.', a:'걱정 하나를 적고, 내려놓는 연습을 해 보세요.' },
+  { t:'너는 내게 부르짖으라 내가 네게 응답하겠고 네가 알지 못하는 크고 비밀한 일을 네게 보이리라', r:'예레미야 33:3', e:'부르면 응답하겠다는 약속이에요. 기도는 정해진 형식 없는 대화예요.', a:'오늘 짧게 한마디라도 마음을 이야기해 보세요.' },
+  { t:'청하오니 당신의 종들을 열흘 동안 시험하여 채식을 주어 먹게 하고 물을 주어 마시게 한 후에', r:'다니엘 1:12', e:'다니엘은 채소와 물로 열흘을 지내 보자고 제안했어요. 단순한 식단도 건강할 수 있어요.', a:'오늘 한 끼는 접시의 절반을 채소로 채워 보세요.' },
+  { t:'삼 주가 차기까지 좋은 떡을 먹지 아니하며 고기와 포도주를 입에 넣지 아니하며 또 몸에 기름을 바르지 아니하니라', r:'다니엘 10:3', e:'다니엘은 3주 동안 좋은 음식과 고기, 술을 멀리하며 마음을 집중했어요.', a:'오늘 단 음료 하나를 물로 바꿔 보세요.' },
+  { t:'그러므로 우리가 이를 위하여 금식하며 우리 하나님께 간구하였더니 그 응낙하심을 입었느니라', r:'에스라 8:23', e:'중요한 여정을 앞두고 금식하며 도움을 구했고, 응답을 받았다는 이야기예요.', a:'요즘 가장 바라는 한 가지를 적어 보세요.' },
+  { t:'내가 이 말을 듣고 앉아서 울고 수일 동안 슬퍼하며 하늘의 하나님 앞에 금식하며 기도하여', r:'느헤미야 1:4', e:'느헤미야는 슬픈 소식 앞에서 금식하며 기도로 마음을 쏟아 놓았어요.', a:'마음이 무거운 일이 있다면 오늘 돌아보기에 털어놓아 보세요.' },
+  { t:'주를 섬겨 금식할 때에 성령이 가라사대 내가 불러 시키는 일을 위하여 바나바와 사울을 따로 세우라 하시니', r:'사도행전 13:2', e:'초대 교회 사람들은 함께 금식하며 중요한 결정을 준비했어요. 함께하면 힘이 돼요.', a:'함께할 친구에게 오늘의 기록을 공유해 보세요.' },
+  { t:'육체의 연습은 약간의 유익이 있으나 경건은 범사에 유익하니 금생과 내생에 약속이 있느니라', r:'디모데전서 4:8', e:'운동도 유익하지만 마음과 영혼의 건강은 더 넓게 유익하다는 말이에요. 둘 다 챙겨요.', a:'운동 10분, 그리고 마음 돌보기 5분.' },
+  { t:'사랑하는 자여 네 영혼이 잘됨 같이 네가 범사에 잘되고 강건하기를 내가 간구하노라', r:'요한삼서 1:2', e:'영혼도 몸도 함께 건강하기를 바라는 따뜻한 축복의 인사예요.', a:'오늘 나에게, 그리고 친구에게 이 축복을 들려주세요.' },
+  { t:'하나님은 우리의 피난처시요 힘이시니 환난 중에 만날 큰 도움이시라', r:'시편 46:1', e:'힘들 때 피할 곳이 되어 주시는 분이 계시다는 고백이에요.', a:'힘든 순간 기댈 수 있는 사람에게 연락해 보세요.' },
+  { t:'근심하지 말라 여호와를 기뻐하는 것이 너희의 힘이니라', r:'느헤미야 8:10', e:'근심보다 기쁨이 우리를 버티게 하는 힘이 된다는 말이에요.', a:'오늘 나를 웃게 하는 일 하나를 해 보세요.' },
+  { t:'나에게 이르시기를 내 은혜가 네게 족하도다 이는 내 능력이 약한 데서 온전하여짐이라 하신지라', r:'고린도후서 12:9', e:'약함은 부끄러운 게 아니라 은혜가 드러나는 자리라는 말이에요.', a:'오늘 실수해도 스스로를 탓하지 말아요.' },
+  { t:'무릇 징계가 당시에는 즐거워 보이지 않고 슬퍼 보이나 후에 그로 말미암아 연달한 자들에게는 의의 평강한 열매를 맺나니', r:'히브리서 12:11', e:'훈련은 당장은 힘들어도, 나중에 평안한 열매를 맺는다는 말이에요.', a:'오늘의 작은 수고가 차곡차곡 쌓이고 있어요.' },
+  { t:'우리를 양육하시되 경건치 않은 것과 이 세상 정욕을 다 버리고 근신함과 의로움과 경건함으로 이 세상에 살고', r:'디도서 2:12', e:'욕심에 휩쓸리지 않고 차분하고 바르게 살자는 권면이에요.', a:'오늘 화면 보는 시간을 30분 줄여 보세요.' },
+  { t:'여호와는 나의 목자시니 내가 부족함이 없으리로다', r:'시편 23:1', e:'나를 돌보는 목자가 있으니 부족함이 없다는 고백이에요.', a:'이미 가진 것들 중 감사한 것 하나를 떠올려 보세요.' },
+  { t:'예수께서 가라사대 나는 생명의 떡이니 내게 오는 자는 결코 주리지 아니할 터이요 나를 믿는 자는 영원히 목마르지 아니하리라', r:'요한복음 6:35', e:'예수님은 마음의 배고픔까지 채워 주는 “생명의 떡”이라고 자신을 소개하셨어요.', a:'허전할 때, 지금 정말 필요한 게 음식인지 한 번 물어보세요.' },
+  { t:'내가 주는 물을 먹는 자는 영원히 목마르지 아니하리니 나의 주는 물은 그 속에서 영생하도록 솟아나는 샘물이 되리라', r:'요한복음 4:14', e:'목마름이 반복되는 우리에게 마르지 않는 샘을 주시겠다는 약속이에요.', a:'오늘 물 목표를 꼭 채워 봐요.' }
+];
+const PRAYER_PROMPTS = [
+  '나의 몸을 귀한 선물로 여기게 하소서.', '먹고 마시는 모든 일에 감사하게 하소서.', '허기의 순간마다 말씀으로 채워 주소서.',
+  '가족의 건강과 평안을 위해 기도합니다.', '절제의 열매가 내 삶에 맺히게 하소서.', '함께하는 지체들에게 힘을 주소서.',
+  '아프고 약한 이웃을 위해 기도합니다.', '나를 묶고 있는 습관을 끊어 주소서.', '교회와 섬기는 분들을 위해 기도합니다.',
+  '감사하는 마음을 잃지 않게 하소서.', '흔들리는 마음을 지키시고 새 힘을 주소서.', '아직 주님을 모르는 친구를 위해 기도합니다.'
+];
+const ACT = [
+  { id:'1', n:'거의 앉아서 지내요', s:'사무직 · 운동은 거의 안 해요', f:1.2 },
+  { id:'2', n:'가볍게 움직여요', s:'주 1~3회 산책이나 가벼운 운동', f:1.375 },
+  { id:'3', n:'보통이에요', s:'주 3~5회 운동', f:1.55 },
+  { id:'4', n:'활발해요', s:'주 6~7회 운동 또는 몸 쓰는 일', f:1.725 }
+];
+const FLAGS = [
+  ['preg','임신 중이거나 수유 중이에요'], ['diab','당뇨가 있어요'], ['meds','정기적으로 약을 먹어요'],
+  ['htn','고혈압이 있어요'], ['ed','섭식장애(거식·폭식 등) 경험이 있어요'], ['minor','만 18세 미만이에요']
+];
+const LENT_OPTS = ['미디어·SNS', '간식', '커피·단 음료', '육식', '쇼핑·배달', '게임·영상'];
+const PROGRAMS = {
+  basic: { name:'건강한 절제 습관', icon:'🌿', days:30, diff:'쉬움', label:'기본 · 금식 없음', who:'처음 시작하는 분, 누구나', fasting:false, timer:0,
+    desc:'금식 없이 하루 세 끼를 균형 있게. 식단·운동·물·말씀을 30일 동안 습관으로 만들어요.',
+    items:['추천 식단대로 식사하기', '물 목표 채우기', '오늘의 운동 하기', '오늘의 말씀 읽기'],
+    guide:d => d <= 7 ? '첫 주예요. 완벽함보다 꾸준함이 중요해요. 한 가지만 지켜도 잘한 거예요.' : d <= 14 ? '둘째 주: 진짜 배고픔과 습관적인 식욕을 구분해 보세요.' : d <= 21 ? '셋째 주: 운동 시간을 5분씩 늘려 봐요.' : '마지막 주: 몸과 마음의 변화를 돌아보고 감사해요.' },
+  if168: { name:'간헐적 단식 16:8', icon:'⏱', days:7, diff:'보통', label:'7일', who:'규칙적으로 식사할 수 있는 건강한 성인', fasting:true, timer:16,
+    desc:'16시간 공복, 낮 12시~저녁 8시 사이 8시간 안에 식사해요. 공복에는 물·무가당 차만.',
+    items:['16시간 공복 지키기', '8시간 안에 식사 마치기', '물 목표 채우기', '말씀 묵상·기도 10분'],
+    guide:d => ['첫날: 저녁 8시 이후 공복 → 다음날 낮 12시 첫 식사. 타이머를 시작해 보세요.', '허기는 파도처럼 지나가요. 배고플 때 물 한 잔과 짧은 기도를.', '첫 식사는 단백질·채소 위주로, 천천히.', '수면 7시간 이상이 공복 유지에 큰 도움이 돼요.', '가벼운 걷기는 식사 시간대에. 공복 고강도 운동은 피해요.', '몸의 변화와 감사 제목을 기록해 보세요.', '완주의 날! 계속할지, 주 2~3회로 줄일지 몸 상태를 보고 정해요.'][d-1] || '' },
+  daniel: { name:'다니엘 금식 21일', icon:'🥗', days:21, diff:'보통', label:'21일', who:'식습관을 단순하게 바꾸고 싶은 성인', fasting:true, timer:0, plant:true,
+    desc:'채소·곡물·콩·과일과 물 중심으로. 고기, 단 음식, 술을 절제해요. (다니엘 1:12, 10:3)',
+    items:['채소·곡물·콩 중심 식사', '음료는 물 위주 (단 음료·술 X)', '고기·단 음식 절제', '기도·말씀 15분'],
+    guide:d => d <= 3 ? '시작 주간: 채소·현미·콩·두부·과일을 미리 준비하세요. 카페인을 줄이면 두통이 올 수 있어요.' : d <= 7 ? '단백질은 콩·두부·견과로 채워요. 세 끼를 거르지 않는 게 좋아요.' : d <= 14 ? '중반: 나물·쌈·채소 수프로 식단을 다양하게.' : d <= 20 ? '마무리 주간: “삼 주가 차기까지…”(다니엘 10:3) 마음을 모아 기도해요.' : '완주의 날! 고기·단 음식은 며칠에 걸쳐 천천히 다시 드세요.' },
+  lent: { name:'사순절 40일 절제', icon:'✝', days:40, diff:'쉬움~보통', label:'40일 · 비음식 절제 가능', who:'음식 외의 절제도 함께하고 싶은 분', fasting:false, timer:0, hasOpt:true,
+    desc:'미디어·간식 등 한 가지를 정해 40일 동안 절제하고, 그 자리를 말씀과 기도로 채워요.',
+    items:['말씀 1장 읽기', '기도 10분', '선택한 절제 지키기', '이웃을 위한 작은 선행'],
+    guide:d => d === 40 ? '40일째: 부활의 기쁨을 묵상하며 감사로 마무리해요.' : ['', '1주: 돌아옴 — 요엘 2:12', '2주: 광야의 시험 — 마태복음 4:1-4', '3주: 기도의 자리 — 마태복음 26:41', '4주: 이웃 사랑과 나눔 — 이사야 58:6', '5주: 약함과 은혜 — 고린도후서 12:9', '6주: 고난주간, 침묵과 감사'][Math.min(6, Math.ceil(d/7))] },
+  oneday: { name:'1일 금식 (24시간)', icon:'🌙', days:1, diff:'어려움', label:'24시간', who:'건강한 성인 · 금식 경험이 있는 분', fasting:true, timer:24,
+    desc:'저녁 식사 후부터 다음 날 저녁까지 24시간, 물과 기도로 보내요. 마치는 식사는 가볍게.',
+    items:['저녁 식사 후 금식 시작', '물·무가당 차 충분히', '정해진 시간 기도 3번', '마치는 식사는 죽·채소로 가볍게'],
+    guide:() => '저녁→저녁 방식을 권장해요. 어지럼·두근거림이 있으면 바로 중단하세요. 물은 평소보다 넉넉히.' }
+};
+// 식품 (k: 단위당 kcal) — 대략적인 참고값
+const F = {
+  rice:{n:'현미밥',k:1.5,u:'g',min:80,max:420}, mix:{n:'잡곡밥',k:1.5,u:'g',min:80,max:420}, soba:{n:'메밀국수',k:1.1,u:'g',min:100,max:450},
+  swp:{n:'고구마',k:1.3,u:'g',min:60,max:400}, bread:{n:'통밀빵',k:2.5,u:'g',min:30,max:180}, oat:{n:'오트밀(두유)',k:0.9,u:'g',min:100,max:450},
+  chick:{n:'닭가슴살 구이',k:1.1,u:'g',min:60,max:300}, mack:{n:'고등어구이',k:2.0,u:'g',min:50,max:200}, salmon:{n:'연어구이',k:1.8,u:'g',min:50,max:220},
+  beef:{n:'소고기 우둔 볶음',k:1.5,u:'g',min:50,max:220}, egg:{n:'계란',k:75,u:'개',min:1,max:4}, yog:{n:'그릭요거트',k:1.0,u:'g',min:80,max:300},
+  tofu:{n:'두부부침',k:1.0,u:'g',min:80,max:350}, chickpea:{n:'병아리콩 샐러드',k:1.6,u:'g',min:60,max:250}, lentil:{n:'렌틸콩 조림',k:1.2,u:'g',min:60,max:300},
+  natto:{n:'낫토',k:2.0,u:'g',min:50,max:150}, soymilk:{n:'두유(무가당)',k:0.45,u:'ml',min:190,max:400}, nuts:{n:'견과류',k:6.0,u:'g',min:10,max:60}
+};
+const SIDES = [{n:'시금치나물',k:40},{n:'브로콜리',k:35},{n:'배추김치',k:15},{n:'오이무침',k:30},{n:'버섯볶음',k:50},{n:'콩나물무침',k:30},{n:'미역줄기볶음',k:45},{n:'애호박볶음',k:40}];
+const SOUPS = [{n:'된장국',k:80},{n:'미역국(들기름)',k:60},{n:'콩나물국',k:45},{n:'배추된장국',k:70}];
+const BSIDES = [{n:'채소 샐러드',k:35},{n:'방울토마토 10개',k:35},{n:'오이·당근 스틱',k:25}];
+const FRUITS = [{n:'사과 반 개',k:50},{n:'바나나 1개',k:90},{n:'귤 2개',k:80},{n:'키위 1개',k:50},{n:'방울토마토 15개',k:50}];
+const POOL = {
+  B_grain:['bread','swp','oat'], B_grain_p:['swp','oat','rice'], B_prot:['egg','yog','tofu'], B_prot_p:['soymilk','tofu','natto'],
+  L_grain:['rice','mix','soba'], D_grain:['mix','rice','swp'],
+  prot:['chick','mack','tofu','salmon','beef','egg'], prot_p:['tofu','lentil','chickpea','natto'],
+  fill:['nuts','yog','soymilk'], fill_p:['nuts','soymilk']
+};
+const QUICK_FOODS = [['김밥 1줄',480],['라면 1개',500],['떡볶이 1인분',480],['치킨 2조각',450],['피자 1조각',270],['빵 1개',300],['과자 1봉',250],['아이스크림',200],['라떼 1잔',180],['과일 1개',80]];
+// 운동 (MET 기반 대략 소모량)
+const EX = {
+  walk:{t:'빠르게 걷기',a:'🚶',met:3.5,min:30,rx:'30분 · 대화할 수 있는 속도',d:'팔을 자연스럽게 흔들며 약간 숨이 찰 정도로 걸어요. 식후 걷기는 혈당 관리에도 좋아요.'},
+  walk20:{t:'편안한 걷기',a:'🚶',met:3.0,min:20,rx:'20분 · 나눠서 해도 좋아요',d:'무릎에 부담이 적은 평지를 편안한 속도로. 10분씩 두 번 나눠도 충분해요.'},
+  chair:{t:'의자 스쿼트',a:'🪑',met:3.5,min:8,rx:'10회 × 2세트',d:'의자 앞에 서서 엉덩이가 의자에 닿을 듯 앉았다 일어나요. 무릎은 발끝과 같은 방향으로.'},
+  wallpush:{t:'벽 푸시업',a:'🧱',met:3.0,min:6,rx:'10회 × 2세트',d:'벽에서 한 걸음 떨어져 손을 어깨너비로 짚고, 가슴을 벽 쪽으로 천천히 가져가요.'},
+  stretch:{t:'전신 스트레칭',a:'🤸',met:2.5,min:8,rx:'8분',d:'목-어깨-가슴-허리-고관절-햄스트링 순으로 각 20~30초 유지. 호흡을 멈추지 말고 통증 직전까지만.'},
+  kick:{t:'태권도 응용 발차기',a:'🦵',met:5,min:10,rx:'좌우 10회 × 3세트',d:'앞차기·옆차기·돌려차기를 천천히. 지지 발 무릎을 살짝 굽히고 코어를 조여요.'},
+  squat:{t:'맨몸 스쿼트 + 런지',a:'🏋️',met:5,min:10,rx:'각 12회 × 3세트',d:'스쿼트: 발 어깨너비, 엉덩이를 뒤로. 런지: 앞무릎 90도, 뒷무릎은 바닥 닿기 직전까지.'},
+  db_curl:{t:'아령 컬',a:'💪',met:3.5,min:8,rx:'12회 × 3세트',d:'팔꿈치를 몸통에 고정하고 아령을 어깨 쪽으로 말아 올려요. 내릴 때는 2~3초 천천히.'},
+  db_shoulder:{t:'아령 숄더 프레스',a:'🏋️‍♂️',met:3.5,min:8,rx:'10회 × 3세트',d:'아령을 어깨 높이에서 머리 위로 밀어 올려요. 허리가 젖혀지지 않게 코어를 조여요.'},
+  db_lateral:{t:'사이드 레터럴 레이즈',a:'🤸‍♂️',met:3.5,min:6,rx:'12회 × 3세트',d:'팔을 약간 굽힌 채 어깨 높이까지 옆으로 들어 올려요.'},
+  db_squat:{t:'아령 스쿼트',a:'🏋️',met:5,min:10,rx:'12회 × 3세트',d:'아령을 양손에 들고 스쿼트. 무게 중심은 뒤꿈치에.'},
+  db_row:{t:'아령 로우',a:'🔙',met:3.5,min:8,rx:'12회 × 3세트',d:'상체를 45도 숙이고 아령을 배꼽 쪽으로 당겨요. 견갑골을 모으는 느낌으로.'}
+};
+const EX_LEVEL = {
+  low:{n:'저충격 운동', plan:'관절에 부담이 적은 운동 위주 · 주 5일 20~30분 (걷기, 의자 스쿼트, 벽 푸시업, 스트레칭)'},
+  easy:{n:'입문', plan:'주 5일 30분 걷기 + 주 2~3회 맨몸 근력 + 스트레칭'},
+  mid:{n:'중급', plan:'주 5일 30분 걷기 + 주 3회 근력 운동(아령 포함)'},
+  hard:{n:'활발', plan:'주 5~6일 40분 · 발차기·아령 근력 + 스트레칭'}
+};
+const STOP_LIST = ['어지럼, 실신 또는 실신할 것 같은 느낌', '가슴 두근거림, 흉통, 숨참', '혈당 70mg/dL 미만, 식은땀·손떨림', '심한 두통, 혼란, 집중이 안 됨', '구토·설사가 계속됨, 소변이 거의 나오지 않음'];
+const TONE = {
+  church:{ vt:'오늘의 말씀', rt:'저녁 감사 · 기도 노트', rp:'오늘 감사한 일과 기도 제목을 적어 보세요', greet:'오늘도 말씀과 함께 건강한 하루 보내요' },
+  seeker:{ vt:'오늘의 말씀', rt:'오늘 하루 돌아보기', rp:'좋았던 일, 마음에 남은 것을 적어 보세요. 기도는 마음을 털어놓는 대화예요.', greet:'오늘도 나를 돌보는 하루, 함께해요' },
+  health:{ vt:'오늘의 한 문장', rt:'오늘 하루 돌아보기', rp:'오늘 잘한 일, 내일 해 볼 것을 적어 보세요', greet:'오늘도 건강한 습관 하나씩' }
+};
+// ===================== 유틸 · 저장 =====================
+const KEY = 'purifyV3';
+const LEGACY = ['purifyState', 'purifyWater', 'purifyV2'];
+function now() { return Date.now(); }
+function pad2(n) { return String(n).padStart(2, '0'); }
+function ymd(t) { const d = new Date(t === undefined ? Date.now() : t); return d.getFullYear() + '-' + pad2(d.getMonth()+1) + '-' + pad2(d.getDate()); }
+function dayNum(s) { const p = (s || ymd()).split('-').map(Number); return Math.floor(Date.UTC(p[0], p[1]-1, p[2]) / 864e5); }
+function addDays(s, n) { const p = s.split('-').map(Number); const d = new Date(Date.UTC(p[0], p[1]-1, p[2] + n)); return d.getUTCFullYear() + '-' + pad2(d.getUTCMonth()+1) + '-' + pad2(d.getUTCDate()); }
+function diffDays(a, b) { return dayNum(b) - dayNum(a); }
+function fmtMD(s) { const p = s.split('-'); return (+p[1]) + '월 ' + (+p[2]) + '일'; }
+function fmtYMD(s) { const p = s.split('-'); return p[0] + '년 ' + (+p[1]) + '월 ' + (+p[2]) + '일'; }
+function esc(s) { return String(s == null ? '' : s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function comma(n) { return Math.round(n).toLocaleString('ko-KR'); }
+function clamp(x, a, b) { return Math.max(a, Math.min(b, x)); }
+function lsGet(k) { try { return JSON.parse(localStorage.getItem(k) || 'null'); } catch(e) { return null; } }
+function lsSet(k, v) { try { localStorage.setItem(k, JSON.stringify(v)); } catch(e) {} }
+function lsDel(k) { try { localStorage.removeItem(k); } catch(e) {} }
+let toastT;
+function toast(m) { const t = document.getElementById('toast'); if (!t) return; t.textContent = m; t.classList.add('show'); clearTimeout(toastT); toastT = setTimeout(() => t.classList.remove('show'), 2200); }
+
+function blank() {
+  return { version:3, onboarded:false, faith:'', name:'', disclaimerAt:0,
+    profile:{ sex:'', age:'', height:'', weight:'', goal:'', activity:'', flags:{}, doctorOk:false },
+    program:{ id:'', start:'', opt:LENT_OPTS[0], checks:{}, done:false, doneAt:0 },
+    history:[], days:{}, weights:[], health:[], timer:{ running:false, start:0, acc:0 },
+    group:{ name:'', members:[], notes:{} }, prayers:{}, legacyFast:[], migratedFrom:'' };
+}
+let S = blank();
+function save() { lsSet(KEY, S); }
+function normalize(o) {
+  const b = blank(), s = Object.assign(b, o);
+  s.profile = Object.assign(blank().profile, o.profile || {}); s.profile.flags = s.profile.flags || {};
+  s.program = Object.assign(blank().program, o.program || {}); s.program.checks = s.program.checks || {};
+  s.timer = Object.assign(blank().timer, o.timer || {});
+  s.group = Object.assign(blank().group, o.group || {});
+  ['history','weights','health','legacyFast'].forEach(k => { if (!Array.isArray(s[k])) s[k] = []; });
+  ['days','prayers'].forEach(k => { if (!s[k] || typeof s[k] !== 'object') s[k] = {}; });
+  return s;
+}
+function load() {
+  const o = lsGet(KEY);
+  if (o && typeof o === 'object' && o.version === 3) { S = normalize(o); return; }
+  S = blank(); migrateLegacy(); save();
+}
+function day(d) {
+  d = d || ymd();
+  const x = S.days[d] || (S.days[d] = {});
+  x.meals = x.meals || {}; x.extras = x.extras || []; x.ex = x.ex || {};
+  x.water = +x.water || 0; x.refl = x.refl || ''; x.shuffle = +x.shuffle || 0;
+  return x;
+}
+// v1/v2 데이터 이전 (기존 키는 지우지 않음)
+function migrateLegacy() {
+  const st = lsGet('purifyState'), w = lsGet('purifyWater'), v2 = lsGet('purifyV2');
+  if (!st && !w && !v2) return;
+  S.migratedFrom = v2 ? 'v2' : 'v1';
+  if (st && typeof st === 'object') {
+    const times = [].concat((st.mealLogs || []).map(m => m && m.t), (st.fastLogs || []).map(r => r && r.t)).filter(Boolean);
+    const first = times.length ? Math.min.apply(null, times) : now();
+    if (+st.startWeight) {
+      const cur = +((+st.startWeight) - (+st.totalLoss || 0)).toFixed(1);
+      S.profile.weight = cur;
+      if (ymd(first) !== ymd() && cur !== +st.startWeight) S.weights.push({ d:ymd(first), kg:+st.startWeight });
+      S.weights.push({ d:ymd(), kg:cur });
+    }
+    if (+st.targetWeight) S.profile.goal = +st.targetWeight;
+    (st.mealLogs || []).forEach(m => { if (m && +m.s) day(ymd(m.t || now())).extras.push({ n:'이전 식단 기록', k:+m.s, t:m.t || now() }); });
+    (st.fastLogs || []).forEach(r => {
+      if (!r) return;
+      S.legacyFast.push(r);
+      if (r.bp || r.bs) S.health.push({ d:ymd(r.t || now()), bp:+r.bp || 0, bs:+r.bs || 0, t:r.t || now() });
+    });
+    if (st.timer && typeof st.timer === 'object') S.timer = { running:!!st.timer.running && !!st.timer.start, start:+st.timer.start || 0, acc:+st.timer.acc || 0 };
+  }
+  if (Array.isArray(w)) w.forEach(l => { if (l && +l.a) { const x = day(ymd(l.t || now())); x.water += +l.a; } });
+  if (v2 && typeof v2 === 'object') {
+    if (v2.group && typeof v2.group === 'object') S.group = Object.assign(blank().group, v2.group);
+    if (v2.prayers && typeof v2.prayers === 'object') S.prayers = v2.prayers;
+    const progs = v2.programs || {};
+    Object.keys(progs).forEach(id => {
+      const p = progs[id]; if (!p || !PROGRAMS[id]) return;
+      if (id === v2.activeProgram) S.program = { id, start:p.start || ymd(), opt:p.opt || LENT_OPTS[0], checks:p.checks || {}, done:!!p.done, doneAt:p.doneAt || 0 };
+      else S.history.push({ id, start:p.start || '', end:'', done:!!p.done });
+    });
+  }
+}
+
+// ===================== 계산 =====================
+function bmiOf(kg, cm) { return kg / Math.pow(cm / 100, 2); }
+function bmiLabel(b) { return b < 18.5 ? '저체중' : b < 23 ? '정상' : b < 25 ? '과체중 전 단계' : b < 30 ? '비만 1단계' : '비만 2단계 이상'; }
+function healthyMin(cm) { return Math.ceil(18.5 * Math.pow(cm / 100, 2) * 2) / 2; }
+function computePlan(p, progId) {
+  const w = +p.weight, h = +p.height, a = +p.age, male = p.sex === 'M', f = p.flags || {};
+  const act = ACT.find(x => x.id === p.activity) || ACT[0];
+  const bmi = bmiOf(w, h), goalBmi = bmiOf(+p.goal, h);
+  const bmr = 10 * w + 6.25 * h - 5 * a + (male ? 5 : -161);
+  const tdee = bmr * act.f;
+  const floor = male ? 1500 : 1200;
+  const notes = [];
+  const wantLoss = +p.goal < w - 0.2;
+  let deficit = 0;
+  if (bmi < 18.5) notes.push('현재 BMI가 18.5 미만이라 감량 대신 유지 칼로리로 계획했어요. 균형 잡힌 식사로 체력을 먼저 채워요.');
+  else if (f.preg) notes.push('임신·수유 중에는 감량하지 않고 유지 칼로리로 계획했어요. 식단은 꼭 담당의와 상의하세요.');
+  else if (f.minor) notes.push('성장기에는 칼로리를 줄이지 않고 유지 칼로리로 계획했어요.');
+  else if (f.ed) notes.push('숫자보다 규칙적인 식사가 더 중요해요. 유지 칼로리로 계획했어요. 전문가와 함께하면 더 좋아요.');
+  else if (wantLoss) deficit = bmi >= 25 ? 500 : bmi >= 23 ? 400 : 300;
+  else notes.push('목표가 현재 체중과 같거나 높아서 유지 칼로리로 계획했어요.');
+  let target = Math.round((tdee - deficit) / 50) * 50;
+  if (target < floor) { target = floor; if (deficit) notes.push('하루 최소 ' + comma(floor) + 'kcal 아래로는 내려가지 않게 했어요. 대신 운동으로 조금 더 움직여 봐요.'); }
+  const realDef = Math.max(0, tdee - target);
+  const weekly = deficit ? Math.min(0.75, realDef * 7 / 7700) : 0;
+  let weeks = 0, goalDate = '';
+  if (deficit && weekly >= 0.1) { weeks = Math.ceil((w - +p.goal) / weekly); goalDate = addDays(ymd(), weeks * 7); }
+  const plant = progId === 'daniel';
+  const mac = plant ? { c:55, p:20, f:25 } : { c:50, p:25, f:25 };
+  const macros = { c:Math.round(target * mac.c / 100 / 4), p:Math.round(target * mac.p / 100 / 4), f:Math.round(target * mac.f / 100 / 9), pct:mac };
+  const water = Math.round(w * 33 / 50) * 50;
+  return { bmi, goalBmi, bmr, tdee, target, deficit, realDef, weekly, weeks, goalDate, macros, water,
+    waterRange:[Math.round(w * 30 / 50) * 50, Math.round(w * 35 / 50) * 50], notes, floor, exLevel:exLevelOf(p), wantLoss };
+}
+function exLevelOf(p) {
+  const b = bmiOf(+p.weight, +p.height), f = p.flags || {};
+  if (b >= 30 || f.preg) return 'low';
+  if (+p.age >= 65) return 'low';
+  return p.activity <= '2' ? 'easy' : p.activity === '3' ? 'mid' : 'hard';
+}
+function plan() { return computePlan(S.profile, progId()); }
+
+// ===================== 프로그램 =====================
+function access(id, flags) {
+  flags = flags || {};
+  if (id === 'basic') return { ok:true };
+  if (flags.preg || flags.minor || flags.ed) return { ok:false, reason:'임신·수유 중, 18세 미만, 섭식장애 경험이 있으면 안전을 위해 기본 프로그램만 이용할 수 있어요.' };
+  if (PROGRAMS[id].fasting && (flags.diab || flags.meds)) return { ok:true, needDoctor:true, reason:'당뇨가 있거나 약을 복용 중이면 금식이 저혈당 등으로 위험할 수 있어요. 의사와 상담한 뒤에만 선택하세요.' };
+  if (PROGRAMS[id].fasting && flags.htn) return { ok:true, caution:'고혈압이 있다면 혈압을 자주 확인하고, 이상하면 바로 중단하세요.' };
+  return { ok:true };
+}
+function canChoose(id, p) { const a = access(id, p.flags); return a.ok && (!a.needDoctor || !!p.doctorOk); }
+function recommend(p) {
+  const f = p.flags || {};
+  if (f.preg || f.minor || f.ed || f.diab || f.meds) return 'basic';
+  const b = bmiOf(+p.weight, +p.height);
+  if (b >= 25 && +p.age >= 18 && +p.age < 65) return 'if168';
+  return 'basic';
+}
+function progId() { return S.program.id && PROGRAMS[S.program.id] ? S.program.id : 'basic'; }
+function progDay(d) { return S.program.start ? diffDays(S.program.start, d || ymd()) + 1 : 1; }
+function progActive(d) { const n = progDay(d); return n >= 1 && n <= PROGRAMS[progId()].days; }
+function progItems() { const p = PROGRAMS[progId()]; return p.items.map((it, i) => (p.hasOpt && i === 2) ? '선택한 절제 지키기: ' + S.program.opt : it); }
+function dayDone(n) { const c = S.program.checks[n]; return !!c && PROGRAMS[progId()].items.every((_, i) => c[i]); }
+function doneCount() { let k = 0; for (let n = 1; n <= PROGRAMS[progId()].days; n++) if (dayDone(n)) k++; return k; }
+function ruleId(d) { return progActive(d) ? progId() : 'basic'; }
+
+// ===================== 식단 =====================
+function pick(pool, seed) { return pool[((seed % pool.length) + pool.length) % pool.length]; }
+function scaleFood(key, kcal) {
+  const f = F[key];
+  let amt = f.u === '개' ? Math.round(kcal / f.k) : Math.round(kcal / f.k / 10) * 10;
+  amt = clamp(amt, f.min, f.max);
+  return { n:f.n, amt:amt + f.u, k:Math.round(amt * f.k), key };
+}
+function buildMeal(kind, T, plant, seed) {
+  const items = [];
+  if (kind === 'S') {
+    const fr = pick(FRUITS, seed); items.push({ n:fr.n, amt:'', k:fr.k });
+    if (T - fr.k >= 40) items.push(scaleFood(pick(plant ? POOL.fill_p : POOL.fill, seed + 1), T - fr.k));
+    return topUp(items, T, plant ? ['nuts', 'swp'] : ['nuts', 'swp', 'yog']);
+  }
+  let sides = [], grainPool, protPool, share = 0.4;
+  if (kind === 'B') { sides = [pick(BSIDES, seed)]; grainPool = plant ? POOL.B_grain_p : POOL.B_grain; protPool = plant ? POOL.B_prot_p : POOL.B_prot; share = 0.45; }
+  else {
+    const s1 = pick(SIDES, seed), s2 = pick(SIDES.filter(x => x !== s1), seed + 3);
+    sides = [s1, s2]; if (kind === 'L') sides.push(pick(SOUPS, seed + 1));
+    grainPool = kind === 'L' ? POOL.L_grain : POOL.D_grain; protPool = plant ? POOL.prot_p : POOL.prot;
+  }
+  const fixed = sides.reduce((a, s) => a + s.k, 0);
+  const pr = scaleFood(pick(protPool, seed + 2), (T - fixed) * share);
+  const gr = scaleFood(pick(grainPool, seed + 5), T - fixed - pr.k);
+  items.push(gr, pr); sides.forEach(s => items.push({ n:s.n, amt:'', k:s.k }));
+  return topUp(items, T, kind === 'B' ? (plant ? ['nuts', 'swp', 'oat'] : ['nuts', 'swp', 'bread']) : ['swp', 'tofu', 'nuts']);
+}
+// 양 제한 때문에 목표보다 많이 모자라면 곁들임을 추가
+function topUp(items, T, pool) {
+  for (const key of pool) {
+    const sum = items.reduce((a, i) => a + i.k, 0), rem = T - sum;
+    if (rem < Math.max(40, T * 0.04)) break;
+    if (items.some(i => i.key === key)) continue;
+    if (rem < F[key].min * F[key].k) continue;
+    items.push(scaleFood(key, rem));
+  }
+  return items;
+}
+const MEAL_META = { B:{n:'아침',time:'7~9시'}, L:{n:'점심',time:'12~1시'}, D:{n:'저녁',time:'6~7시'}, S:{n:'간식',time:'3~4시'} };
+function mealPlan(d) {
+  d = d || ymd();
+  const id = ruleId(d), T = plan().target;
+  const plant = id === 'daniel' || (id === 'lent' && S.program.opt === '육식');
+  const noSnack = id === 'lent' && S.program.opt === '간식';
+  const win = id === 'if168', fastDay = id === 'oneday';
+  const seed = dayNum(d) + (S.days[d] ? +S.days[d].shuffle || 0 : 0) * 7;
+  const meals = [];
+  const mk = (k, share, extra) => ({ key:k, n:MEAL_META[k].n, time:MEAL_META[k].time, items:buildMeal(k, T * share, plant, seed + k.charCodeAt(0)), ...(extra || {}) });
+  if (fastDay) {
+    meals.push({ key:'B', n:'아침', time:'', fast:true, items:[{ n:'금식 · 물과 무가당 차', amt:'', k:0 }] });
+    meals.push({ key:'L', n:'점심', time:'', fast:true, items:[{ n:'금식 · 물 넉넉히, 기도의 시간', amt:'', k:0 }] });
+    meals.push({ key:'D', n:'마치는 식사', time:'저녁 6~7시', items:[{ n:'야채죽', amt:'1그릇', k:250 }, { n:'나박김치', amt:'', k:15 }, { n:'바나나', amt:'1개', k:90 }] });
+  } else if (win) {
+    meals.push({ key:'B', n:'아침', time:'공복 시간', fast:true, items:[{ n:'물 · 무가당 차 · 블랙커피', amt:'', k:0 }] });
+    meals.push(mk('L', .45, { n:'첫 식사', time:'낮 12시' }));
+    meals.push(mk('S', .15, { time:'오후 4시' }));
+    meals.push(mk('D', .40, { n:'마지막 식사', time:'저녁 8시 전' }));
+  } else if (noSnack) {
+    meals.push(mk('B', .28)); meals.push(mk('L', .38)); meals.push(mk('D', .34));
+  } else {
+    meals.push(mk('B', .25)); meals.push(mk('L', .35)); meals.push(mk('S', .10)); meals.push(mk('D', .30));
+  }
+  meals.forEach(m => m.k = m.items.reduce((a, i) => a + i.k, 0));
+  if (!fastDay) {
+    const tot = meals.reduce((a, m) => a + m.k, 0), diff = T - tot;
+    if (Math.abs(diff) > 15) {
+      const adj = meals.find(m => m.key === 'S') || meals.find(m => m.key === 'D');
+      const newT = adj.k + diff;
+      adj.items = buildMeal(adj.key, newT, plant, seed + adj.key.charCodeAt(0));
+      adj.k = adj.items.reduce((a, i) => a + i.k, 0);
+    }
+  }
+  const total = meals.reduce((a, m) => a + m.k, 0);
+  return { meals, total, target:T, id, plant, win, fastDay, noSnack };
+}
+function eatenKcal(d) { const x = day(d); return Object.values(x.meals).reduce((a, v) => a + (+v || 0), 0) + x.extras.reduce((a, e) => a + (+e.k || 0), 0); }
+
+// ===================== 운동 =====================
+function exRoutine(d) {
+  d = d || ymd();
+  const lvl = exLevelOf(S.profile), n = dayNum(d), id = ruleId(d);
+  if (id === 'oneday') return { lvl:'low', ids:['walk20', 'stretch'] };
+  const R = {
+    low:['walk20', n % 2 ? 'chair' : 'wallpush', 'stretch'],
+    easy:['walk', n % 2 ? 'squat' : 'chair', 'stretch'],
+    mid:['walk', n % 2 ? 'squat' : 'db_squat', ['db_curl', 'db_row', 'db_shoulder'][n % 3]],
+    hard:['kick', n % 2 ? 'db_squat' : 'squat', ['db_shoulder', 'db_row', 'db_lateral', 'db_curl'][n % 4], 'stretch']
+  };
+  return { lvl, ids:R[lvl] };
+}
+function exKcal(id) { const e = EX[id]; return Math.round(e.met * 3.5 * (+S.profile.weight || 65) / 200 * e.min); }
+function burnedKcal(d) { return Object.values(day(d).ex).reduce((a, v) => a + (+v || 0), 0); }
+
+// ===================== 안전 =====================
+function safetyWarnings(bp, bs) {
+  const w = []; bp = parseFloat(bp); bs = parseFloat(bs);
+  if (bp && bp >= 140) w.push('수축기 혈압 ' + bp + ': 고혈압 범위(140 이상)예요. 금식 중이라면 멈추고, 안정 후 다시 재 보세요. 계속 높으면 의료진과 상담하세요.');
+  if (bp && bp <= 90) w.push('수축기 혈압 ' + bp + ': 저혈압 범위(90 이하)예요. 어지럼·실신 위험이 있으니 금식을 중단하고 수분과 음식을 드세요.');
+  if (bs && bs < 70) w.push('혈당 ' + bs + ': 저혈당(70 미만)이에요! 즉시 금식을 중단하고 당분을 섭취하세요. 증상이 계속되면 의료기관에 연락하세요.');
+  if (bs && bs >= 126) w.push('공복 혈당 ' + bs + ': 126 이상은 당뇨 범위일 수 있어요. 금식 전 의료진과 상담하세요.');
+  return w;
+}
+
+// ===================== 말씀 =====================
+function idxFor(d, len) { const n = dayNum(d); return ((n % len) + len) % len; }
+function verseFor(d) { return VERSES[idxFor(d, VERSES.length)]; }
+function prayerFor(d) { return PRAYER_PROMPTS[idxFor(d, PRAYER_PROMPTS.length)]; }
+function tone() { return TONE[S.faith] || TONE.seeker; }
+
+// ===================== 타이머 =====================
+let timerId;
+function timerSec() { const t = S.timer; return Math.floor((+t.acc || 0) + (t.running && t.start ? Math.max(0, now() - t.start) / 1000 : 0)); }
+function fmtHMS(s) { return pad2(Math.floor(s / 3600)) + ':' + pad2(Math.floor(s % 3600 / 60)) + ':' + pad2(s % 60); }
+function toggleTimer() {
+  const t = S.timer;
+  if (t.running) { t.acc = timerSec(); t.running = false; t.start = 0; toast('타이머를 멈췄어요.'); }
+  else { t.running = true; t.start = now(); toast('공복 타이머를 시작했어요.'); }
+  save(); renderToday();
+}
+function resetTimer() {
+  if (!confirm('타이머를 0으로 되돌릴까요?')) return;
+  S.timer = { running:false, start:0, acc:0 }; save(); renderToday();
+}
+function tickTimer() {
+  const el = document.getElementById('tmv'); if (!el) return;
+  const s = timerSec(); el.textContent = fmtHMS(s);
+  const g = PROGRAMS[progId()].timer, b = document.getElementById('tmbar');
+  if (b && g) b.style.width = Math.min(100, s / (g * 3600) * 100) + '%';
+}
+// ===================== 온보딩 (한 페이지에 한 가지 결정) =====================
+const STEPS = ['intro', 'faith', 'basic', 'body', 'activity', 'health', 'program', 'summary'];
+let D = null, obStep = 0, obEntry = 0, obMode = 'new';
+function startOnboarding(from, mode) {
+  obMode = mode || 'new';
+  D = JSON.parse(JSON.stringify({ faith:S.faith, name:S.name, profile:S.profile, progId:S.program.id || '', opt:S.program.opt || LENT_OPTS[0], discOk:obMode === 'edit' && !!S.disclaimerAt }));
+  obStep = obEntry = Math.max(0, STEPS.indexOf(from || 'intro'));
+  document.getElementById('main').classList.remove('on');
+  document.getElementById('ob').classList.add('on');
+  renderOb();
+}
+function obPrev() {
+  if (obStep <= obEntry) { if (obMode === 'edit') { showMain(); } return; }
+  obStep--; renderOb();
+}
+function setD(path, v) { const ks = path.split('.'); let o = D; while (ks.length > 1) o = o[ks.shift()]; o[ks[0]] = v; }
+function obPick(path, v) { setD(path, v); renderOb(); }
+function obInput(path, el) { setD(path, el.value); if (STEPS[obStep] === 'body') updateBodyLive(); if (STEPS[obStep] === 'basic') updateAgeNote(); }
+function obToggleFlag(k) {
+  if (k === 'minor' && +D.profile.age > 0 && +D.profile.age < 18) return toast('나이가 18세 미만이라 자동으로 선택돼요.');
+  D.profile.flags[k] = !D.profile.flags[k]; renderOb();
+}
+function renderOb() {
+  const step = STEPS[obStep], b = document.getElementById('obBody'), next = document.getElementById('obNext');
+  const dots = document.getElementById('obDots');
+  dots.innerHTML = step === 'intro' ? '' : STEPS.slice(1).map((_, i) => '<span class="dot' + (i + 1 === obStep ? ' on' : i + 1 < obStep ? ' done' : '') + '"></span>').join('');
+  document.getElementById('obBack').classList.toggle('hide', obStep === 0 || (obStep <= obEntry && obMode !== 'edit'));
+  next.textContent = '다음'; next.disabled = false;
+  b.innerHTML = OB_RENDER[step]();
+  if (step === 'body') updateBodyLive();
+  if (step === 'basic') updateAgeNote();
+  if (step === 'intro') next.textContent = '시작하기';
+  if (step === 'faith' && !D.faith) next.textContent = '건너뛰기';
+  if (step === 'summary') next.textContent = obMode === 'edit' ? '저장하기' : '시작하기';
+  b.scrollTop = 0;
+}
+const OB_RENDER = {
+  intro: () => '<div class="hero"><div class="mark">✦</div><h1>정화의 길</h1>' +
+    '<p>말씀에 귀 기울이며<br>건강하게 먹고, 즐겁게 움직이는 습관을.</p>' +
+    '<p>몸도 마음도 새롭게,<br><b style="color:var(--p)">다시 태어나는 여정</b>을 함께해요.</p>' +
+    '<p class="muted" style="font-size:15px;">신앙이 없어도 괜찮아요. 누구나 환영해요.</p></div>',
+  faith: () => '<h2>당신에 대해<br>조금 알려 주세요</h2><p class="lead">말씀을 어떻게 보여 드릴지 정할 때만 써요. 건너뛰어도, 나중에 바꿔도 괜찮아요.</p>' +
+    [['church', '⛪ 교회에 다니고 있어요', '말씀과 기도 중심으로 함께해요'], ['seeker', '🌱 잘 모르지만 궁금해요', '말씀을 쉬운 설명과 함께 보여 드려요'], ['health', '🏃 건강 관리만 할래요', '말씀은 가볍게, 건강 습관 중심으로']]
+      .map(o => '<button class="opt' + (D.faith === o[0] ? ' sel' : '') + '" onclick="obPick(\'faith\',\'' + o[0] + '\')">' + o[1] + '<small>' + o[2] + '</small></button>').join(''),
+  basic: () => '<h2>기본 정보</h2><p class="lead">맞춤 칼로리를 계산하는 데 필요해요.</p>' +
+    '<label class="f">이름 또는 별명 (선택)</label><input class="inp" id="obName" maxlength="12" placeholder="예: 은혜" value="' + esc(D.name) + '" oninput="obInput(\'name\',this)">' +
+    '<label class="f">성별</label><div class="seg">' + [['F', '여성'], ['M', '남성']].map(o => '<button class="opt' + (D.profile.sex === o[0] ? ' sel' : '') + '" onclick="obPick(\'profile.sex\',\'' + o[0] + '\')">' + o[1] + '</button>').join('') + '</div>' +
+    '<label class="f">나이</label><div class="unit"><input class="inp" id="obAge" type="number" inputmode="numeric" min="10" max="100" placeholder="예: 30" value="' + esc(D.profile.age) + '" oninput="obInput(\'profile.age\',this)"><span>세</span></div><div id="ageNote"></div>',
+  body: () => '<h2>키와 체중</h2><p class="lead">현재 상태와 바라는 목표를 알려 주세요.</p>' +
+    '<label class="f">키</label><div class="unit"><input class="inp" id="obH" type="number" inputmode="decimal" placeholder="예: 160" value="' + esc(D.profile.height) + '" oninput="obInput(\'profile.height\',this)"><span>cm</span></div>' +
+    '<label class="f">현재 체중</label><div class="unit"><input class="inp" id="obW" type="number" inputmode="decimal" step="0.1" placeholder="예: 65" value="' + esc(D.profile.weight) + '" oninput="obInput(\'profile.weight\',this)"><span>kg</span></div>' +
+    '<label class="f">목표 체중</label><div class="unit"><input class="inp" id="obG" type="number" inputmode="decimal" step="0.1" placeholder="예: 58" value="' + esc(D.profile.goal) + '" oninput="obInput(\'profile.goal\',this)"><span>kg</span></div><div id="bodyLive"></div>',
+  activity: () => '<h2>평소 활동량은<br>어느 정도인가요?</h2><p class="lead">하루 필요한 에너지를 계산할 때 써요.</p>' +
+    ACT.map(a => '<button class="opt' + (D.profile.activity === a.id ? ' sel' : '') + '" onclick="obPick(\'profile.activity\',\'' + a.id + '\')">' + a.n + '<small>' + a.s + '</small></button>').join(''),
+  health: () => '<h2>건강 상태 확인</h2><p class="lead">해당하는 것을 모두 골라 주세요. 안전한 계획을 위해서만 쓰이고, 이 기기에만 저장돼요.</p>' +
+    FLAGS.map(f => '<button class="opt' + (D.profile.flags[f[0]] ? ' sel' : '') + '" onclick="obToggleFlag(\'' + f[0] + '\')">' + (D.profile.flags[f[0]] ? '☑ ' : '☐ ') + f[1] + '</button>').join('') +
+    '<p class="muted" style="margin:-2px 0 14px;">해당 사항이 없으면 그대로 두세요.</p>' +
+    '<div class="card hl"><h3>⚕ 꼭 읽어 주세요</h3><p style="font-size:15px;">Purify는 습관을 돕는 <b>기록 앱</b>이며 <b>의학적 조언이 아니에요</b>. 칼로리와 기준값은 일반적인 참고값이에요.</p>' +
+    '<p style="font-size:15px; margin-top:8px;">임신·수유 중, 당뇨, 약 복용 중, 18세 미만, 섭식장애 경험, 심장·신장 질환이 있다면 식단이나 금식을 바꾸기 전에 <b>반드시 의사와 상담</b>하세요.</p>' +
+    '<p style="font-size:15px; margin-top:8px;">어지럼, 실신, 가슴 두근거림, 혈당 70 미만 등이 나타나면 즉시 중단하고 의료기관에 연락하세요.</p>' +
+    '<label class="chk" style="margin-top:8px;"><input type="checkbox" id="discChk" ' + (D.discOk ? 'checked' : '') + ' onchange="D.discOk=this.checked">위 내용을 이해했고 동의해요</label></div>',
+  program: () => {
+    const rec = recommend(D.profile), f = D.profile.flags, needDoc = Object.keys(PROGRAMS).some(id => access(id, f).needDoctor);
+    if (!D.progId || !canChoose(D.progId, D.profile)) D.progId = rec;
+    let h = '<h2>어떤 여정으로<br>시작할까요?</h2><p class="lead">언제든 바꿀 수 있어요. 여러 날 물만 마시는 금식은 안전을 위해 제공하지 않아요.</p>';
+    if (needDoc) h += '<div class="warn">당뇨나 복약 중이면 금식이 위험할 수 있어요.<label class="chk" style="color:var(--t);"><input type="checkbox" ' + (D.profile.doctorOk ? 'checked' : '') + ' onchange="D.profile.doctorOk=this.checked; if(!this.checked && D.progId!==\'basic\' && PROGRAMS[D.progId].fasting) D.progId=\'basic\'; renderOb()">의사와 상담했고 금식해도 된다고 들었어요</label></div>';
+    Object.keys(PROGRAMS).forEach(id => {
+      const p = PROGRAMS[id], a = access(id, f), ok = canChoose(id, D.profile);
+      h += '<button class="opt' + (D.progId === id ? ' sel' : '') + (ok ? '' : ' dis') + '" onclick="obPickProgram(\'' + id + '\')" aria-disabled="' + !ok + '">' +
+        '<b>' + p.icon + ' ' + p.name + '</b>' + (id === rec ? '<span class="badge">추천</span>' : '') +
+        '<small>' + p.desc + '</small><span class="tag">' + p.label + '</span><span class="tag">난이도 ' + p.diff + '</span><span class="tag">' + p.who + '</span>' +
+        (!a.ok ? '<small style="color:#ffcabf;">🔒 ' + a.reason + '</small>' : a.needDoctor && !D.profile.doctorOk ? '<small style="color:#ffcabf;">🔒 ' + a.reason + '</small>' : a.caution ? '<small style="color:#ffcabf;">⚠ ' + a.caution + '</small>' : '') + '</button>';
+      if (id === 'lent' && D.progId === 'lent') h += '<label class="f" style="margin-top:-4px;">무엇을 절제할까요?</label><select class="inp" style="margin-bottom:12px;" onchange="D.opt=this.value">' + LENT_OPTS.map(o => '<option' + (o === D.opt ? ' selected' : '') + '>' + o + '</option>').join('') + '</select>';
+    });
+    return h;
+  },
+  summary: () => {
+    const p = D.profile, P = computePlan(p, D.progId), pr = PROGRAMS[D.progId], who = D.name ? esc(D.name) + '님' : '나';
+    const lv = EX_LEVEL[P.exLevel];
+    return '<h2>' + who + '의 맞춤 계획</h2><p class="lead">' + pr.icon + ' ' + pr.name + ' · ' + pr.days + '일</p>' +
+      '<div class="stats"><div class="stat"><b>' + comma(P.target) + '</b><span>하루 목표 kcal</span></div><div class="stat"><b>' + (P.water / 1000).toFixed(1) + 'L</b><span>하루 물</span></div><div class="stat"><b>' + P.bmi.toFixed(1) + '</b><span>BMI · ' + bmiLabel(P.bmi) + '</span></div></div>' +
+      '<div class="card"><h3>🎯 목표</h3>' + (P.goalDate ? '<p>' + p.weight + 'kg → <b>' + p.goal + 'kg</b></p><p class="muted">주 약 ' + P.weekly.toFixed(2) + 'kg씩 (안전한 속도: 주 0.25~0.75kg)<br>예상 도달: <b style="color:var(--p)">' + fmtYMD(P.goalDate) + '</b> (약 ' + P.weeks + '주)</p>' : '<p>현재 체중 유지 · 건강한 습관 만들기</p>') +
+      P.notes.map(n => '<div class="good">' + n + '</div>').join('') + '</div>' +
+      '<div class="card"><h3>🍽 영양 비율 (대략)</h3><p>탄수화물 ' + P.macros.c + 'g · 단백질 ' + P.macros.p + 'g · 지방 ' + P.macros.f + 'g</p><p class="muted">' + P.macros.pct.c + ' : ' + P.macros.pct.p + ' : ' + P.macros.pct.f + (D.progId === 'daniel' ? ' · 단백질은 콩·두부·견과로' : '') + '</p></div>' +
+      '<div class="card"><h3>💧 물</h3><p>하루 약 ' + comma(P.water) + 'ml <span class="muted">(체중 1kg당 30~35ml · ' + comma(P.waterRange[0]) + '~' + comma(P.waterRange[1]) + 'ml)</span></p></div>' +
+      '<div class="card"><h3>🏃 운동 · ' + lv.n + '</h3><p>' + lv.plan + '</p></div>' +
+      '<details class="card"><summary>계산 근거 보기</summary><p class="muted">기초대사량(Mifflin-St Jeor) ' + comma(P.bmr) + 'kcal × 활동계수 = 유지 칼로리 ' + comma(P.tdee) + 'kcal' + (P.deficit ? ' − ' + P.deficit + 'kcal' : '') + '. 하루 최소 ' + comma(P.floor) + 'kcal 이상. 모든 값은 참고용이에요.</p></details>';
+  }
+};
+function updateAgeNote() {
+  const el = document.getElementById('ageNote'); if (!el) return;
+  const a = +D.profile.age;
+  el.innerHTML = a && a < 18 ? '<div class="good">성장기에는 칼로리를 줄이지 않는 기본 프로그램으로 안내해 드려요.</div>' : '';
+}
+function updateBodyLive() {
+  const el = document.getElementById('bodyLive'); if (!el) return;
+  const h = +D.profile.height, w = +D.profile.weight, g = +D.profile.goal;
+  if (!(h >= 120 && h <= 220 && w >= 30)) { el.innerHTML = ''; return; }
+  const b = bmiOf(w, h);
+  let s = '<div class="card" style="margin-top:16px;"><p>현재 BMI <b style="color:var(--p)">' + b.toFixed(1) + '</b> · ' + bmiLabel(b) + '</p>';
+  if (g >= 30) {
+    const gb = bmiOf(g, h), hm = healthyMin(h);
+    s += '<p class="muted">목표 BMI ' + gb.toFixed(1) + '</p>';
+    if (gb < 18.5) s += '<div class="warn">목표 체중이 저체중 범위(BMI 18.5 미만)예요. 건강을 위해 <b>' + hm + 'kg 이상</b>을 권해요.<button class="btn sm sec" onclick="applyHealthyGoal()">' + hm + 'kg로 바꾸기</button></div>';
+    if (b < 18.5 && g < w) s += '<div class="good">지금은 감량보다 건강하게 유지하는 것을 권해요.</div>';
+  }
+  el.innerHTML = s + '</div>';
+}
+function applyHealthyGoal() { D.profile.goal = healthyMin(+D.profile.height); renderOb(); }
+function obPickProgram(id) {
+  const a = access(id, D.profile.flags);
+  if (!a.ok) return alert('🔒 ' + a.reason);
+  if (a.needDoctor && !D.profile.doctorOk) return alert('🔒 ' + a.reason + '\n\n위의 확인란을 먼저 체크해 주세요.');
+  D.progId = id; renderOb();
+}
+function obValidate() {
+  const step = STEPS[obStep], p = D.profile;
+  if (step === 'basic') {
+    if (!p.sex) return '성별을 선택해 주세요.';
+    const a = +p.age; if (!(a >= 10 && a <= 100 && Math.floor(a) === a)) return '나이를 10~100 사이 숫자로 입력해 주세요.';
+    p.age = a; if (a < 18) p.flags.minor = true;
+  }
+  if (step === 'body') {
+    const h = +p.height, w = +p.weight, g = +p.goal;
+    if (!(h >= 120 && h <= 220)) return '키를 120~220cm 사이로 입력해 주세요.';
+    if (!(w >= 30 && w <= 250)) return '현재 체중을 30~250kg 사이로 입력해 주세요.';
+    if (!(g >= 30 && g <= 250)) return '목표 체중을 30~250kg 사이로 입력해 주세요.';
+    if (bmiOf(g, h) < 18.5 && g < w) return '목표 체중이 저체중 범위예요. 건강을 위해 ' + healthyMin(h) + 'kg 이상으로 정해 주세요.';
+    p.height = h; p.weight = w; p.goal = g;
+  }
+  if (step === 'activity' && !p.activity) return '활동량을 선택해 주세요.';
+  if (step === 'health' && !D.discOk) return '안내 내용을 읽고 동의에 체크해 주세요.';
+  if (step === 'program') {
+    if (!D.progId || !canChoose(D.progId, p)) return '선택할 수 있는 프로그램을 골라 주세요.';
+  }
+  return '';
+}
+function obNextStep() {
+  const err = obValidate();
+  if (err) { alert(err); return false; }
+  if (STEPS[obStep] === 'summary') { obCommit(); return true; }
+  obStep++; renderOb(); return true;
+}
+function obCommit() {
+  S.faith = D.faith || 'seeker'; S.name = (D.name || '').trim(); S.profile = D.profile;
+  if (!S.disclaimerAt) S.disclaimerAt = now();
+  const id = D.progId;
+  if (S.program.id !== id || !S.program.start) {
+    if (S.program.id && S.program.start) S.history.push({ id:S.program.id, start:S.program.start, end:ymd(), done:!!S.program.done });
+    S.program = { id, start:ymd(), opt:D.opt || LENT_OPTS[0], checks:{}, done:false, doneAt:0 };
+    S.timer = { running:false, start:0, acc:0 };
+  } else S.program.opt = D.opt || S.program.opt;
+  const last = S.weights.slice().sort((a, b) => a.d < b.d ? -1 : 1).pop();
+  if (!last || Math.abs(last.kg - S.profile.weight) > 0.05) {
+    S.weights = S.weights.filter(x => x.d !== ymd()); S.weights.push({ d:ymd(), kg:+S.profile.weight });
+  }
+  const first = !S.onboarded; S.onboarded = true; save();
+  showMain('today');
+  toast(first ? '환영해요! 오늘부터 함께해요.' : '저장했어요.');
+}
+// ===================== 메인 =====================
+let curTab = 'today';
+function showMain(tab) {
+  document.getElementById('ob').classList.remove('on');
+  document.getElementById('main').classList.add('on');
+  showTab(tab || curTab || 'today');
+}
+function showTab(tab) {
+  curTab = tab;
+  document.querySelectorAll('#main .screen').forEach(s => { const on = s.id === 's-' + tab; s.classList.toggle('on', on); if (!on) s.innerHTML = ''; });
+  const navTab = tab === 'seek' ? 'word' : tab;
+  document.querySelectorAll('.nav button').forEach(b => b.classList.toggle('on', b.dataset.tab === navTab));
+  document.getElementById('mainBack').classList.toggle('hide', tab !== 'seek');
+  ({ today:renderToday, history:renderHistory, word:renderWord, seek:renderSeek, me:renderMe })[tab]();
+  document.getElementById('mainBody').scrollTop = 0;
+}
+function goBack() { if (curTab === 'seek') showTab('word'); }
+function rerender() { const b = document.getElementById('mainBody'), y = b.scrollTop; ({ today:renderToday, history:renderHistory, word:renderWord, seek:renderSeek, me:renderMe })[curTab](); b.scrollTop = y; }
+
+function ring(pct, big, small) {
+  const r = 38, c = 2 * Math.PI * r, off = c * (1 - clamp(pct, 0, 1));
+  return '<svg width="96" height="96" viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="48" r="' + r + '" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="8"/>' +
+    '<circle cx="48" cy="48" r="' + r + '" fill="none" stroke="#d4af77" stroke-width="8" stroke-linecap="round" stroke-dasharray="' + c.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '" transform="rotate(-90 48 48)"/>' +
+    '<text x="48" y="47" text-anchor="middle" fill="#f5f0e8" font-size="19" font-weight="700">' + big + '</text><text x="48" y="65" text-anchor="middle" fill="#a8b0c0" font-size="11.5">' + small + '</text></svg>';
+}
+function greet() { const h = new Date(now()).getHours(); return h < 5 ? '고요한 밤이에요' : h < 11 ? '좋은 아침이에요' : h < 17 ? '좋은 오후예요' : '편안한 저녁이에요'; }
+function verseCard(v, opts) {
+  opts = opts || {};
+  const open = S.faith === 'seeker' || opts.open;
+  const light = S.faith === 'health' && !opts.full;
+  return '<div class="verse"' + (light ? ' style="font-size:16px;"' : '') + '>“' + v.t + '”</div><div class="ref">— ' + v.r + ' (개역한글)</div>' +
+    '<details' + (open ? ' open' : '') + '><summary>💡 쉽게 풀어보기</summary><div class="explain">' + v.e + '</div></details>' +
+    '<div class="apply"><b>✔ 오늘의 실천</b> · ' + v.a + '</div>';
+}
+
+// ---------- 오늘 ----------
+function renderToday() {
+  const el = document.getElementById('s-today'); if (!el) return;
+  const T = ymd(), x = day(T), P = plan(), pid = progId(), pr = PROGRAMS[pid], n = progDay(T), active = progActive(T);
+  const who = S.name ? esc(S.name) + '님, ' : '';
+  const mp = mealPlan(T), eaten = eatenKcal(T), burned = burnedKcal(T);
+  let h = '<h2 style="margin-bottom:2px;">' + who + greet() + '</h2><p class="muted" style="margin-bottom:14px;">' + fmtMD(T) + ' · ' + tone().greet + '</p>';
+  // 프로그램 진행
+  const dc = doneCount(), checks = S.program.checks[n] || [];
+  const todayDone = pr.items.filter((_, i) => checks[i]).length;
+  h += '<div class="card hl"><div class="ringwrap">' + ring(dc / pr.days, active ? n + '일차' : '완료', '/ ' + pr.days + '일') +
+    '<div class="grow"><b>' + pr.icon + ' ' + pr.name + '</b>' + (S.program.done ? '<span class="badge">🏅 완주</span>' : '') +
+    '<p class="muted">완료 ' + dc + '일 · 오늘 체크 ' + (active ? todayDone + '/' + pr.items.length : '-') + '</p>' +
+    (active ? '<p style="font-size:14.5px; margin-top:4px;">' + pr.guide(n) + '</p>' : '<button class="btn sm" onclick="startOnboarding(\'program\',\'edit\')">다음 여정 고르기</button>') + '</div></div></div>';
+  // 말씀
+  const v = verseFor(T);
+  h += '<div class="card"><div class="sec-title"><h3>📖 ' + tone().vt + '</h3>' + (S.faith === 'seeker' ? '<button class="link" onclick="showTab(\'seek\')">말씀이 처음이라면 ›</button>' : '') + '</div>' + verseCard(v) +
+    (S.faith === 'church' ? '<div class="prayer">🙏 오늘의 기도 제목 · ' + prayerFor(T) + '</div>' : '') + '</div>';
+  // 칼로리 요약
+  h += '<div class="stats"><div class="stat"><b>' + comma(eaten) + '</b><span>섭취 / ' + comma(P.target) + '</span></div><div class="stat"><b>' + comma(burned) + '</b><span>운동 kcal</span></div><div class="stat"><b>' + (x.water / 1000).toFixed(1) + 'L</b><span>물 / ' + (P.water / 1000).toFixed(1) + 'L</span></div></div>' +
+    '<div class="bar"><i style="width:' + Math.min(100, eaten / P.target * 100) + '%"></i></div><div style="height:10px"></div>';
+  // 식단
+  h += '<div class="card"><div class="sec-title"><h3>🍽 오늘의 추천 식단</h3><button class="link" onclick="shuffleMeals()">↻ 다른 메뉴</button></div>' +
+    '<p class="muted">약 ' + comma(mp.total) + 'kcal' + (mp.plant ? ' · 채소·곡물·콩 중심' : '') + (mp.win ? ' · 식사 시간 12시~8시' : '') + (mp.noSnack ? ' · 간식 절제 중' : '') + (mp.fastDay ? ' · 금식일' : '') + '</p>';
+  mp.meals.forEach(m => {
+    const on = x.meals[m.key] !== undefined;
+    const txt = m.items.map(i => esc(i.n) + (i.amt ? ' ' + i.amt : '')).join(' · ');
+    h += '<div class="item"><div class="txt"><b>' + m.n + '</b> <small>' + m.time + (m.fast ? '' : ' · ' + comma(m.k) + 'kcal') + '</small><div>' + txt + '</div></div>' +
+      (m.fast ? '<span class="ic">💧</span>' : '<button class="tick' + (on ? ' on' : '') + '" aria-label="' + m.n + ' 먹음" onclick="toggleMeal(\'' + m.key + '\',' + m.k + ')">✓</button>') + '</div>';
+  });
+  h += '<details><summary>＋ 다른 음식 기록하기</summary><div style="margin-top:4px;">' + QUICK_FOODS.map((q, i) => '<button class="chip" onclick="addQuick(' + i + ')">' + q[0] + ' <small>' + q[1] + '</small></button>').join('') +
+    '<div class="row" style="margin-top:4px;"><input class="inp grow" id="exName" placeholder="음식 이름"><input class="inp" id="exKcal" type="number" inputmode="numeric" placeholder="kcal" style="width:96px;"></div><button class="btn sm sec" onclick="addCustomFood()">기록</button></div></details>';
+  if (x.extras.length) h += '<div class="muted" style="margin-top:6px;">' + x.extras.map((e, i) => esc(e.n) + ' ' + comma(e.k) + 'kcal <button class="link" onclick="delExtra(' + i + ')" aria-label="삭제">✕</button>').join('<br>') + '</div>';
+  h += '</div>';
+  // 단식 타이머
+  if (pr.timer && active) {
+    h += '<div class="card"><h3>⏱ 공복 타이머 · 목표 ' + pr.timer + '시간</h3><div class="timer" id="tmv">' + fmtHMS(timerSec()) + '</div><div class="bar"><i id="tmbar" style="width:' + Math.min(100, timerSec() / (pr.timer * 3600) * 100) + '%"></i></div>' +
+      '<div class="row"><button class="btn grow" onclick="toggleTimer()">' + (S.timer.running ? '일시정지' : '공복 시작') + '</button><button class="btn sec" style="width:96px;" onclick="resetTimer()">초기화</button></div>' +
+      '<p class="muted" style="margin-top:8px;">어지럽거나 몸이 이상하면 목표와 상관없이 바로 멈추고 드세요.</p></div>';
+  }
+  // 운동
+  const R = exRoutine(T);
+  h += '<div class="card"><h3>🏃 오늘의 운동 <span class="tag">' + EX_LEVEL[R.lvl].n + '</span></h3>' +
+    (pid === 'if168' && active ? '<p class="muted">공복 중 고강도 운동은 피하고, 식사 시간대에 해요.</p>' : '');
+  R.ids.forEach(id => {
+    const e = EX[id], on = x.ex[id] !== undefined, k = exKcal(id);
+    h += '<div class="item"><span class="ic">' + e.a + '</span><div class="txt"><b>' + e.t + '</b><div>' + e.rx + ' · 약 ' + k + 'kcal</div><details><summary style="min-height:36px; font-size:14px;">방법 보기</summary><div class="explain" style="font-size:14.5px;">' + e.d + '</div></details></div>' +
+      '<button class="tick' + (on ? ' on' : '') + '" aria-label="' + e.t + ' 완료" onclick="toggleEx(\'' + id + '\',' + k + ')">✓</button></div>';
+  });
+  h += '</div>';
+  // 물
+  const wp = Math.min(100, x.water / P.water * 100);
+  h += '<div class="card"><div class="sec-title"><h3>💧 물</h3><b style="color:var(--p)">' + comma(x.water) + ' / ' + comma(P.water) + 'ml</b></div><div class="bar"><i style="width:' + wp + '%"></i></div>' +
+    '<div class="row"><button class="btn sec" style="width:72px;" onclick="addWater(-250)" aria-label="250ml 빼기">−</button><button class="btn grow" onclick="addWater(250)">+ 한 컵 (250ml)</button><button class="btn sec" style="width:96px;" onclick="addWater(500)">+500</button></div></div>';
+  // 체중 체크인
+  h += weightCard(T);
+  // 체크리스트
+  if (active) {
+    h += '<div class="card"><h3>✅ 오늘의 체크리스트 · ' + n + '일차</h3>' + progItems().map((it, i) => '<label class="chk"><input type="checkbox" ' + (checks[i] ? 'checked' : '') + ' onchange="toggleCheck(' + i + ',this.checked)">' + esc(it) + '</label>').join('') + '</div>';
+  }
+  // 저녁 돌아보기
+  h += '<div class="card"><h3>🌙 ' + tone().rt + '</h3><textarea class="inp" id="refl" placeholder="' + tone().rp + '" onchange="saveRefl(this.value)">' + esc(x.refl) + '</textarea></div>';
+  // 공유 · 안전
+  h += '<button class="btn sec" onclick="shareToday()">📤 오늘 요약과 말씀 공유하기</button>';
+  h += '<details class="card" style="margin-top:14px;"' + (pr.fasting && active ? ' open' : '') + '><summary>🛑 이럴 땐 즉시 중단하세요</summary><ul class="l">' + STOP_LIST.map(s => '<li>' + s + '</li>').join('') + '</ul><p class="muted">의료기관에 연락하세요. 응급 시 119.</p></details>';
+  el.innerHTML = h;
+}
+function weightCard(T) {
+  const ws = S.weights.slice().sort((a, b) => a.d < b.d ? -1 : 1), last = ws[ws.length - 1];
+  const due = !last || diffDays(last.d, T) >= 7;
+  const f = S.profile.flags || {};
+  const form = '<div class="row" style="margin-top:8px;"><div class="unit grow"><input class="inp" id="wIn" type="number" inputmode="decimal" step="0.1" placeholder="체중"><span>kg</span></div></div>' +
+    '<div class="row" style="margin-top:8px;"><input class="inp grow" id="bpIn" type="number" inputmode="numeric" placeholder="수축기 혈압 (선택)"><input class="inp grow" id="bsIn" type="number" inputmode="numeric" placeholder="공복 혈당 (선택)"></div>' +
+    (f.diab || f.htn ? '<p class="muted" style="margin-top:6px;">' + (f.diab ? '당뇨가 있다면 혈당을 꼭 함께 기록해 주세요. ' : '') + (f.htn ? '혈압도 함께 기록해 주세요.' : '') + '</p>' : '') +
+    '<button class="btn sm" onclick="saveCheckin()">기록하기</button>';
+  if (due) return '<div class="card hl"><h3>⚖ 이번 주 체중 체크인</h3><p class="muted">일주일에 한 번, 같은 시간(아침 공복)에 재면 좋아요.</p>' + form + '</div>';
+  return '<div class="card"><div class="sec-title"><h3>⚖ 체중</h3><span class="muted">다음 체크인 ' + (7 - diffDays(last.d, T)) + '일 후</span></div>' + weightChart(340, 150) +
+    '<details><summary>지금 기록하기</summary>' + form + '</details></div>';
+}
+function weightChart(W, H) {
+  const pts = S.weights.slice().sort((a, b) => a.d < b.d ? -1 : 1), goal = +S.profile.goal;
+  if (!pts.length) return '<p class="muted">아직 체중 기록이 없어요.</p>';
+  const vals = pts.map(p => p.kg).concat(goal ? [goal] : []);
+  const lo = Math.floor(Math.min.apply(null, vals) - 1), hi = Math.ceil(Math.max.apply(null, vals) + 1);
+  const L = 36, R = 12, Tp = 12, B = 24, d0 = dayNum(pts[0].d), d1 = Math.max(dayNum(pts[pts.length - 1].d), d0 + 7);
+  const X = d => L + (dayNum(d) - d0) / (d1 - d0) * (W - L - R), Y = v => Tp + (hi - v) / (hi - lo) * (H - Tp - B);
+  let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" role="img" aria-label="체중 변화 그래프">';
+  [lo, (lo + hi) / 2, hi].forEach(v => { s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(v) + '" y2="' + Y(v) + '" stroke="rgba(255,255,255,.08)"/><text x="' + (L - 6) + '" y="' + (Y(v) + 4) + '" text-anchor="end" fill="#a8b0c0" font-size="10.5">' + (+v.toFixed(1)) + '</text>'; });
+  if (goal) s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(goal) + '" y2="' + Y(goal) + '" stroke="#8fd3a8" stroke-dasharray="5 4"/><text x="' + (W - R) + '" y="' + (Y(goal) - 5) + '" text-anchor="end" fill="#8fd3a8" font-size="11">목표 ' + goal + 'kg</text>';
+  s += '<polyline fill="none" stroke="#d4af77" stroke-width="2.5" stroke-linejoin="round" points="' + pts.map(p => X(p.d).toFixed(1) + ',' + Y(p.kg).toFixed(1)).join(' ') + '"/>';
+  pts.forEach(p => { s += '<circle cx="' + X(p.d).toFixed(1) + '" cy="' + Y(p.kg).toFixed(1) + '" r="4" fill="#d4af77"/>'; });
+  s += '<text x="' + L + '" y="' + (H - 6) + '" fill="#a8b0c0" font-size="10.5">' + fmtMD(pts[0].d) + '</text><text x="' + (W - R) + '" y="' + (H - 6) + '" text-anchor="end" fill="#a8b0c0" font-size="10.5">' + fmtMD(pts[pts.length - 1].d) + ' · ' + pts[pts.length - 1].kg + 'kg</text>';
+  return s + '</svg>';
+}
+function toggleMeal(k, kcal) { const x = day(); if (x.meals[k] !== undefined) delete x.meals[k]; else { x.meals[k] = kcal; toast(['잘 드셨어요. 감사한 한 끼!', '좋은 선택이에요.', '몸이 고마워할 거예요.'][Object.keys(x.meals).length % 3]); } save(); rerender(); }
+function shuffleMeals() { const x = day(); x.shuffle++; save(); rerender(); toast('다른 메뉴로 바꿨어요.'); }
+function addQuick(i) { const q = QUICK_FOODS[i]; day().extras.push({ n:q[0], k:q[1], t:now() }); save(); rerender(); toast('기록했어요. 다음 끼니는 가볍게, 괜찮아요.'); }
+function addCustomFood() {
+  const n = document.getElementById('exName').value.trim(), k = +document.getElementById('exKcal').value;
+  if (!n || !(k > 0 && k < 5000)) return alert('음식 이름과 칼로리(1~5000)를 입력해 주세요.');
+  day().extras.push({ n, k:Math.round(k), t:now() }); save(); rerender(); toast('기록했어요.');
+}
+function delExtra(i) { day().extras.splice(i, 1); save(); rerender(); }
+function toggleEx(id, k) { const x = day(); if (x.ex[id] !== undefined) delete x.ex[id]; else { x.ex[id] = k; toast('멋져요! 움직임이 몸을 새롭게 해요.'); } save(); rerender(); }
+function addWater(ml) { const x = day(); x.water = Math.max(0, x.water + ml); save(); rerender(); if (ml > 0) toast(x.water >= plan().water ? '오늘 물 목표 달성! 💧' : '물 ' + comma(x.water) + 'ml'); }
+function toggleCheck(i, on) {
+  const n = progDay(), pr = PROGRAMS[progId()];
+  const c = S.program.checks[n] || (S.program.checks[n] = []); c[i] = !!on;
+  if (!S.program.done && doneCount() === pr.days) { S.program.done = true; S.program.doneAt = now(); save(); rerender(); alert('🏅 축하해요! ' + pr.name + ' ' + pr.days + '일을 완주했어요.\n“내게 능력 주시는 자 안에서 내가 모든 것을 할 수 있느니라” (빌립보서 4:13)'); return; }
+  save(); rerender(); if (on && dayDone(n)) toast(n + '일차 완료! 잘하셨어요.');
+}
+function saveRefl(v) { day().refl = v.trim(); save(); toast('저장했어요.'); }
+function saveCheckin() {
+  const kg = +document.getElementById('wIn').value, bp = +document.getElementById('bpIn').value || 0, bs = +document.getElementById('bsIn').value || 0;
+  if (!kg && !bp && !bs) return alert('체중이나 혈압·혈당 중 하나 이상 입력해 주세요.');
+  if (kg && !(kg >= 30 && kg <= 250)) return alert('체중을 30~250kg 사이로 입력해 주세요.');
+  if (bp && !(bp >= 60 && bp <= 250)) return alert('혈압 값을 확인해 주세요 (60~250).');
+  if (bs && !(bs >= 20 && bs <= 600)) return alert('혈당 값을 확인해 주세요 (20~600).');
+  const T = ymd();
+  if (kg) { S.weights = S.weights.filter(w => w.d !== T); S.weights.push({ d:T, kg }); }
+  if (bp || bs) S.health.push({ d:T, bp, bs, t:now() });
+  save();
+  const warns = safetyWarnings(bp, bs);
+  if (warns.length) { alert('⚠ 안전 안내\n\n' + warns.join('\n\n') + '\n\n이 앱은 의학적 조언이 아니에요.'); toast('⚠ 측정값을 꼭 확인하세요.'); }
+  else toast(kg ? '체크인 완료! 꾸준함이 힘이에요.' : '기록했어요.');
+  rerender();
+  return warns;
+}
+
+// ---------- 기록 ----------
+function renderHistory() {
+  const el = document.getElementById('s-history'); if (!el) return;
+  const T = ymd(), P = plan();
+  let h = '<h2>나의 기록</h2>';
+  const ws = S.weights.slice().sort((a, b) => a.d < b.d ? -1 : 1);
+  h += '<div class="card"><h3>⚖ 체중 변화</h3>' + weightChart(340, 180);
+  if (ws.length) { const f = ws[0].kg, l = ws[ws.length - 1].kg; h += '<p class="muted">시작 ' + f + 'kg → 현재 ' + l + 'kg (' + (l - f > 0 ? '+' : '') + (l - f).toFixed(1) + 'kg) · 목표까지 ' + Math.max(0, l - S.profile.goal).toFixed(1) + 'kg</p>'; }
+  h += '<details><summary>체중 기록하기</summary><div class="row"><div class="unit grow"><input class="inp" id="wIn" type="number" step="0.1" inputmode="decimal" placeholder="체중"><span>kg</span></div></div><input type="hidden" id="bpIn"><input type="hidden" id="bsIn"><button class="btn sm" onclick="saveCheckin()">기록하기</button></details></div>';
+  // 7일 칼로리
+  const days7 = []; for (let i = 6; i >= 0; i--) days7.push(addDays(T, -i));
+  const vals = days7.map(d => S.days[d] ? eatenKcal(d) : 0), mx = Math.max(P.target * 1.3, ...vals);
+  const W = 340, H = 150, bw = 30, gap = (W - 20 - bw * 7) / 6, Y = v => 120 - v / mx * 104;
+  let svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" role="img" aria-label="최근 7일 섭취 칼로리">';
+  svg += '<line x1="10" x2="' + (W - 10) + '" y1="' + Y(P.target) + '" y2="' + Y(P.target) + '" stroke="#8fd3a8" stroke-dasharray="5 4"/>';
+  days7.forEach((d, i) => { const x = 10 + i * (bw + gap), v = vals[i]; svg += '<rect x="' + x + '" y="' + Y(v) + '" width="' + bw + '" height="' + (120 - Y(v)) + '" rx="6" fill="' + (v > P.target * 1.1 ? '#e8a07a' : '#d4af77') + '" opacity="' + (d === T ? 1 : .75) + '"/><text x="' + (x + bw / 2) + '" y="138" text-anchor="middle" fill="#a8b0c0" font-size="10.5">' + (+d.split('-')[2]) + '일</text>'; });
+  svg += '</svg>';
+  h += '<div class="card"><h3>🍽 최근 7일 섭취</h3>' + svg + '<p class="muted">점선: 목표 ' + comma(P.target) + 'kcal</p></div>';
+  // 물 · 운동 7일
+  const wv = days7.map(d => S.days[d] ? +S.days[d].water || 0 : 0), ev = days7.map(d => S.days[d] ? burnedKcal(d) : 0);
+  h += '<div class="card"><h3>💧 물 · 🏃 운동 (7일)</h3>' + days7.map((d, i) => '<div class="row" style="font-size:14.5px; min-height:34px;"><span style="width:52px;" class="muted">' + fmtMD(d).replace('월 ', '/').replace('일', '') + '</span><div class="grow"><div class="bar" style="margin:0;"><i style="width:' + Math.min(100, wv[i] / P.water * 100) + '%"></i></div></div><span style="width:110px; text-align:right;">' + (wv[i] / 1000).toFixed(1) + 'L · ' + ev[i] + 'kcal</span></div>').join('') + '</div>';
+  // 프로그램
+  const pr = PROGRAMS[progId()], dc = doneCount();
+  h += '<div class="card"><h3>📋 프로그램</h3><p>' + pr.icon + ' ' + pr.name + (S.program.done ? '<span class="badge">🏅 완주</span>' : '') + '</p><div class="bar"><i style="width:' + dc / pr.days * 100 + '%"></i></div><p class="muted">' + dc + ' / ' + pr.days + '일 완료 · 시작 ' + (S.program.start ? fmtMD(S.program.start) : '-') + '</p>' +
+    (S.history.length ? '<p class="muted" style="margin-top:6px;">이전: ' + S.history.map(x => (PROGRAMS[x.id] ? PROGRAMS[x.id].name : x.id) + (x.done ? ' 🏅' : '')).join(', ') + '</p>' : '') + '</div>';
+  // 건강 기록
+  if (S.health.length) h += '<div class="card"><h3>❤ 혈압 · 혈당</h3>' + S.health.slice(-10).reverse().map(r => { const w = safetyWarnings(r.bp, r.bs).length; return '<div class="row" style="min-height:36px; font-size:15px;"><span class="muted" style="width:70px;">' + fmtMD(r.d) + '</span><span class="grow"' + (w ? ' style="color:#ffb3a3;"' : '') + '>' + (r.bp ? '혈압 ' + r.bp : '') + (r.bp && r.bs ? ' · ' : '') + (r.bs ? '혈당 ' + r.bs : '') + (w ? ' ⚠' : '') + '</span></div>'; }).join('') + '</div>';
+  // 돌아보기
+  const refl = Object.keys(S.days).sort().reverse().filter(d => S.days[d].refl).slice(0, 10);
+  if (refl.length) h += '<div class="card"><h3>🌙 돌아보기 노트</h3>' + refl.map(d => '<p style="font-size:15px; margin:8px 0;"><span class="muted">' + fmtMD(d) + '</span><br>' + esc(S.days[d].refl) + '</p>').join('') + '</div>';
+  if (S.legacyFast.length) h += '<details class="card"><summary>이전 단식 기록 (' + S.legacyFast.length + ')</summary>' + S.legacyFast.slice().reverse().map(r => '<p class="muted" style="margin:6px 0;">' + esc(r.day || '') + (r.wloss ? ' · 체중 ' + esc(r.wloss) + 'kg' : '') + (r.bp ? ' · 혈압 ' + esc(r.bp) : '') + (r.bs ? ' · 혈당 ' + esc(r.bs) : '') + (r.note ? '<br>' + esc(r.note) : '') + '</p>').join('') + '</details>';
+  el.innerHTML = h;
+}
+
+// ---------- 말씀 ----------
+function renderWord() {
+  const el = document.getElementById('s-word'); if (!el) return;
+  const T = ymd(), ti = idxFor(T, VERSES.length);
+  let h = '<h2>말씀</h2>';
+  h += '<button class="opt" onclick="showTab(\'seek\')" style="border-color:rgba(212,175,119,.55);">🌱 <b>말씀이 처음이라면</b><small>하나님, 예수님, 기도가 궁금한 분을 위한 쉬운 안내</small></button>';
+  h += '<div class="card hl"><h3>오늘의 말씀 · ' + fmtMD(T) + '</h3>' + verseCard(VERSES[ti], { full:true }) + '</div>';
+  h += '<h3 style="margin:18px 0 10px;">말씀 모음 (' + VERSES.length + ')</h3>';
+  VERSES.forEach((v, i) => {
+    if (i === ti) return;
+    h += '<details class="card"><summary style="display:block; min-height:auto; color:var(--t); font-weight:400;"><span class="ref" style="margin:0 0 4px; display:block;">' + v.r + '</span>' + v.t + '</summary><div class="explain">💡 ' + v.e + '</div><div class="apply"><b>✔ 실천</b> · ' + v.a + '</div></details>';
+  });
+  h += '<p class="muted" style="text-align:center; margin-top:10px;">성경 본문: 개역한글 (저작권 보호기간 만료)</p>';
+  el.innerHTML = h;
+}
+function renderSeek() {
+  const el = document.getElementById('s-seek'); if (!el) return;
+  el.innerHTML = '<h2>말씀이 처음이라면</h2><p class="lead">아무것도 강요하지 않아요. 궁금한 만큼만, 천천히 읽어 보세요.</p>' +
+    '<div class="card"><h3>📖 성경은 어떤 책인가요?</h3><p>오랜 시간에 걸쳐 쓰인 66권의 책 모음이에요. 사람이 어떻게 살면 좋은지, 그리고 하나님이 사람을 얼마나 사랑하시는지를 이야기해요.</p></div>' +
+    '<div class="card"><h3>✨ 하나님은 어떤 분인가요?</h3><p>성경은 하나님을 세상을 만드시고, 우리 한 사람 한 사람을 이름으로 아시며 사랑하시는 분으로 소개해요. 잘할 때만이 아니라, 넘어졌을 때도 다시 일어나기를 기다려 주시는 분이에요.</p></div>' +
+    '<div class="card"><h3>✝ 예수님은 누구인가요?</h3><p>약 2천 년 전 이스라엘에서 사셨던 분이에요. 아픈 사람을 고치고, 외로운 사람의 친구가 되어 주셨어요. 성경은 예수님이 우리의 잘못을 대신 지고 십자가에서 돌아가셨다가 다시 살아나셨다고 말해요. 그래서 누구든 다시 시작할 수 있는 길이 열렸다고요.</p>' +
+    '<div class="prayer">“하나님이 세상을 이처럼 사랑하사 독생자를 주셨으니 이는 저를 믿는 자마다 멸망치 않고 영생을 얻게 하려 하심이니라”<br><small class="muted">— 요한복음 3:16 (개역한글)</small></div></div>' +
+    '<div class="card"><h3>🌱 다시 태어난다는 것</h3><p>몸의 습관이 새로워지듯, 마음도 새로워질 수 있어요. 성경은 이것을 “거듭남”이라고 불러요. 과거가 나를 정의하지 않고, 누구든 새롭게 시작할 수 있다는 뜻이에요.</p>' +
+    '<div class="prayer">“그런즉 누구든지 그리스도 안에 있으면 새로운 피조물이라 이전 것은 지나갔으니 보라 새 것이 되었도다”<br><small class="muted">— 고린도후서 5:17 (개역한글)</small></div></div>' +
+    '<div class="card"><h3>🙏 기도는 어떻게 하나요?</h3><p>정해진 형식은 없어요. 친구에게 말하듯 솔직하게 이야기하면 돼요. 이렇게 시작해 봐도 좋아요.</p>' +
+    '<div class="prayer">하나님, 저는 아직 잘 모르지만 궁금해요. 제 몸과 마음을 돌보는 이 시간을 지켜 주세요. 저를 알고 계신다면 저에게도 알려 주세요. 예수님의 이름으로 기도합니다. 아멘.</div></div>' +
+    '<div class="card"><h3>⛪ 더 알고 싶다면</h3><p>이 앱을 알려 준 친구에게 편하게 물어보거나, 가까운 교회 예배에 한 번 들러 보세요. 처음 왔다고 말하면 반갑게 맞아 줄 거예요.</p><p class="muted" style="margin-top:8px;">물론 지금처럼 앱으로 건강 습관만 함께해도 충분히 괜찮아요. 믿음은 누구도 강요할 수 없어요.</p>' +
+    '<button class="btn sec" onclick="askFriend()">💬 친구에게 궁금하다고 말하기</button><button class="btn ghost" onclick="showTab(\'word\')">말씀 모음 보기</button></div>';
+}
+
+// ---------- 나 ----------
+function renderMe() {
+  const el = document.getElementById('s-me'); if (!el) return;
+  const p = S.profile, P = plan(), pr = PROGRAMS[progId()];
+  const faithName = { church:'교회에 다니고 있어요', seeker:'잘 모르지만 궁금해요', health:'건강 관리만 할래요' }[S.faith] || '선택 안 함';
+  const flags = FLAGS.filter(f => p.flags[f[0]]).map(f => f[1]);
+  let h = '<h2>' + (S.name ? esc(S.name) + '님' : '나') + '</h2>';
+  h += '<div class="card"><h3>👤 프로필</h3><p>' + (p.sex === 'M' ? '남성' : '여성') + ' · ' + p.age + '세 · ' + p.height + 'cm · ' + p.weight + 'kg → 목표 ' + p.goal + 'kg</p>' +
+    '<p class="muted">BMI ' + P.bmi.toFixed(1) + ' · 하루 ' + comma(P.target) + 'kcal · 물 ' + comma(P.water) + 'ml · ' + (ACT.find(a => a.id === p.activity) || {}).n + '</p>' +
+    (flags.length ? '<p class="muted">건강: ' + flags.join(', ') + '</p>' : '') + (P.goalDate ? '<p class="muted">예상 도달 ' + fmtYMD(P.goalDate) + '</p>' : '') +
+    '<button class="btn sm sec" onclick="startOnboarding(\'basic\',\'edit\')">프로필 수정 · 계획 다시 계산</button></div>';
+  h += '<div class="card"><h3>📋 프로그램</h3><p>' + pr.icon + ' ' + pr.name + (S.program.done ? '<span class="badge">🏅 완주</span>' : '') + '</p><p class="muted">' + progDay() + '일차 · 시작 ' + (S.program.start ? fmtMD(S.program.start) : '-') + '</p>' +
+    (pr.hasOpt ? '<label class="f">절제할 것</label><select class="inp" onchange="S.program.opt=this.value; save(); toast(\'바꿨어요.\')">' + LENT_OPTS.map(o => '<option' + (o === S.program.opt ? ' selected' : '') + '>' + o + '</option>').join('') + '</select>' : '') +
+    '<button class="btn sm sec" onclick="startOnboarding(\'program\',\'edit\')">프로그램 바꾸기</button></div>';
+  h += '<div class="card"><h3>🌱 신앙 배경</h3><p class="muted">' + faithName + '</p><button class="btn sm sec" onclick="startOnboarding(\'faith\',\'edit\')">바꾸기</button></div>';
+  h += '<div class="card"><h3>📤 공유 카드</h3><p class="muted">오늘의 요약과 말씀을 카카오톡 등으로 나눠 보세요.</p><div class="share-pre" id="sharePre">' + esc(buildShareText()) + '</div><button class="btn" onclick="shareToday()">공유하기</button></div>';
+  h += groupCard();
+  h += '<div class="card"><h3>💾 백업</h3><p class="muted">모든 기록을 파일로 저장하거나 불러와요. 기기를 바꿀 때 사용하세요.</p><button class="btn sm sec" onclick="downloadBackup()">⬇ 백업 내보내기</button><button class="btn sm sec" onclick="document.getElementById(\'importFile\').click()">⬆ 백업 가져오기</button><input type="file" id="importFile" accept="application/json,.json" style="display:none;" onchange="importFromFile(this)"></div>';
+  h += '<div class="card"><h3>⚕ 안전 안내</h3><details><summary>이 앱은 의학적 조언이 아니에요</summary><p style="font-size:15px;">임신·수유 중, 당뇨, 약 복용 중, 18세 미만, 섭식장애 경험, 심장·신장 질환이 있다면 식단·금식을 바꾸기 전에 반드시 의사와 상담하세요. 칼로리와 기준값은 일반적인 참고값이에요.</p></details>' +
+    '<details><summary>🛑 즉시 중단 기준</summary><ul class="l">' + STOP_LIST.map(s => '<li>' + s + '</li>').join('') + '</ul><p class="muted">의료기관에 연락하세요. 응급 시 119.</p></details>' +
+    '<details><summary>혈압 · 혈당 참고 기준</summary><p class="muted">수축기 혈압 120 미만 정상 · 140 이상 고혈압 범위 · 90 이하 저혈압 주의<br>공복 혈당 70~99 정상 · 100~125 당뇨 전 단계 · 126 이상 주의 · 70 미만 저혈당</p></details></div>';
+  h += '<button class="btn ghost" onclick="resetAll()" style="opacity:.8;">모든 기록 초기화</button><p class="muted" style="text-align:center; margin-top:12px;">Purify v3 · 성경 본문 개역한글</p>';
+  el.innerHTML = h;
+}
+// ===================== 소그룹 (이 기기에만 저장) =====================
+function groupCard() {
+  const g = S.group, T = ymd(), t = g.notes[T] || {};
+  return '<div class="card"><h3>👥 소그룹 <span class="tag">이 기기에만 저장</span></h3>' +
+    '<p style="font-size:14px; color:#ffcabf; margin:4px 0 8px;">서버가 없어 다른 사람과 동기화되지 않아요. 공유 버튼으로 요약을 보내 주세요.</p>' +
+    '<div class="row"><input class="inp grow" id="grpName" placeholder="그룹 이름" value="' + esc(g.name) + '"><button class="btn sec" style="width:80px;" onclick="saveGroupName()">저장</button></div>' +
+    '<div class="row" style="margin-top:8px;"><input class="inp grow" id="memName" placeholder="멤버 이름"><button class="btn sec" style="width:80px;" onclick="addMember()">추가</button></div>' +
+    (g.members.length ? '<p class="muted" style="margin-top:10px;">오늘(' + fmtMD(T) + ')의 응원 · 기도 제목</p>' : '') +
+    g.members.map(m => { const n = t[m.id] || {}; return '<div class="member"><div class="row"><b class="grow">' + esc(m.name) + '</b><button class="link" onclick="removeMember(\'' + m.id + '\')">삭제</button></div>' +
+      '<input class="inp" placeholder="응원 메시지" value="' + esc(n.cheer || '') + '" onchange="setMemberNote(\'' + m.id + '\',\'cheer\',this.value)">' +
+      '<input class="inp" placeholder="기도 제목" value="' + esc(n.prayer || '') + '" onchange="setMemberNote(\'' + m.id + '\',\'prayer\',this.value)"></div>'; }).join('') + '</div>';
+}
+function saveGroupName() { S.group.name = document.getElementById('grpName').value.trim(); save(); toast('그룹 이름을 저장했어요.'); rerender(); }
+function addMember() {
+  const el = document.getElementById('memName'), n = el.value.trim();
+  if (!n) return alert('멤버 이름을 입력해 주세요.');
+  S.group.members.push({ id:'m' + now().toString(36) + Math.floor(Math.random() * 1000), name:n.slice(0, 20) }); save(); rerender();
+}
+function removeMember(id) {
+  const m = S.group.members.find(x => x.id === id); if (!m || !confirm(m.name + ' 님을 삭제할까요?')) return;
+  S.group.members = S.group.members.filter(x => x.id !== id); save(); rerender();
+}
+function setMemberNote(id, f, v) { const T = ymd(), t = S.group.notes[T] || (S.group.notes[T] = {}); t[id] = t[id] || {}; t[id][f] = v.trim(); save(); }
+
+// ===================== 공유 =====================
+function buildShareText() {
+  const T = ymd(), v = verseFor(T), P = plan(), pr = PROGRAMS[progId()], x = day(T);
+  const L = ['✦ Purify 정화의 길 · ' + fmtMD(T)];
+  if (S.group.name) L.push('[' + S.group.name + ']');
+  L.push('', (S.name ? S.name + '의 ' : '') + '오늘: ' + pr.name + ' ' + (progActive(T) ? progDay(T) + '/' + pr.days + '일차' : '완주') + (S.program.done ? ' 🏅' : ''));
+  L.push('🍽 ' + comma(eatenKcal(T)) + ' / ' + comma(P.target) + 'kcal · 🏃 ' + burnedKcal(T) + 'kcal · 💧 ' + (x.water / 1000).toFixed(1) + 'L');
+  L.push('', '📖 오늘의 말씀', '“' + v.t + '”', '— ' + v.r, '', '💡 쉽게: ' + v.e, '✔ 오늘의 실천: ' + v.a);
+  const t = S.group.notes[T] || {};
+  const lines = S.group.members.map(m => { const n = t[m.id] || {}, ps = []; if (n.cheer) ps.push('응원: ' + n.cheer); if (n.prayer) ps.push('기도: ' + n.prayer); return ps.length ? '- ' + m.name + ' · ' + ps.join(' / ') : ''; }).filter(Boolean);
+  if (lines.length) L.push('', '👥 함께하는 사람들', ...lines);
+  L.push('', '— 말씀과 함께 건강한 몸, 새로운 마음. Purify');
+  return L.join('\n');
+}
+function fallbackCopy(txt) {
+  try { const ta = document.createElement('textarea'); ta.value = txt; ta.style.position = 'fixed'; ta.style.opacity = '0'; document.body.appendChild(ta); ta.select(); const ok = document.execCommand && document.execCommand('copy'); ta.remove(); return !!ok; } catch(e) { return false; }
+}
+function shareText(txt, title) {
+  if (navigator.share) return navigator.share({ title:title || 'Purify', text:txt }).catch(() => {});
+  const done = ok => { if (ok) toast('복사했어요. 카카오톡에 붙여 넣어 보세요.'); else prompt('아래 내용을 복사해 주세요', txt); };
+  if (navigator.clipboard && navigator.clipboard.writeText) return navigator.clipboard.writeText(txt).then(() => done(true), () => done(fallbackCopy(txt)));
+  done(fallbackCopy(txt)); return Promise.resolve();
+}
+function shareToday() { return shareText(buildShareText(), 'Purify 오늘의 정화'); }
+function askFriend() { return shareText('나 요즘 Purify로 건강 습관 만들고 있는데, 앱에 나오는 말씀이 좀 궁금해졌어. 시간 될 때 이야기해 줄래? 🙂', 'Purify'); }
+
+// ===================== 백업 =====================
+function exportData() {
+  save();
+  return { app:'purify', version:3, exportedAt:new Date(now()).toISOString(), data:{ purifyV3:JSON.parse(JSON.stringify(S)), purifyState:lsGet('purifyState'), purifyWater:lsGet('purifyWater'), purifyV2:lsGet('purifyV2') } };
+}
+function downloadBackup() {
+  try {
+    const blob = new Blob([JSON.stringify(exportData(), null, 2)], { type:'application/json' });
+    const url = URL.createObjectURL(blob), a = document.createElement('a');
+    a.href = url; a.download = 'purify-backup-' + ymd() + '.json'; document.body.appendChild(a); a.click(); a.remove();
+    setTimeout(() => URL.revokeObjectURL(url), 1500); toast('백업 파일을 저장했어요.');
+  } catch(e) { alert('내보내기 오류: ' + e.message); }
+}
+function validateBackup(o) {
+  const isObj = x => x && typeof x === 'object' && !Array.isArray(x);
+  if (!isObj(o) || o.app !== 'purify') return 'Purify 백업 파일이 아니에요.';
+  if (!isObj(o.data)) return '백업 데이터가 없어요.';
+  const d = o.data;
+  if (d.purifyV3 != null) {
+    const v = d.purifyV3;
+    if (!isObj(v) || v.version !== 3) return 'v3 데이터 형식이 올바르지 않아요.';
+    if (v.profile != null && !isObj(v.profile)) return '프로필 형식이 올바르지 않아요.';
+    if (v.days != null && !isObj(v.days)) return '일별 기록 형식이 올바르지 않아요.';
+    if (v.weights != null && (!Array.isArray(v.weights) || v.weights.some(w => !w || typeof w.d !== 'string' || typeof w.kg !== 'number'))) return '체중 기록 형식이 올바르지 않아요.';
+  }
+  if (d.purifyState != null && !isObj(d.purifyState)) return 'purifyState 형식이 올바르지 않아요.';
+  if (d.purifyWater != null && (!Array.isArray(d.purifyWater) || d.purifyWater.some(l => !l || typeof l.a !== 'number'))) return '물 기록 형식이 올바르지 않아요.';
+  if (d.purifyV2 != null && !isObj(d.purifyV2)) return 'purifyV2 형식이 올바르지 않아요.';
+  if (d.purifyV3 == null && d.purifyState == null && d.purifyWater == null && d.purifyV2 == null) return '불러올 기록이 없어요.';
+  return '';
+}
+function applyBackup(o, skipConfirm) {
+  const err = validateBackup(o);
+  if (err) { alert('가져오기 실패: ' + err); return false; }
+  if (!skipConfirm && !confirm('백업(' + (o.exportedAt ? o.exportedAt.slice(0, 10) : '날짜 없음') + ')을 불러올까요?\n지금 기기의 기록은 모두 덮어써져요.')) return false;
+  const d = o.data;
+  try {
+    if (d.purifyV3 != null) localStorage.setItem(KEY, JSON.stringify(d.purifyV3)); else localStorage.removeItem(KEY);
+    LEGACY.forEach(k => { if (d[k] != null) localStorage.setItem(k, JSON.stringify(d[k])); else localStorage.removeItem(k); });
+  } catch(e) { alert('저장 오류: ' + e.message); return false; }
+  try { location.reload(); } catch(e) {}
+  return true;
+}
+function importFromFile(input) {
+  const f = input.files && input.files[0]; if (!f) return;
+  const r = new FileReader();
+  r.onload = () => { let o; try { o = JSON.parse(r.result); } catch(e) { input.value = ''; return alert('가져오기 실패: JSON 파일을 읽을 수 없어요.'); } applyBackup(o); input.value = ''; };
+  r.readAsText(f);
+}
+function resetAll() {
+  if (!confirm('모든 기록(프로필, 식단, 체중, 프로그램, 그룹 등)을 지울까요? 되돌릴 수 없어요.')) return;
+  lsDel(KEY); LEGACY.forEach(lsDel);
+  try { location.reload(); } catch(e) {}
+}
+
+// ===================== 시작 =====================
+let lastDate = '';
+function init() {
+  load();
+  lastDate = ymd();
+  if (S.onboarded && S.profile.height && S.disclaimerAt) showMain('today');
+  else startOnboarding('intro', 'new');
+  setInterval(() => {
+    tickTimer();
+    if (ymd() !== lastDate) { lastDate = ymd(); if (document.getElementById('main').classList.contains('on')) rerender(); }
+  }, 1000);
+}
+init();
+// PWA: 서비스 워커 등록 (http/https에서만, 실패해도 앱은 그대로 동작)
+if ('serviceWorker' in navigator && /^https?:$/.test(location.protocol)) {
+  window.addEventListener('load', () => { navigator.serviceWorker.register('sw.js', { scope:'./' }).catch(() => {}); });
+}
+// 저장 공간 보존 요청 (브라우저가 기록을 임의로 지우지 않도록)
+try { if (navigator.storage && navigator.storage.persist) navigator.storage.persist().catch(() => {}); } catch(e) {}
+</script>
+</body>
+</html>

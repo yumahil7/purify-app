@@ -1,8 +1,9 @@
 // Purify service worker — 오프라인 캐시 (사용자 데이터는 localStorage에 있으며 SW는 건드리지 않음)
-const CACHE = 'purify-v3-4';
+const CACHE = 'purify-v3-5';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './favicon.png',
   './icons/icon-192.png', './icons/icon-512.png', './icons/icon-512-maskable.png', './icons/apple-touch-icon.png',
-  './audio/purify-bgm.mp3'];
+  './audio/purify-bgm.mp3', './audio/ave-maria.mp3',
+  './audio/chant-salve.mp3', './audio/chant-veni.mp3', './audio/chant-avemaris.mp3', './audio/chant-pange.mp3', './audio/chant-ubi.mp3'];
 self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
 });

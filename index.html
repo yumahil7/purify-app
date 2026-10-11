@@ -3,7 +3,7 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
-<meta name="theme-color" content="#0a1628">
+<meta name="theme-color" content="#1e2c31">
 <meta name="description" content="말씀과 함께 건강하게 먹고 움직이는 습관을 만드는 앱">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
@@ -17,22 +17,21 @@
 <link rel="apple-touch-icon" sizes="180x180" href="icons/apple-touch-icon.png">
 <title>Purify - 정화의 길</title>
 <style>
-  :root { --p:#d4af77; --p2:#c9a227; --t:#f5f0e8; --m:#a8b0c0; --card:rgba(255,255,255,.055); --line:rgba(212,175,119,.18); }
+  :root { --p:#b4c9a6; --p2:#8fa77f; --g:#cdb787; --t:#ebe5d6; --m:#a9b4ac; --card:rgba(235,229,214,.05); --line:rgba(235,229,214,.1); }
   * { box-sizing:border-box; margin:0; padding:0; -webkit-tap-highlight-color:transparent; }
   html, body { height:100%; }
-  body { font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Segoe UI",sans-serif; background:#07111f; color:var(--t); font-size:16px; line-height:1.55; }
-  .app { max-width:480px; margin:0 auto; height:100vh; height:100dvh; background:linear-gradient(180deg,#0a1628 0%,#10233b 55%,#163252 100%); position:relative; overflow:hidden; }
-  .app::before { content:''; position:absolute; left:50%; top:0; width:1px; height:100%; background:linear-gradient(transparent,rgba(212,175,119,.22),transparent); pointer-events:none; }
+  body { font-family:-apple-system,BlinkMacSystemFont,"Apple SD Gothic Neo","Noto Sans KR","Segoe UI",sans-serif; background:#192428; color:var(--t); font-size:16px; line-height:1.55; }
+  .app { max-width:480px; margin:0 auto; height:100vh; height:100dvh; background:linear-gradient(180deg,#1e2c31 0%,#22333a 55%,#263a3f 100%); position:relative; overflow:hidden; }
   .view { display:none; flex-direction:column; height:100%; position:relative; z-index:1; }
   .view.on { display:flex; }
   .top { display:flex; align-items:center; gap:8px; padding:calc(8px + env(safe-area-inset-top)) 10px 8px; min-height:60px; }
-  .brand { flex:1; text-align:center; color:var(--p); font-weight:700; letter-spacing:3px; font-size:15px; }
+  .brand { flex:1; text-align:center; color:var(--g); font-weight:700; letter-spacing:3px; font-size:15px; }
   .iconbtn { width:48px; height:48px; border-radius:24px; border:none; background:transparent; color:var(--p); font-size:28px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-family:inherit; }
   .iconbtn.sm { font-size:20px; }
   .iconbtn.hide { visibility:hidden; }
   .dots { flex:1; display:flex; justify-content:center; gap:7px; }
   .dot { width:8px; height:8px; border-radius:4px; background:rgba(255,255,255,.18); transition:all .25s; }
-  .dot.done { background:rgba(212,175,119,.55); }
+  .dot.done { background:rgba(180,201,166,.55); }
   .dot.on { background:var(--p); width:22px; }
   .body { flex:1; overflow-y:auto; padding:6px 20px 28px; -webkit-overflow-scrolling:touch; }
   .foot { padding:10px 20px calc(16px + env(safe-area-inset-bottom)); }
@@ -40,30 +39,30 @@
   h2 { font-size:23px; color:var(--p); margin:4px 0 6px; line-height:1.35; }
   h3 { font-size:17.5px; color:var(--t); margin-bottom:6px; }
   .lead { color:var(--m); font-size:15.5px; margin-bottom:18px; }
-  .btn { display:block; width:100%; min-height:56px; padding:14px; border:none; border-radius:16px; background:linear-gradient(135deg,var(--p2),var(--p)); color:#0a1628; font-weight:700; font-size:17px; cursor:pointer; margin-top:10px; font-family:inherit; }
+  .btn { display:block; width:100%; min-height:56px; padding:14px; border:none; border-radius:16px; background:linear-gradient(135deg,var(--p2),var(--p)); color:#17241f; font-weight:700; font-size:17px; cursor:pointer; margin-top:10px; font-family:inherit; }
   .btn:disabled { opacity:.4; }
-  .btn.sec { background:transparent; color:var(--p); border:1.5px solid rgba(212,175,119,.6); }
+  .btn.sec { background:transparent; color:var(--p); border:1.5px solid rgba(180,201,166,.6); }
   .btn.ghost { background:rgba(255,255,255,.05); color:var(--t); border:1px solid var(--line); font-weight:600; }
   .btn.sm { min-height:48px; font-size:15.5px; padding:10px; }
-  .opt { display:block; width:100%; min-height:64px; text-align:left; padding:14px 16px; margin-bottom:12px; border-radius:16px; border:1.5px solid var(--line); background:var(--card); color:var(--t); font-size:17px; cursor:pointer; font-family:inherit; line-height:1.45; }
+  .opt { box-shadow:0 1px 2px rgba(0,0,0,.05); display:block; width:100%; min-height:64px; text-align:left; padding:14px 16px; margin-bottom:12px; border-radius:16px; border:1.5px solid var(--line); background:var(--card); color:var(--t); font-size:17px; cursor:pointer; font-family:inherit; line-height:1.45; }
   .opt small { display:block; color:var(--m); font-size:14px; margin-top:3px; }
-  .opt.sel { border-color:var(--p); background:rgba(212,175,119,.14); box-shadow:0 0 0 1px var(--p) inset; }
+  .opt.sel { border-color:var(--p); background:rgba(180,201,166,.14); box-shadow:0 0 0 1px var(--p) inset; }
   .opt.dis { opacity:.5; }
   .seg { display:flex; gap:10px; } .seg .opt { flex:1; text-align:center; margin-bottom:0; }
   label.f { display:block; font-size:14.5px; color:var(--m); margin:16px 0 6px; }
-  .inp { width:100%; min-height:54px; padding:12px 14px; border-radius:14px; background:rgba(255,255,255,.06); color:#fff; border:1.5px solid var(--line); font-size:17px; font-family:inherit; }
+  .inp { width:100%; min-height:54px; padding:12px 14px; border-radius:14px; background:rgba(255,255,255,.06); color:var(--t); border:1.5px solid var(--line); font-size:17px; font-family:inherit; }
   .inp:focus { outline:none; border-color:var(--p); }
   textarea.inp { min-height:96px; line-height:1.5; resize:vertical; }
   select.inp { appearance:none; }
   .unit { position:relative; } .unit .inp { padding-right:48px; } .unit span { position:absolute; right:16px; top:50%; transform:translateY(-50%); color:var(--m); pointer-events:none; }
-  .card { background:var(--card); border:1px solid var(--line); border-radius:20px; padding:18px 16px; margin-bottom:14px; }
-  .card.hl { border-color:rgba(212,175,119,.55); background:rgba(212,175,119,.08); }
+  .card { background:var(--card); border:1px solid var(--line); border-radius:22px; box-shadow:0 1px 2px rgba(0,0,0,.06), 0 8px 22px rgba(0,0,0,.08); padding:18px 16px; margin-bottom:14px; }
+  .card.hl { border-color:rgba(180,201,166,.55); background:rgba(180,201,166,.08); }
   .verse { font-size:17px; line-height:1.75; }
-  .ref { color:var(--p); font-size:14px; margin-top:6px; }
-  .explain { background:rgba(255,255,255,.05); border-radius:14px; padding:12px 14px; margin-top:8px; font-size:15.5px; color:#e8e2d6; }
+  .ref { color:var(--g); font-size:14px; margin-top:6px; }
+  .explain { background:rgba(255,255,255,.05); border-radius:14px; padding:12px 14px; margin-top:8px; font-size:15.5px; color:#e4ddcd; }
   .apply { margin-top:12px; font-size:15.5px; } .apply b { color:var(--p); }
-  .warn { background:rgba(220,80,60,.13); border:1px solid rgba(230,100,80,.55); color:#ffcabf; border-radius:16px; padding:12px 14px; font-size:15px; margin:10px 0; }
-  .good { background:rgba(120,200,150,.1); border:1px solid rgba(120,200,150,.4); color:#d3efdf; border-radius:16px; padding:12px 14px; font-size:15px; margin:10px 0; }
+  .warn { background:rgba(196,120,96,.14); border:1px solid rgba(206,140,116,.5); color:#efcdbf; border-radius:16px; padding:12px 14px; font-size:15px; margin:10px 0; }
+  .good { background:rgba(157,184,140,.1); border:1px solid rgba(157,184,140,.4); color:#dbe7d2; border-radius:16px; padding:12px 14px; font-size:15px; margin:10px 0; }
   .muted { color:var(--m); font-size:14.5px; }
   .row { display:flex; gap:10px; align-items:center; }
   .row > .btn { margin-top:0; }
@@ -78,36 +77,65 @@
   .item:first-of-type { border-top:none; }
   .item .txt { flex:1; min-width:0; }
   .item .txt b { font-size:16px; }
-  .item .txt div { font-size:14.5px; color:#ddd5c6; }
+  .item .txt div { font-size:14.5px; color:#d9d2c3; }
   .item .txt small { color:var(--m); font-size:13px; }
   .ic { font-size:28px; width:36px; text-align:center; flex:none; }
-  .tick { flex:none; width:54px; height:54px; border-radius:27px; border:2px solid rgba(212,175,119,.6); background:transparent; color:var(--p); font-size:22px; cursor:pointer; font-family:inherit; }
-  .tick.on { background:var(--p); color:#0a1628; border-color:var(--p); }
+  .tick { flex:none; width:54px; height:54px; border-radius:27px; border:2px solid rgba(180,201,166,.6); background:transparent; color:var(--p); font-size:22px; cursor:pointer; font-family:inherit; }
+  .tick.on { background:var(--p); color:#17241f; border-color:var(--p); }
   .chip { display:inline-block; min-height:46px; padding:10px 14px; margin:0 6px 8px 0; border-radius:23px; border:1px solid var(--line); background:rgba(255,255,255,.05); color:var(--t); font-size:15px; cursor:pointer; font-family:inherit; }
-  .chip.on { border-color:var(--p); background:rgba(212,175,119,.2); color:var(--p); font-weight:700; }
+  .chip.on { border-color:var(--p); background:rgba(180,201,166,.2); color:var(--p); font-weight:700; }
   .cat { margin:18px 0 10px; padding:12px 14px; border-left:3px solid var(--p); background:rgba(255,255,255,.03); border-radius:0 14px 14px 0; }
-  .cat h3 { margin-bottom:4px; } .cat.hl { background:rgba(212,175,119,.12); box-shadow:0 0 0 1px rgba(212,175,119,.4) inset; }
+  .cat h3 { margin-bottom:4px; } .cat.hl { background:rgba(180,201,166,.12); box-shadow:0 0 0 1px rgba(180,201,166,.4) inset; }
   .sub { margin:-4px 0 14px; padding:12px 14px; border:1px dashed var(--line); border-radius:16px; }
-  .btn.stop { background:#c8503c; color:#fff; }
+  .btn.stop { background:#a8533f; color:#fbf3ea; }
   .stage { display:flex; gap:6px; margin:8px 0; } .stage span { flex:1; text-align:center; font-size:12.5px; padding:6px 2px; border-radius:10px; background:rgba(255,255,255,.06); color:var(--m); }
-  .stage span.on { background:rgba(212,175,119,.25); color:var(--p); font-weight:700; } .stage span.done { color:#8fd3a8; }
+  .stage span.on { background:rgba(180,201,166,.25); color:var(--p); font-weight:700; } .stage span.done { color:#a9c79a; }
   .chk { display:flex; align-items:center; gap:14px; min-height:56px; padding:6px 0; border-top:1px solid rgba(255,255,255,.07); font-size:16px; cursor:pointer; }
   .chk:first-of-type { border-top:none; }
-  .chk input { width:26px; height:26px; accent-color:#d4af77; flex:none; }
-  .nav { display:flex; height:calc(68px + env(safe-area-inset-bottom)); padding-bottom:env(safe-area-inset-bottom); background:rgba(8,18,34,.97); border-top:1px solid rgba(212,175,119,.25); }
+  .chk input { width:26px; height:26px; accent-color:#b4c9a6; flex:none; }
+  .nav { display:flex; height:calc(68px + env(safe-area-inset-bottom)); padding-bottom:env(safe-area-inset-bottom); background:rgba(24,35,39,.97); border-top:1px solid rgba(180,201,166,.25); }
   .nav button { flex:1; border:none; background:transparent; color:var(--m); font-size:13px; cursor:pointer; font-family:inherit; display:flex; flex-direction:column; align-items:center; justify-content:center; gap:3px; }
   .nav button i { font-style:normal; font-size:22px; line-height:1; }
   .nav button.on { color:var(--p); font-weight:700; }
+  .afsw { margin-top:12px; padding:12px; border-radius:16px; background:rgba(235,229,214,.04); border:1px solid var(--line); transition:background .6s, border-color .6s; }
+  .afsw.on { background:rgba(205,183,135,.10); border-color:rgba(205,183,135,.45); }
+  .afsw .knob { position:relative; width:64px; height:32px; border-radius:16px; background:rgba(169,180,172,.25); flex:none; margin-right:10px; }
+  .afsw .knob i { position:absolute; top:3px; left:3px; width:26px; height:26px; border-radius:13px; background:var(--m); transition:left .5s cubic-bezier(.3,1.4,.5,1), background .5s; }
+  .afsw .knob b { position:absolute; top:7px; right:8px; font-size:11px; color:var(--m); }
+  .afsw.on .knob { background:rgba(205,183,135,.35); }
+  .afsw.on .knob i { left:35px; background:var(--g); box-shadow:0 0 12px rgba(205,183,135,.7); }
+  .afsw.on .knob b { left:8px; right:auto; color:#2a2a1f; }
+  .afsw.flip { animation:afglow 1.6s ease-out 1; }
+  @keyframes afglow { 0% { box-shadow:0 0 0 0 rgba(205,183,135,.6); } 100% { box-shadow:0 0 0 18px rgba(205,183,135,0); } }
+  .bar.thin { height:6px; margin-top:10px; }
+  .afnote { border-color:rgba(205,183,135,.5); background:rgba(205,183,135,.08); }
+  .evi { display:inline-block; font-size:11px; padding:1px 7px; border-radius:9px; margin-left:2px; vertical-align:1px; border:1px solid var(--line); color:var(--m); white-space:nowrap; }
+  .evi-h, .evi-ho { color:#cfe0c4; border-color:rgba(157,184,140,.5); }
+  .evi-a { color:#e3cfa6; border-color:rgba(205,183,135,.5); }
+  .evi-c, .evi-y { color:#c9c3e0; border-color:rgba(190,180,222,.45); }
+  .evi-g, .evi-r, .evi-n { color:var(--m); } .evi-x { color:#e7d3c6; border-color:rgba(206,140,116,.45); }
+  ul.claims { padding-left:18px; margin:6px 0; } ul.claims li { margin:6px 0; line-height:1.6; }
+  #main a, #ob a { color:#c7d6bc; }
+  .cite { font-size:12px; color:var(--m); } .cite a, .srcl a, .refs a, .hlinks a { color:#c7d6bc; }
+  .srcl { font-size:12px; color:var(--m); line-height:1.5; margin-top:8px; }
+  details.hcard { border:1px solid var(--line); border-radius:16px; padding:10px 12px; margin:8px 0; background:rgba(235,229,214,.03); }
+  details.hcard summary { cursor:pointer; min-height:28px; }
+  details.hcard p { margin:6px 0; line-height:1.6; }
+  .care { color:#e7d3c6; }
+  .hlinks { font-size:12px; margin:4px 0 0; color:var(--m); }
+  .htabs .opt { font-size:13px; padding:8px 4px; }
+  ol.refs { padding-left:20px; font-size:12px; line-height:1.5; } ol.refs li { margin:4px 0; word-break:break-all; }
+  .chip.lock { opacity:.55; }
   .screen { display:none; } .screen.on { display:block; }
-  .toast { position:absolute; left:50%; bottom:96px; transform:translateX(-50%); background:rgba(10,22,40,.97); border:1px solid var(--p); padding:12px 16px; border-radius:16px; z-index:200; opacity:0; transition:opacity .25s; pointer-events:none; width:max-content; max-width:300px; text-align:center; font-size:15px; }
+  .toast { position:absolute; left:50%; bottom:96px; transform:translateX(-50%); background:rgba(27,39,43,.97); border:1px solid var(--p); padding:12px 16px; border-radius:16px; z-index:200; opacity:0; transition:opacity .25s; pointer-events:none; width:max-content; max-width:300px; text-align:center; font-size:15px; }
   .toast.show { opacity:1; }
   details > summary { cursor:pointer; color:var(--p); min-height:48px; display:flex; align-items:center; font-weight:600; list-style:none; font-size:15.5px; }
   details > summary::-webkit-details-marker { display:none; }
   details > summary::after { content:'›'; margin-left:auto; font-size:22px; transition:transform .2s; }
   details[open] > summary::after { transform:rotate(90deg); }
   ul.l { margin:6px 0 4px 20px; } ul.l li { margin:4px 0; }
-  .badge { display:inline-block; background:linear-gradient(135deg,var(--p2),var(--p)); color:#0a1628; font-size:12.5px; font-weight:700; padding:3px 10px; border-radius:20px; margin-left:6px; vertical-align:middle; }
-  .tag { display:inline-block; font-size:12.5px; color:var(--p); border:1px solid rgba(212,175,119,.45); padding:2px 9px; border-radius:20px; margin:6px 4px 0 0; }
+  .badge { display:inline-block; background:linear-gradient(135deg,var(--p2),var(--p)); color:#17241f; font-size:12.5px; font-weight:700; padding:3px 10px; border-radius:20px; margin-left:6px; vertical-align:middle; }
+  .tag { display:inline-block; font-size:12.5px; color:var(--p); border:1px solid rgba(180,201,166,.45); padding:2px 9px; border-radius:20px; margin:6px 4px 0 0; }
   .hero { text-align:center; padding-top:9vh; }
   .hero .mark { font-size:56px; color:var(--p); margin-bottom:6px; }
   .hero p { font-size:17.5px; line-height:1.8; margin:14px 0; }
@@ -116,17 +144,26 @@
   .sec-title h3 { margin:0; }
   .link { background:none; border:none; color:var(--p); font-size:15px; cursor:pointer; min-height:44px; padding:0 4px; font-family:inherit; }
   .ringwrap { display:flex; align-items:center; gap:16px; }
-  .prayer { background:rgba(212,175,119,.08); border-left:3px solid var(--p); border-radius:10px; padding:12px 14px; margin-top:10px; font-size:15.5px; line-height:1.7; }
-  .share-pre { white-space:pre-wrap; font-size:14px; background:rgba(0,0,0,.25); border-radius:14px; padding:12px; color:#e8e2d6; max-height:240px; overflow:auto; }
+  .prayer { background:rgba(180,201,166,.08); border-left:3px solid var(--p); border-radius:10px; padding:12px 14px; margin-top:10px; font-size:15.5px; line-height:1.7; }
+  .share-pre { white-space:pre-wrap; font-size:14px; background:rgba(0,0,0,.25); border-radius:14px; padding:12px; color:#e4ddcd; max-height:240px; overflow:auto; }
   .member { border-top:1px solid rgba(255,255,255,.07); padding:10px 0; }
   .member .inp { margin-top:8px; min-height:48px; font-size:15.5px; }
-  .musicbtn { position:absolute; top:calc(14px + env(safe-area-inset-top)); right:10px; z-index:60; width:44px; height:44px; border-radius:22px; border:1px solid rgba(212,175,119,.45); background:rgba(10,22,40,.75); color:var(--p); font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-family:inherit; -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); }
+  .musicbtn { position:absolute; top:calc(14px + env(safe-area-inset-top)); right:10px; z-index:60; width:44px; height:44px; border-radius:22px; border:1px solid rgba(180,201,166,.45); background:rgba(27,39,43,.75); color:var(--p); font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-family:inherit; -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); }
   .musicbtn.off { color:var(--m); opacity:.7; }
+  .music-mini { position:absolute; top:calc(62px + env(safe-area-inset-top)); right:10px; z-index:59; max-width:min(300px, calc(100% - 20px)); background:rgba(32,30,51,.94); border:1px solid rgba(195,184,227,.35); border-radius:16px; color:#e6e0f2; font-size:13px; box-shadow:0 6px 18px rgba(0,0,0,.18); }
+  .music-mini summary { list-style:none; cursor:pointer; padding:8px 12px; display:flex; gap:6px; align-items:baseline; flex-wrap:wrap; }
+  .music-mini summary::-webkit-details-marker { display:none; }
+  .music-mini .la1 { color:#aaa4bf; font-style:italic; font-size:12px; }
+  .music-mini .mini-body { padding:0 12px 10px; max-height:52vh; overflow:auto; }
+  .la { font-style:italic; color:#dbd6e8; margin:8px 0 2px; line-height:1.5; }
+  .ko { color:var(--t); margin:0 0 6px; line-height:1.6; }
+  .nowplay { margin-top:12px; padding:12px; border-radius:16px; background:rgba(130,118,180,.12); border:1px solid rgba(195,184,227,.25); }
+  details.lyr summary { cursor:pointer; color:#c3b8e3; margin-top:8px; min-height:32px; }
   .musicbtn.off::after { content:''; position:absolute; width:26px; height:2px; background:var(--m); transform:rotate(-45deg); border-radius:1px; }
   .toast { white-space:pre-line; line-height:1.5; }
-  .vline { font-size:14.5px; line-height:1.65; color:#d9cfae; margin:10px 0 2px; padding-left:10px; border-left:2px solid rgba(232,201,122,.45); }
+  .vline { font-size:14.5px; line-height:1.65; color:#d8cfb4; margin:10px 0 2px; padding-left:10px; border-left:2px solid rgba(205,183,135,.45); }
   .vline span { color:var(--m); font-size:13px; white-space:nowrap; }
-  details.xpl > summary { display:inline-flex; min-height:40px; padding:0 14px; margin:8px 0 2px; border:1px solid rgba(232,201,122,.5); border-radius:999px; background:rgba(232,201,122,.08); font-size:15px; }
+  details.xpl > summary { display:inline-flex; min-height:40px; padding:0 14px; margin:8px 0 2px; border:1px solid rgba(205,183,135,.5); border-radius:999px; background:rgba(205,183,135,.08); font-size:15px; }
   details.xpl > summary small { color:var(--m); font-weight:400; margin-left:6px; font-size:12.5px; }
   details.xpl[open] > summary small { display:none; }
   details.xpl > summary::after { margin-left:8px; font-size:18px; }
@@ -139,31 +176,31 @@
   .isec { margin:10px 0 12px; }
   .isec h4 { font-size:14px; color:var(--p); margin:0 0 4px; letter-spacing:.02em; }
   .isec p, .isec li { font-size:15px; line-height:1.6; }
-  .stars { color:var(--p); letter-spacing:2px; }
+  .stars { color:var(--g); letter-spacing:2px; }
   .cmpwrap { padding-top:6px; }
   table.cmp { width:100%; border-collapse:collapse; font-size:13.5px; line-height:1.45; }
   table.cmp th, table.cmp td { border-bottom:1px solid rgba(255,255,255,.08); padding:8px 4px; text-align:left; vertical-align:top; }
   table.cmp tr:first-child th { color:var(--p); font-size:14px; }
   table.cmp th:first-child { color:var(--m); font-weight:500; width:22%; }
-  .devo { margin:22px 0 10px; padding:18px 14px 8px; border-radius:22px; background:linear-gradient(180deg,#221a3a 0%,#161230 100%); border:1px solid rgba(196,178,255,.32); box-shadow:0 0 0 1px rgba(0,0,0,.2) inset; }
-  .devo h3 { color:#e9e0ff; font-size:19px; margin-bottom:8px; letter-spacing:.02em; }
-  .devo p { font-size:15px; line-height:1.65; color:#ddd6f3; }
-  .devo .muted { color:#ada4c8; }
-  .devo .vline { border-left-color:rgba(196,178,255,.55); color:#e4dcff; }
-  .devo .isec h4 { color:#cbbcff; }
-  .devo details.more > summary { color:#cbbcff; }
-  .devo-card > .opt { background:rgba(120,100,190,.12); border-color:rgba(196,178,255,.35); }
-  .devo-card > .opt.sel { border-color:#cbbcff; box-shadow:0 0 0 2px rgba(203,188,255,.35); }
-  .devo-sub .chip.on { background:#cbbcff; color:#1b1430; border-color:#cbbcff; }
-  .tier { background:rgba(0,0,0,.22); border:1px solid rgba(196,178,255,.22); border-radius:14px; padding:12px; margin:10px 0; }
-  .tier.cur { border-color:rgba(255,190,160,.55); }
-  .tier h4 { font-size:15px; color:#f1eaff; margin:0 0 6px; }
-  .tier p { font-size:14px; line-height:1.6; margin:4px 0; color:#ddd6f3; }
-  .tier p b { color:#cbbcff; font-weight:600; margin-right:4px; }
-  .devo-today { background:linear-gradient(180deg,#221a3a 0%,#18142e 100%); border-color:rgba(196,178,255,.35); }
-  .devo-today h3 { color:#e9e0ff; }
-  .devo-today .verse { color:#f1eaff; }
-  .card.soft { border-color:rgba(255,214,150,.3); background:rgba(255,214,150,.05); }
+  .devo { margin:22px 0 10px; padding:18px 14px 8px; border-radius:22px; background:linear-gradient(180deg,#2a2740 0%,#201e33 100%); border:1px solid rgba(190,180,222,.32); box-shadow:0 0 0 1px rgba(0,0,0,.2) inset; }
+  .devo h3 { color:#e6e0f2; font-size:19px; margin-bottom:8px; letter-spacing:.02em; }
+  .devo p { font-size:15px; line-height:1.65; color:#dbd6e8; }
+  .devo .muted { color:#aaa4bf; }
+  .devo .vline { border-left-color:rgba(190,180,222,.55); color:#e2dcf0; }
+  .devo .isec h4 { color:#c3b8e3; }
+  .devo details.more > summary { color:#c3b8e3; }
+  .devo-card > .opt { background:rgba(130,118,180,.12); border-color:rgba(190,180,222,.35); }
+  .devo-card > .opt.sel { border-color:#c3b8e3; box-shadow:0 0 0 2px rgba(195,184,227,.35); }
+  .devo-sub .chip.on { background:#c3b8e3; color:#221f33; border-color:#c3b8e3; }
+  .tier { background:rgba(0,0,0,.22); border:1px solid rgba(190,180,222,.22); border-radius:14px; padding:12px; margin:10px 0; }
+  .tier.cur { border-color:rgba(214,160,136,.5); }
+  .tier h4 { font-size:15px; color:#efeaf6; margin:0 0 6px; }
+  .tier p { font-size:14px; line-height:1.6; margin:4px 0; color:#dbd6e8; }
+  .tier p b { color:#c3b8e3; font-weight:600; margin-right:4px; }
+  .devo-today { background:linear-gradient(180deg,#2a2740 0%,#211f34 100%); border-color:rgba(190,180,222,.35); }
+  .devo-today h3 { color:#e6e0f2; }
+  .devo-today .verse { color:#efeaf6; }
+  .card.soft { border-color:rgba(205,183,135,.3); background:rgba(205,183,135,.05); }
 </style>
 </head>
 <body>
@@ -191,18 +228,21 @@
       <div class="screen" id="s-history"></div>
       <div class="screen" id="s-word"></div>
       <div class="screen" id="s-seek"></div>
+      <div class="screen" id="s-health"></div>
       <div class="screen" id="s-me"></div>
     </div>
     <nav class="nav">
       <button data-tab="today" onclick="showTab('today')"><i>☀</i>오늘</button>
       <button data-tab="history" onclick="showTab('history')"><i>📈</i>기록</button>
       <button data-tab="word" onclick="showTab('word')"><i>📖</i>말씀</button>
+      <button data-tab="health" onclick="showTab('health')"><i>🌿</i>건강</button>
       <button data-tab="me" onclick="showTab('me')"><i>👤</i>나</button>
     </nav>
   </div>
 
   <div id="toast" class="toast"></div>
   <button id="musicBtn" class="musicbtn" onclick="musicToggle()" aria-pressed="true" aria-label="배경 음악 끄기" title="배경 음악 끄기">♪</button>
+  <div id="musicMini" class="music-mini hide" aria-live="polite"></div>
 </div>
 <script>
 'use strict';
@@ -296,7 +336,7 @@ const PROGRAMS = {
     items:['16:8 식사 시간 지키기', '단백질 챙긴 식단대로 먹기', '운동 30~45분', '짠 음식·단 음식·술 피하기'],
     verses:['다니엘 1:8', '고린도전서 9:25', '히브리서 12:1', '빌립보서 3:13-14', '잠언 16:3', '여호수아 1:9', '갈라디아서 6:9', '잠언 25:28', '고린도전서 9:27', '갈라디아서 5:22-23', '잠언 16:32', '빌립보서 4:13', '히브리서 12:11', '이사야 40:31'],
     guide:d => d <= 3 ? '처음 며칠은 몸속 수분이 빠지며 체중이 빨리 줄 수 있어요. 진짜 지방 감소는 주 0.5~1kg 정도예요.' : d <= 7 ? '배고픔이 가장 큰 시기예요. 단백질과 채소를 먼저 먹고, 물을 넉넉히.' : d <= 14 ? '운동 강도보다 매일 하는 것이 중요해요. 잠을 7시간 이상 자요.' : '마무리 주간: 결심을 다시 새기고(다니엘 1:8), 끝난 뒤의 유지 기간도 계획해요.' },
-  waterfast: { cat:'water', name:'기도와 헌신의 물 금식', icon:'🕯', days:3, custom:true, diff:'매우 어려움', label:'본인의 선택과 결단', who:'BMI 25 이상 건강한 성인 · 의사와 상의한 분', fasting:true, timer:0, water:true,
+  waterfast: { cat:'water', name:'기도와 헌신의 물 금식', icon:'🕯', days:3, custom:true, diff:'매우 어려움', label:'본인의 선택과 결단', who:'건강한 성인 (정상 체중은 3일까지, BMI 25 이상은 40일까지) · 의사와 상의한 분', fasting:true, timer:0, water:true,
     desc:'정한 기간 동안 물만 마시며 기도에 깊이 집중하는 헌신의 금식이에요. 체중 감량이 아니라 결단과 기도를 위한 시간이에요. 매일 안전 확인과 회복식을 함께해요.',
     items:['물 목표 채우기', '오늘의 증상 체크하기', '혈압·혈당·체중 기록', '기도·말씀 묵상'],
     verses:['마태복음 4:4', '시편 63:1', '이사야 58:6', '요엘 2:12', '마태복음 6:17-18', '에스라 8:23', '느헤미야 1:4', '사도행전 13:2', '요한복음 4:14', '요한복음 6:35', '이사야 40:31', '고린도후서 12:9', '시편 46:1', '빌립보서 4:6'],
@@ -314,7 +354,7 @@ const PROGRAMS = {
     items:['단백질·채소 중심으로 규칙적인 식사', '운동 20분 이상 (근력 포함)', '식욕·감정 일기 쓰기', '말씀 한 구절 묵상'],
     guide:d => d <= 7 ? '1주: 약은 처방대로. 이 앱은 약을 끊으라고 하지 않아요. 지금은 습관을 쌓는 시간이에요.' : d <= 14 ? '2주: 식사량이 줄어도 단백질과 근력 운동으로 근육을 지켜요.' : d <= 21 ? '3주: 약 조절(감량·중단)은 반드시 담당 의사와 상의해요. 다음 진료 때 물어볼 것을 적어 두세요.' : '4주: 약을 줄이거나 멈춘 뒤엔 식욕이 다시 커질 수 있어요(반동). 의사와 함께 미리 대비해요.' }
 };
-const WF_LENS = [1, 2, 3, 5, 7, 10, 14, 21, 40];
+const WF_LENS = [1, 3, 7, 14, 21, 40];
 const WF_PHRASE = '의사와 상의했습니다';
 const SYMPTOMS = [['dizzy', '어지럼'], ['palp', '가슴 두근거림'], ['confuse', '혼동·멍함'], ['faint', '실신 또는 실신할 것 같음'], ['vomit', '구토']];
 const BODY_CHANGES = [[1, '1일차: 간에 저장된 당(글리코겐)을 쓰기 시작해요. 허기와 두통이 흔해요.'], [3, '2~3일차: 몸이 지방을 에너지로 쓰는 쪽(케톤)으로 바뀌어요. 가장 힘든 시기라고 말하는 분이 많아요.'], [7, '4~7일차: 허기는 줄어든다고 보고되지만, 전해질 부족·어지럼 위험이 커져요. 의료진 확인이 꼭 필요해요.'], [14, '8~14일차: 장기 금식 영역이에요. 근육 손실과 전해질 이상 위험이 있어 의료 감독 하에서만 하세요.'], [21, '15~21일차: 매우 긴 금식이에요. 의료진의 지속적인 관찰이 필요해요.'], [40, '22~40일차: 극히 긴 금식이에요. 반드시 의료진의 감독 아래에서만 이어 가세요.']];
@@ -379,10 +419,13 @@ const PACES = [['slow', '🐢 천천히 건강하게', '주 0.25~0.5kg · 무리
 const MOTIVES = [['health', '💪 건강해지고 싶어요'], ['event', '📅 중요한 행사를 앞두고 있어요'], ['prevent', '🩺 질병을 예방하고 싶어요'], ['faith', '✝ 신앙적인 결단이에요']];
 // 자동 생성 (verses.py) — 개역한글, 대한성서공회 본문과 대조 완료
 const KRV = {
+"창세기 1:29": "하나님이 가라사대 내가 온 지면의 씨 맺는 모든 채소와 씨 가진 열매 맺는 모든 나무를 너희에게 주노니 너희 식물이 되리라",
+"창세기 2:2": "하나님의 지으시던 일이 일곱째 날이 이를 때에 마치니 그 지으시던 일이 다하므로 일곱째 날에 안식하시니라",
 "출애굽기 34:28": "모세가 여호와와 함께 사십일 사십야를 거기 있으면서 떡도 먹지 아니하였고 물도 마시지 아니하였으며 여호와께서는 언약의 말씀 곧 십계를 그 판들에 기록하셨더라",
 "신명기 8:3": "너를 낮추시며 너로 주리게 하시며 또 너도 알지 못하며 네 열조도 알지 못하던 만나를 네게 먹이신 것은 사람이 떡으로만 사는 것이 아니요 여호와의 입에서 나오는 모든 말씀으로 사는 줄을 너로 알게하려 하심이니라",
 "신명기 8:10": "네가 먹어서 배불리고 네 하나님 여호와께서 옥토로 네게 주셨음을 인하여 그를 찬송하리라",
 "여호수아 1:9": "내가 네게 명한 것이 아니냐 마음을 강하게 하고 담대히 하라 두려워 말며 놀라지 말라 네가 어디로 가든지 네 하나님 여호와가 너와 함께 하느니라 하시니라",
+"여호수아 6:15": "제 칠일 새벽에 그들이 일찌기 일어나서 여전한 방식으로 성을 일곱번 도니 성을 일곱번 돌기는 그날 뿐이었더라",
 "열왕기상 19:7": "여호와의 사자가 또 다시 와서 어루만지며 이르되 일어나서 먹으라 네가 길을 이기지 못할까 하노라 하는지라",
 "열왕기상 19:8": "이에 일어나 먹고 마시고 그 식물의 힘을 의지하여 사십주 사십야를 행하여 하나님의 산 호렙에 이르니라",
 "에스라 8:23": "그러므로 우리가 이를 위하여 금식하며 우리 하나님께 간구하였더니 그 응낙하심을 입었느니라",
@@ -427,6 +470,7 @@ const KRV = {
 "예레미야애가 3:22-23": "여호와의 자비와 긍휼이 무궁하시므로 우리가 진멸되지 아니함이니이다 이것이 아침마다 새로우니 주의 성실이 크도소이다",
 "다니엘 1:8": "다니엘은 뜻을 정하여 왕의 진미와 그의 마시는 포도주로 자기를 더럽히지 아니하리라 하고 자기를 더럽히지 않게 하기를 환관장에게 구하니",
 "다니엘 1:12": "청하오니 당신의 종들을 열흘 동안 시험하여 채식을 주어 먹게 하고 물을 주어 마시게 한 후에",
+"다니엘 1:15": "열흘 후에 그들의 얼굴이 더욱 아름답고 살이 더욱 윤택하여 왕의 진미를 먹는 모든 소년보다 나아 보인지라",
 "다니엘 10:2-3": "그 때에 나 다니엘이 세 이레 동안을 슬퍼하며 세 이레가 차기까지 좋은 떡을 먹지 아니하며 고기와 포도주를 입에 넣지 아니하며 또 기름을 바르지 아니하니라",
 "다니엘 10:3": "세 이레가 차기까지 좋은 떡을 먹지 아니하며 고기와 포도주를 입에 넣지 아니하며 또 기름을 바르지 아니하니라",
 "다니엘 10:12": "그가 내게 이르되 다니엘아 두려워하지 말라 네가 깨달으려 하여 네 하나님 앞에 스스로 겸비케 하기로 결심하던 첫날부터 네 말이 들으신바 되었으므로 내가 네 말로 인하여 왔느니라",
@@ -439,11 +483,12 @@ const KRV = {
 "마태복음 4:11": "이에 마귀는 예수를 떠나고 천사들이 나아와서 수종드니라",
 "마태복음 5:6": "의에 주리고 목마른 자는 복이 있나니 저희가 배부를 것임이요",
 "마태복음 6:11": "오늘날 우리에게 일용할 양식을 주옵시고",
-"마태복음 6:16": "금식할 때에 너희는 외식하는 자들과 같이 슬픈 기색을 내지 말라 저희는 금식하는 것을 사람에게 보이려고 얼굴을 흉하게 하느니라 내가 진실로 너희에게 이르노니 저희는 자기 상을 이미 받았느니라",
 "마태복음 6:16-18": "금식할 때에 너희는 외식하는 자들과 같이 슬픈 기색을 내지 말라 저희는 금식하는 것을 사람에게 보이려고 얼굴을 흉하게 하느니라 내가 진실로 너희에게 이르노니 저희는 자기 상을 이미 받았느니라 너는 금식할 때에 머리에 기름을 바르고 얼굴을 씻으라 이는 금식하는 자로 사람에게 보이지 않고 오직 은밀한 중에 계신 네 아버지께 보이게 하려 함이라 은밀한 중에 보시는 네 아버지께서 갚으시리라",
+"마태복음 6:16": "금식할 때에 너희는 외식하는 자들과 같이 슬픈 기색을 내지 말라 저희는 금식하는 것을 사람에게 보이려고 얼굴을 흉하게 하느니라 내가 진실로 너희에게 이르노니 저희는 자기 상을 이미 받았느니라",
 "마태복음 6:17-18": "너는 금식할 때에 머리에 기름을 바르고 얼굴을 씻으라 이는 금식하는 자로 사람에게 보이지 않고 오직 은밀한 중에 계신 네 아버지께 보이게 하려 함이라 은밀한 중에 보시는 네 아버지께서 갚으시리라",
 "마태복음 7:7": "구하라 그러면 너희에게 주실 것이요 찾으라 그러면 찾을 것이요 문을 두드리라 그러면 너희에게 열릴 것이니",
 "마태복음 11:28": "수고하고 무거운 짐진 자들아 다 내게로 오라 내가 너희를 쉬게 하리라",
+"마태복음 12:40": "요나가 밤낮 사흘을 큰 물고기 뱃속에 있었던것 같이 인자도 밤낮 사흘을 땅속에 있으리라",
 "마태복음 26:41": "시험에 들지 않게 깨어 있어 기도하라 마음에는 원이로되 육신이 약하도다 하시고",
 "요한복음 3:3": "예수께서 대답하여 가라사대 진실로 진실로 네게 이르노니 사람이 거듭나지 아니하면 하나님 나라를 볼수 없느니라",
 "요한복음 3:16": "하나님이 세상을 이처럼 사랑하사 독생자를 주셨으니 이는 저를 믿는 자마다 멸망치 않고 영생을 얻게 하려 하심이니라",
@@ -454,13 +499,16 @@ const KRV = {
 "요한복음 14:27": "평안을 너희에게 끼치노니 곧 나의 평안을 너희에게 주노라 내가 너희에게 주는 것은 세상이 주는 것 같지 아니하니라 너희는 마음에 근심도 말고 두려워하지도 말라",
 "요한복음 15:5": "나는 포도나무요 너희는 가지니 저가 내 안에, 내가 저 안에 있으면 이 사람은 과실을 많이 맺나니 나를 떠나서는 너희가 아무 것도 할 수 없음이라",
 "요한복음 21:12": "예수께서 가라사대 와서 조반을 먹으라 하시니 제자들이 주신 줄 아는 고로 당신이 누구냐 감히 묻는 자가 없더라",
-"사도행전 13:2": "주를 섬겨 금식할 때에 성령이 가라사대 내가 불러 시키는 일을 위하여 바나바와 사울을 따로 세우라 하시니",
 "사도행전 13:2-3": "주를 섬겨 금식할 때에 성령이 가라사대 내가 불러 시키는 일을 위하여 바나바와 사울을 따로 세우라 하시니 이에 금식하며 기도하고 두 사람에게 안수하여 보내니라",
+"사도행전 13:2": "주를 섬겨 금식할 때에 성령이 가라사대 내가 불러 시키는 일을 위하여 바나바와 사울을 따로 세우라 하시니",
+"사도행전 27:33": "날이 새어가매 바울이 여러 사람을 음식 먹으라 권하여 가로되 너희가 기다리고 기다리며 먹지 못하고 주린 지가 오늘까지 열 나흘인즉",
+"사도행전 27:34": "음식 먹으라 권하노니 이것이 너희 구원을 위하는 것이요 너희 중 머리터럭 하나라도 잃을 자가 없느니라 하고",
 "로마서 8:26": "이와 같이 성령도 우리 연약함을 도우시나니 우리가 마땅히 빌바를 알지 못하나 오직 성령이 말할 수 없는 탄식으로 우리를 위하여 친히 간구하시느니라",
 "로마서 12:1": "그러므로 형제들아 내가 하나님의 모든 자비하심으로 너희를 권하노니 너희 몸을 하나님이 기뻐하시는 거룩한 산 제사로 드리라 이는 너희의 드릴 영적 예배니라",
 "로마서 12:2": "너희는 이 세대를 본받지 말고 오직 마음을 새롭게 함으로 변화를 받아 하나님의 선하시고 기뻐하시고 온전하신 뜻이 무엇인지 분별하도록 하라",
 "로마서 15:13": "소망의 하나님이 모든 기쁨과 평강을 믿음 안에서 너희에게 충만케 하사 성령의 능력으로 소망이 넘치게 하시기를 원하노라",
 "고린도전서 6:19-20": "너희 몸은 너희가 하나님께로부터 받은바 너희 가운데 계신 성령의 전인 줄을 알지 못하느냐 너희는 너희의 것이 아니라 값으로 산 것이 되었으니 그런즉 너희 몸으로 하나님께 영광을 돌리라",
+"고린도전서 6:19": "너희 몸은 너희가 하나님께로부터 받은바 너희 가운데 계신 성령의 전인 줄을 알지 못하느냐 너희는 너희의 것이 아니라",
 "고린도전서 9:24": "운동장에서 달음질하는 자들이 다 달아날찌라도 오직 상 얻는 자는 하나인 줄을 너희가 알지 못하느냐 너희도 얻도록 이와 같이 달음질하라",
 "고린도전서 9:25": "이기기를 다투는 자마다 모든 일에 절제하나니 저희는 썩을 면류관을 얻고자 하되 우리는 썩지 아니할 것을 얻고자 하노라",
 "고린도전서 9:26": "그러므로 내가 달음질하기를 향방 없는것 같이 아니하고 싸우기를 허공을 치는것 같이 아니하여",
@@ -540,7 +588,7 @@ const PINFO = {
     who:'비만 치료제를 사용 중인 분', period:'28일', eat:'단백질·채소 먼저, 규칙적인 세 끼 (적게 먹어도 거르지 않기)', avoid:'식사 거르기, 단 음료, 술',
     day:['아침: 단백질 포함 식사', '점심 후: 걷기 20분', '저녁: 근력 운동 10분', '밤: 식욕·감정 일기 + 말씀 한 구절'], effect:'근육을 지키며 감량 유지, 약을 조절할 때 흔들리지 않는 습관' },
   waterfast:{ stars:0, what:'정한 기간 동안 음식을 먹지 않고 물(과 무가당 차)만 마시며, 배고픔을 기도로 바꾸는 헌신의 금식이에요. 체중을 줄이기 위한 것이 아니에요.',
-    refs:[], bg:'', who:'BMI 25 이상의 건강한 성인 · 금식 경험이 있고 의사와 상의한 분', period:'1~40일 (본인의 선택) → 회복식',
+    refs:[], bg:'', who:'건강한 성인 · 정상 체중은 1·3일, BMI 25 이상은 1~40일 · 금식 경험이 있고 의사와 상의한 분', period:'1 · 3 · 7 · 14 · 21 · 40일 중 선택 → 회복식',
     eat:'물, 무가당 차 (소금·전해질은 의사와 상의)', avoid:'모든 음식, 단 음료, 카페인 과다, 무리한 운동', day:['아침: 혈압·혈당 측정(체중은 선택)과 증상 체크', '하루: 물을 조금씩 자주 · 정한 시간에 기도', '오후: 말씀 묵상과 쉼', '밤: 오늘의 기도 기록'],
     effect:'기도에 깊이 집중하는 시간, 결단과 헌신의 경험 (체중 변화는 목적이 아니에요)' }
 };
@@ -567,17 +615,25 @@ const WF_FRAME = [
 const WF_TIERS = [
   { a:1, b:1, n:'1일 (24시간)', stars:3, body:'간에 저장된 당(글리코겐)을 쓰며 허기가 파도처럼 왔다 가요.', sym:'허기, 두통, 집중력 저하, 짜증',
     risks:['저혈당 (특히 당뇨약 복용 시)', '저혈압·기립성 어지럼 (일어설 때 핑 도는 느낌)'], not:'당뇨약·혈압약을 먹는 분은 의사 확인 후에만' },
-  { a:2, b:3, n:'2~3일', stars:4, body:'2일째부터 몸이 지방을 태워 케톤을 만들기 시작해요. 보통 2~3일째가 가장 힘들어요.', sym:'심한 허기, 두통, 피로, 입 냄새, 잠 설침, 추위',
+  { a:2, b:3, n:'3일', stars:4, body:'2일째부터 몸이 지방을 태워 케톤을 만들기 시작해요. 보통 2~3일째가 가장 힘들어요.', sym:'심한 허기, 두통, 피로, 입 냄새, 잠 설침, 추위',
     risks:['전해질 이상 (나트륨·칼륨)', '저혈압·기립성 어지럼', '저혈당', '탈수'], not:'당뇨·고혈압·복약 중이면 의사 확인 필수' },
-  { a:4, b:7, n:'4~7일', stars:4, body:'허기는 줄었다고 느끼는 분이 많지만, 근육 분해와 전해질 손실이 커져요.', sym:'어지럼, 근육 경련, 무기력, 추위, 가슴 두근거림',
+  { a:4, b:7, n:'7일', stars:4, body:'허기는 줄었다고 느끼는 분이 많지만, 근육 분해와 전해질 손실이 커져요.', sym:'어지럼, 근육 경련, 무기력, 추위, 가슴 두근거림',
     risks:['전해질 이상', '저혈압·기립성 어지럼', '요산이 올라 통풍 발작', '근손실', '부정맥', '재급식 증후군 (5일 이상)'], not:'심장·신장 질환, 통풍·담석 병력, 65세 이상은 의사 확인 필수' },
-  { a:8, b:14, n:'8~14일', stars:5, body:'장기 금식 영역이에요. 단백질(근육)을 에너지로 쓰는 비율이 커져요.', sym:'심한 무기력, 어지럼, 실신 위험, 집중력 저하',
+  { a:8, b:14, n:'14일', stars:5, body:'장기 금식 영역이에요. 단백질(근육)을 에너지로 쓰는 비율이 커져요.', sym:'심한 무기력, 어지럼, 실신 위험, 집중력 저하',
     risks:['전해질 이상', '부정맥', '근손실', '담석', '통풍 발작', '재급식 증후군'], not:'의료진의 감독 없이는 누구도 하지 마세요' },
-  { a:15, b:21, n:'15~21일', stars:5, body:'근육과 장기에 부담이 아주 커지는 매우 긴 금식이에요.', sym:'극심한 피로, 기립성 실신, 심장 박동 이상, 감각 저하',
+  { a:15, b:21, n:'21일', stars:5, body:'근육과 장기에 부담이 아주 커지는 매우 긴 금식이에요.', sym:'극심한 피로, 기립성 실신, 심장 박동 이상, 감각 저하',
     risks:['부정맥', '심한 전해질 이상', '근손실', '담석', '재급식 증후군 (위험 높음)'], not:'정기적인 진찰과 혈액 검사(전해질)를 받는 의료 감독 하에서만' },
-  { a:22, b:40, n:'22~40일', stars:5, body:'극히 긴 금식이에요. 성경 속 40일 금식(모세·엘리야·예수님)은 특별한 부르심의 사건이었어요. 오늘날에는 생명에 위험할 수 있어요.', sym:'심한 쇠약, 실신, 혼동, 심장 이상',
+  { a:22, b:40, n:'40일', stars:5, body:'극히 긴 금식이에요. 성경 속 40일 금식(모세·엘리야·예수님)은 특별한 부르심의 사건이었어요. 오늘날에는 생명에 위험할 수 있어요.', sym:'심한 쇠약, 실신, 혼동, 심장 이상',
     risks:['부정맥·급사 위험', '심한 전해질 이상', '심한 근손실', '담석', '재급식 증후군 (위험 매우 높음)'], not:'의료진의 지속적인 관찰 아래에서만. 혼자 하면 생명이 위험해요' }
 ];
+const WF_MEANING = {
+  1:{ note:'하루 — 정한 하루를 온전히 드려요. 에스라와 백성은 먼 길을 떠나기 전 금식하며 하나님께 간구했어요.', refs:['에스라 8:23'] },
+  3:{ note:'사흘 — 에스더는 민족을 위해 밤낮 삼일을 금식하며 결단했고, 요나는 물고기 뱃속에서 사흘 밤낮을 보냈어요. 예수님은 이것을 “요나의 표적”이라 하셨어요.', refs:['에스더 4:16', '요나 1:17', '마태복음 12:40'] },
+  7:{ note:'일곱 — 성경에서 완전함과 안식을 떠올리게 하는 수예요. 하나님은 일곱째 날에 안식하셨고, 이스라엘은 여리고성을 7일 동안 돌았어요(여호수아 6장).', refs:['창세기 2:2', '여호수아 6:15'] },
+  14:{ note:'두 이레 — 성경에 14일 금식이 정해진 것은 아니에요. 바울과 함께 배에 탄 사람들은 폭풍 속에서 열나흘을 먹지 못했고, 바울은 그들에게 “음식 먹으라, 이것이 너희 구원을 위하는 것”이라고 권했어요. 마치는 것과 회복도 믿음의 일이에요.', refs:['사도행전 27:33', '사도행전 27:34'] },
+  21:{ note:'세 이레 — 다니엘은 세 이레(21일) 동안 좋은 떡과 고기와 포도주를 먹지 않으며 기도했어요.', refs:['다니엘 10:2-3'] },
+  40:{ note:'사십 — 모세는 시내산에서, 엘리야는 호렙산 가는 길에서, 예수님은 광야에서 40일을 보내셨어요. 특별한 부르심의 시간이었어요.', refs:['출애굽기 34:28', '열왕기상 19:8', '마태복음 4:2'] }
+};
 function wfTier(len) { return WF_TIERS.find(t => len >= t.a && len <= t.b) || WF_TIERS[WF_TIERS.length - 1]; }
 function stars(n) { return '★★★★★'.slice(0, n) + '<span style="opacity:.3">' + '★★★★★'.slice(n) + '</span>'; }
 // 물 금식 — 날마다 다른 말씀과 격려 (40일)
@@ -768,7 +824,7 @@ function access(id, p) {
   if (id === 'intensive' && !(bmi >= 23)) return { ok:false, reason:'집중 감량은 BMI 23 이상일 때만 열려요' + (bmi ? ' (지금 ' + bmi.toFixed(1) + ')' : '') + '. 지금은 기본·16:8로도 충분히 건강해질 수 있어요.' };
   if (id === 'waterfast') {
     if (flags.t1d) return { ok:false, reason:'제1형 당뇨이거나 인슐린을 쓰고 있다면 물 금식은 생명에 위험할 수 있어 선택할 수 없어요.' };
-    if (!(bmi >= 25)) return { ok:false, reason:'기도와 헌신의 물 금식은 BMI 25 이상일 때만 열려요' + (bmi ? ' (지금 ' + bmi.toFixed(1) + ')' : '') + '.' };
+    if (!(bmi >= 18.5)) return { ok:false, reason:'저체중(BMI 18.5 미만)에서는 물 금식이 몸에 위험해서 선택할 수 없어요' + (bmi ? ' (지금 ' + bmi.toFixed(1) + ')' : '') + '. 기도에 마음을 모으는 사순절 절제를 권해요.' };
   }
   if (p.glp1 === 'using' && (id === 'waterfast' || id === 'oneday' || id === 'intensive'))
     return { ok:true, needDoctor:true, reason:'비만 치료제를 쓰는 중에 금식·집중 감량을 함께하면 저혈당·탈수·근육 손실 위험이 커질 수 있어요. 담당 의사와 상의한 뒤에만 선택하세요.' };
@@ -791,9 +847,12 @@ function recommend(p) {
   return 'basic';
 }
 // 물 금식 확인 사항 (기간별)
-function wfCheck(len, wf) {
+const WF_NORMAL_MSG = '정상 체중은 몸에 큰 무리가 갈 수 있어 3일까지만 선택할 수 있어요';
+function wfMaxLen(p) { const b = bmiOf(+(p || {}).weight, +(p || {}).height); return b >= 25 ? 40 : b >= 18.5 ? 3 : 0; }
+function wfCheck(len, wf, p) {
   wf = wf || {}; len = +len;
-  if (!(len >= 1 && len <= 40 && Math.floor(len) === len)) return '단식 기간을 1~40일 사이로 골라 주세요.';
+  if (!WF_LENS.includes(len)) return '금식 기간을 1 · 3 · 7 · 14 · 21 · 40일 중에서 골라 주세요.';
+  if (p && len > wfMaxLen(p)) return WF_NORMAL_MSG + '.';
   if (len > 3 && !wf.ack) return '3일을 넘는 물 금식은 의사 상담 확인에 체크해 주세요.';
   if (len > 3 && String(wf.typed || '').replace(/\s+/g, ' ').trim() !== WF_PHRASE) return '확인을 위해 “' + WF_PHRASE + '”를 그대로 입력해 주세요.';
   if (len > 7 && !wf.sup) return '7일을 넘는 물 금식은 의료진의 감독을 받고 있을 때만 시작할 수 있어요.';
@@ -966,7 +1025,7 @@ function fmtHMS(s) { return pad2(Math.floor(s / 3600)) + ':' + pad2(Math.floor(s
 function toggleTimer() {
   const t = S.timer;
   if (t.running) { t.acc = timerSec(); t.running = false; t.start = 0; toast('타이머를 멈췄어요.'); }
-  else { t.running = true; t.start = now(); toast('공복 타이머를 시작했어요.'); }
+  else { t.running = true; t.start = now(); if (!t.sid) t.sid = now(); toast('공복 타이머를 시작했어요.'); }
   save(); renderToday();
 }
 function resetTimer() {
@@ -978,6 +1037,7 @@ function tickTimer() {
   const s = timerSec(); el.textContent = fmtHMS(s);
   const g = PROGRAMS[progId()].timer, b = document.getElementById('tmbar');
   if (b && g) b.style.width = Math.min(100, s / (g * 3600) * 100) + '%';
+  if (typeof afTick === 'function') afTick();
 }
 // ===================== 온보딩 (한 페이지에 한 가지 결정) =====================
 const STEPS = ['intro', 'goal', 'basic', 'body', 'path', 'activity', 'health', 'program', 'summary'];
@@ -1123,7 +1183,7 @@ function updateBodyLive() {
   el.innerHTML = s + '</div>';
 }
 function applyHealthyGoal() { D.profile.goal = healthyMin(+D.profile.height); renderOb(); }
-function dLen() { const pr = PROGRAMS[D.progId] || {}; return pr.lens ? (pr.lens.includes(+D.len) ? +D.len : pr.lens[0]) : pr.custom ? (+D.len || pr.days) : pr.days; }
+function dLen() { const pr = PROGRAMS[D.progId] || {}; return pr.lens ? (pr.lens.includes(+D.len) ? +D.len : pr.lens[0]) : pr.custom ? (WF_LENS.includes(+D.len) ? +D.len : pr.days) : pr.days; }
 function recReason(p, rec) {
   const f = p.flags || {};
   if (rec === 'companion') return '약물 치료와 함께하는 분께 맞춘 동행이에요.';
@@ -1135,9 +1195,9 @@ function progOpt(id, rec) {
   const p = PROGRAMS[id], I = PINFO[id] || {}, a = access(id, D.profile), ok = canChoose(id, D.profile), sel = D.progId === id;
   const st = id === 'waterfast' && sel ? wfTier(dLen()).stars : I.stars;
   return '<button class="opt' + (sel ? ' sel' : '') + (ok ? '' : ' dis') + '" data-pid="' + id + '" onclick="obPickProgram(\'' + id + '\')" aria-disabled="' + !ok + '">' +
-    '<b>' + p.icon + ' ' + p.name + '</b>' + (id === rec ? '<span class="badge">추천</span>' : '') + (sel ? '<span class="badge" style="background:#8fd3a8;">선택됨</span>' : '') +
+    '<b>' + p.icon + ' ' + p.name + '</b>' + (id === rec ? '<span class="badge">추천</span>' : '') + (sel ? '<span class="badge" style="background:#a9c79a;">선택됨</span>' : '') +
     '<small>' + p.desc + '</small><span class="tag">' + (I.period || p.label) + '</span><span class="tag">난이도 ' + (st ? stars(st) : stars(3) + ' ~ ' + stars(5)) + '</span>' + (p.water ? '<span class="tag">' + p.label + '</span>' : '') +
-    (!a.ok ? '<small style="color:#ffcabf;">🔒 ' + a.reason + '</small>' : a.needDoctor && !D.profile.doctorOk ? '<small style="color:#ffcabf;">🔒 ' + a.reason + '</small>' : a.caution ? '<small style="color:#ffcabf;">⚠ ' + a.caution + '</small>' : '') + '</button>';
+    (!a.ok ? '<small style="color:#efcdbf;">🔒 ' + a.reason + '</small>' : a.needDoctor && !D.profile.doctorOk ? '<small style="color:#efcdbf;">🔒 ' + a.reason + '</small>' : a.caution ? '<small style="color:#efcdbf;">⚠ ' + a.caution + '</small>' : '') + '</button>';
 }
 function infoBody(id) {
   const I = PINFO[id]; if (!I) return '';
@@ -1160,10 +1220,10 @@ function compareTable() {
     '<p class="muted" style="margin-top:8px;">16:8은 “언제”, 다니엘은 “무엇을”, 사순절은 “어떤 습관을” 절제해요.</p></details>';
 }
 function tierCard(t, len) {
-  const rf = t.a === t.b ? refeedLen(t.a) + '일' : refeedLen(t.a) + '~' + refeedLen(t.b) + '일';
-  return '<div class="tier' + (len ? ' cur' : '') + '"><h4>' + (len ? len + '일 금식 · ' : '') + t.n + ' <span class="stars">' + stars(t.stars) + '</span></h4>' +
+  const rf = refeedLen(t.b) + '일';
+  return '<div class="tier' + (len ? ' cur' : '') + '"><h4>' + (len ? len + '일 금식' + (t.n.indexOf(len + '일') === 0 ? '' : ' · ' + t.n) : t.n) + ' <span class="stars">' + stars(t.stars) + '</span></h4>' +
     '<p><b>몸의 변화</b> ' + t.body + '</p><p><b>흔한 증상</b> ' + t.sym + '</p><p><b>주의할 위험</b> ' + t.risks.join(' · ') + '</p>' +
-    '<p><b>하면 안 되는 분</b> 임신·수유 중, 18세 미만, 섭식장애 경험, 제1형 당뇨·인슐린, BMI 25 미만 · ' + t.not + '</p><p><b>회복식</b> ' + (len ? refeedLen(len) + '일' : rf) + '</p></div>';
+    '<p><b>하면 안 되는 분</b> 임신·수유 중, 18세 미만, 섭식장애 경험, 제1형 당뇨·인슐린, 저체중(BMI 18.5 미만) · ' + (t.a > 3 ? '정상 체중(BMI 25 미만) · ' : '') + '' + t.not + '</p><p><b>회복식</b> ' + (len ? refeedLen(len) + '일' : rf) + '</p></div>';
 }
 function devoSection(rec) {
   return '<div class="devo"><h3>🕯 기도와 헌신의 물 금식</h3>' +
@@ -1180,8 +1240,8 @@ function progExtra(id) {
     '<p class="muted">끝나면 14일 유지 기간을 이어서 권해 드려요 (요요 예방).</p></div>';
   if (id === 'waterfast') {
     const w = D.wf;
-    return '<div class="sub devo-sub" id="wfBox"><label class="f">금식 기간 (본인의 선택)</label><div class="chips">' + WF_LENS.map(n => '<button class="chip' + (len === n ? ' on' : '') + '" onclick="obSetLen(' + n + ')">' + n + '일</button>').join('') + '</div>' +
-      '<div class="row" style="margin-top:6px;"><span class="muted">직접 입력</span><div class="unit grow"><input class="inp" id="wfLen" type="number" inputmode="numeric" min="1" max="40" value="' + len + '" onchange="obSetLen(this.value)"><span>일</span></div></div>' +
+    return '<div class="sub devo-sub" id="wfBox"><label class="f">금식 기간 (본인의 선택)</label><div class="chips">' + WF_LENS.map(n => { const lock = n > wfMaxLen(D.profile); return '<button class="chip' + (len === n ? ' on' : '') + (lock ? ' lock' : '') + '" data-len="' + n + '" aria-disabled="' + lock + '" onclick="obSetLen(' + n + ')">' + (lock ? '🔒 ' : '') + n + '일</button>'; }).join('') + '</div>' +
+      (wfMaxLen(D.profile) < 40 ? '<p class="muted" id="wfLimit">🔒 ' + WF_NORMAL_MSG + '.</p>' : '') + wfMeaning(len) +
       '<div class="warn" style="margin-top:10px;"><b>본인의 선택과 결단이에요.</b> 물 금식은 저혈당·저혈압·전해질 이상·실신 위험이 있어요. 끝나면 <b>회복식 ' + refeedLen(len) + '일</b>이 자동으로 이어져요.</div>' +
       tierCard(wfTier(len), len) +
       '<details class="more"><summary>기간별 위험과 난이도 모두 보기</summary>' + WF_TIERS.map(t => tierCard(t)).join('') + '</details>' +
@@ -1191,7 +1251,18 @@ function progExtra(id) {
   }
   return '';
 }
-function obSetLen(n) { n = Math.round(+n); if (!(n >= 1)) n = 1; D.len = clamp(n, 1, 40); renderOb(); }
+function obSetLen(n) {
+  n = Math.round(+n);
+  if (D.progId === 'waterfast') {
+    if (!WF_LENS.includes(n)) n = WF_LENS.reduce((a, b) => Math.abs(b - n) < Math.abs(a - n) ? b : a, 1);
+    if (n > wfMaxLen(D.profile)) { alert('🔒 ' + WF_NORMAL_MSG + '.'); return; }
+  }
+  if (!(n >= 1)) n = 1; D.len = clamp(n, 1, 40); renderOb();
+}
+function wfMeaning(len) {
+  const m = WF_MEANING[len]; if (!m) return '';
+  return '<div class="isec wfmean"><h4>📜 ' + len + '일의 의미</h4><p>' + m.note + '</p>' + okRefs(m.refs).map(r => '<p class="vline">“' + vt(r) + '” <span>— ' + r + '</span></p>').join('') + '</div>';
+}
 function obPickProgram(id) {
   const a = access(id, D.profile);
   if (!a.ok) return alert('🔒 ' + a.reason);
@@ -1222,7 +1293,7 @@ function obValidate() {
   if (step === 'program') {
     if (!D.progId) return '계획을 직접 골라 주세요. 카드를 누르면 선택돼요.';
     if (!canChoose(D.progId, p)) return '선택할 수 있는 프로그램을 골라 주세요.';
-    if (D.progId === 'waterfast') { const e = wfCheck(dLen(), D.wf); if (e) return e; }
+    if (D.progId === 'waterfast') { const e = wfCheck(dLen(), D.wf, D.profile); if (e) return e; }
   }
   return '';
 }
@@ -1269,17 +1340,17 @@ function showTab(tab) {
   const navTab = tab === 'seek' ? 'word' : tab;
   document.querySelectorAll('.nav button').forEach(b => b.classList.toggle('on', b.dataset.tab === navTab));
   document.getElementById('mainBack').classList.toggle('hide', tab !== 'seek');
-  ({ today:renderToday, history:renderHistory, word:renderWord, seek:renderSeek, me:renderMe })[tab]();
+  ({ today:renderToday, history:renderHistory, word:renderWord, seek:renderSeek, health:renderHealth, me:renderMe })[tab]();
   document.getElementById('mainBody').scrollTop = 0;
 }
 function goBack() { if (curTab === 'seek') showTab('word'); }
-function rerender() { const b = document.getElementById('mainBody'), y = b.scrollTop; ({ today:renderToday, history:renderHistory, word:renderWord, seek:renderSeek, me:renderMe })[curTab](); b.scrollTop = y; }
+function rerender() { const b = document.getElementById('mainBody'), y = b.scrollTop; ({ today:renderToday, history:renderHistory, word:renderWord, seek:renderSeek, health:renderHealth, me:renderMe })[curTab](); b.scrollTop = y; }
 
 function ring(pct, big, small) {
   const r = 38, c = 2 * Math.PI * r, off = c * (1 - clamp(pct, 0, 1));
   return '<svg width="96" height="96" viewBox="0 0 96 96" aria-hidden="true"><circle cx="48" cy="48" r="' + r + '" fill="none" stroke="rgba(255,255,255,.1)" stroke-width="8"/>' +
-    '<circle cx="48" cy="48" r="' + r + '" fill="none" stroke="#d4af77" stroke-width="8" stroke-linecap="round" stroke-dasharray="' + c.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '" transform="rotate(-90 48 48)"/>' +
-    '<text x="48" y="47" text-anchor="middle" fill="#f5f0e8" font-size="19" font-weight="700">' + big + '</text><text x="48" y="65" text-anchor="middle" fill="#a8b0c0" font-size="11.5">' + small + '</text></svg>';
+    '<circle cx="48" cy="48" r="' + r + '" fill="none" stroke="#b4c9a6" stroke-width="8" stroke-linecap="round" stroke-dasharray="' + c.toFixed(1) + '" stroke-dashoffset="' + off.toFixed(1) + '" transform="rotate(-90 48 48)"/>' +
+    '<text x="48" y="47" text-anchor="middle" fill="#ebe5d6" font-size="19" font-weight="700">' + big + '</text><text x="48" y="65" text-anchor="middle" fill="#a9b4ac" font-size="11.5">' + small + '</text></svg>';
 }
 function greet() { const h = new Date(now()).getHours(); return h < 5 ? '고요한 밤이에요' : h < 11 ? '좋은 아침이에요' : h < 17 ? '좋은 오후예요' : '편안한 저녁이에요'; }
 function verseCard(v, opts) {
@@ -1302,7 +1373,7 @@ function renderToday() {
   const todayDone = pr.items.filter((_, i) => checks[i]).length;
   const wf = pid === 'waterfast' && active;
   h += '<div class="card hl"><div class="ringwrap">' + ring(dc / progLen(), active ? n + '일차' : '완료', '/ ' + progLen() + '일') +
-    '<div class="grow"><b>' + pr.icon + ' ' + progName() + '</b>' + (pr.water ? '<span class="tag" style="color:#ffcabf;">' + pr.label + '</span>' : '') + (S.program.done ? '<span class="badge">🏅 완주</span>' : '') +
+    '<div class="grow"><b>' + pr.icon + ' ' + progName() + '</b>' + (pr.water ? '<span class="tag" style="color:#efcdbf;">' + pr.label + '</span>' : '') + (S.program.done ? '<span class="badge">🏅 완주</span>' : '') +
     '<p class="muted">완료 ' + dc + '일 · 오늘 체크 ' + (active ? todayDone + '/' + pr.items.length : '-') + '</p>' +
     (active ? '<p style="font-size:14.5px; margin-top:4px;">' + pr.guide(n) + '</p>' : finishedCard(pid)) + '</div></div>' +
     (wf ? '<button class="btn stop" onclick="stopFast()">🛑 오늘 중단하기 (회복식으로)</button>' : '') + '</div>';
@@ -1330,7 +1401,7 @@ function renderToday() {
   mp.meals.forEach(m => {
     const on = x.meals[m.key] !== undefined;
     const txt = m.items.map(i => esc(i.n) + (i.amt ? ' ' + i.amt : '')).join(' · ');
-    h += '<div class="item"><div class="txt"><b>' + m.n + '</b> <small>' + m.time + (m.fast ? '' : ' · ' + comma(m.k) + 'kcal') + '</small><div>' + txt + '</div></div>' +
+    h += '<div class="item"><div class="txt"><b>' + m.n + '</b> <small>' + m.time + (m.fast ? '' : ' · ' + comma(m.k) + 'kcal') + '</small><div>' + txt + '</div>' + hfLinks(m.items) + '</div>' +
       (m.fast ? '<span class="ic">💧</span>' : '<button class="tick' + (on ? ' on' : '') + '" aria-label="' + m.n + ' 먹음" onclick="toggleMeal(\'' + m.key + '\',' + m.k + ')">✓</button>') + '</div>';
   });
   h += '<details><summary>＋ 다른 음식 기록하기</summary><div style="margin-top:4px;">' + QUICK_FOODS.map((q, i) => '<button class="chip" onclick="addQuick(' + i + ')">' + q[0] + ' <small>' + q[1] + '</small></button>').join('') +
@@ -1341,9 +1412,10 @@ function renderToday() {
   if (pid === 'companion' && active) h += companionCard(S.profile, true);
   // 단식 타이머
   if (pr.timer && active) {
-    h += '<div class="card"><h3>⏱ 공복 타이머 · 목표 ' + pr.timer + '시간</h3><div class="timer" id="tmv">' + fmtHMS(timerSec()) + '</div><div class="bar"><i id="tmbar" style="width:' + Math.min(100, timerSec() / (pr.timer * 3600) * 100) + '%"></i></div>' +
+    afCheck(true);
+    h += afNoteCard() + '<div class="card"><h3>⏱ 공복 타이머 · 목표 ' + pr.timer + '시간</h3><div class="timer" id="tmv">' + fmtHMS(timerSec()) + '</div><div class="bar"><i id="tmbar" style="width:' + Math.min(100, timerSec() / (pr.timer * 3600) * 100) + '%"></i></div>' +
       '<div class="row"><button class="btn grow" onclick="toggleTimer()">' + (S.timer.running ? '일시정지' : '공복 시작') + '</button><button class="btn sec" style="width:96px;" onclick="resetTimer()">초기화</button></div>' +
-      '<p class="muted" style="margin-top:8px;">어지럽거나 몸이 이상하면 목표와 상관없이 바로 멈추고 드세요.</p></div>';
+      '<p class="muted" style="margin-top:8px;">어지럽거나 몸이 이상하면 목표와 상관없이 바로 멈추고 드세요.</p>' + afSwitch(timerSec() / 3600) + '</div>';
   }
   // 운동
   const R = exRoutine(T);
@@ -1404,11 +1476,11 @@ function weightChart(W, H) {
   const L = 36, R = 12, Tp = 12, B = 24, d0 = dayNum(pts[0].d), d1 = Math.max(dayNum(pts[pts.length - 1].d), d0 + 7);
   const X = d => L + (dayNum(d) - d0) / (d1 - d0) * (W - L - R), Y = v => Tp + (hi - v) / (hi - lo) * (H - Tp - B);
   let s = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" role="img" aria-label="체중 변화 그래프">';
-  [lo, (lo + hi) / 2, hi].forEach(v => { s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(v) + '" y2="' + Y(v) + '" stroke="rgba(255,255,255,.08)"/><text x="' + (L - 6) + '" y="' + (Y(v) + 4) + '" text-anchor="end" fill="#a8b0c0" font-size="10.5">' + (+v.toFixed(1)) + '</text>'; });
-  if (goal) s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(goal) + '" y2="' + Y(goal) + '" stroke="#8fd3a8" stroke-dasharray="5 4"/><text x="' + (W - R) + '" y="' + (Y(goal) - 5) + '" text-anchor="end" fill="#8fd3a8" font-size="11">목표 ' + goal + 'kg</text>';
-  s += '<polyline fill="none" stroke="#d4af77" stroke-width="2.5" stroke-linejoin="round" points="' + pts.map(p => X(p.d).toFixed(1) + ',' + Y(p.kg).toFixed(1)).join(' ') + '"/>';
-  pts.forEach(p => { s += '<circle cx="' + X(p.d).toFixed(1) + '" cy="' + Y(p.kg).toFixed(1) + '" r="4" fill="#d4af77"/>'; });
-  s += '<text x="' + L + '" y="' + (H - 6) + '" fill="#a8b0c0" font-size="10.5">' + fmtMD(pts[0].d) + '</text><text x="' + (W - R) + '" y="' + (H - 6) + '" text-anchor="end" fill="#a8b0c0" font-size="10.5">' + fmtMD(pts[pts.length - 1].d) + ' · ' + pts[pts.length - 1].kg + 'kg</text>';
+  [lo, (lo + hi) / 2, hi].forEach(v => { s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(v) + '" y2="' + Y(v) + '" stroke="rgba(255,255,255,.08)"/><text x="' + (L - 6) + '" y="' + (Y(v) + 4) + '" text-anchor="end" fill="#a9b4ac" font-size="10.5">' + (+v.toFixed(1)) + '</text>'; });
+  if (goal) s += '<line x1="' + L + '" x2="' + (W - R) + '" y1="' + Y(goal) + '" y2="' + Y(goal) + '" stroke="#a9c79a" stroke-dasharray="5 4"/><text x="' + (W - R) + '" y="' + (Y(goal) - 5) + '" text-anchor="end" fill="#a9c79a" font-size="11">목표 ' + goal + 'kg</text>';
+  s += '<polyline fill="none" stroke="#b4c9a6" stroke-width="2.5" stroke-linejoin="round" points="' + pts.map(p => X(p.d).toFixed(1) + ',' + Y(p.kg).toFixed(1)).join(' ') + '"/>';
+  pts.forEach(p => { s += '<circle cx="' + X(p.d).toFixed(1) + '" cy="' + Y(p.kg).toFixed(1) + '" r="4" fill="#b4c9a6"/>'; });
+  s += '<text x="' + L + '" y="' + (H - 6) + '" fill="#a9b4ac" font-size="10.5">' + fmtMD(pts[0].d) + '</text><text x="' + (W - R) + '" y="' + (H - 6) + '" text-anchor="end" fill="#a9b4ac" font-size="10.5">' + fmtMD(pts[pts.length - 1].d) + ' · ' + pts[pts.length - 1].kg + 'kg</text>';
   return s + '</svg>';
 }
 function toggleMeal(k, kcal) { const x = day(); if (x.meals[k] !== undefined) delete x.meals[k]; else { x.meals[k] = kcal; ktoast(['잘 드셨어요. 감사한 한 끼!', '좋은 선택이에요.', '몸이 고마워할 거예요.'][Object.keys(x.meals).length % 3], 'toast'); } save(); rerender(); }
@@ -1461,8 +1533,8 @@ function renderHistory() {
   const vals = days7.map(d => S.days[d] ? eatenKcal(d) : 0), mx = Math.max(P.target * 1.3, ...vals);
   const W = 340, H = 150, bw = 30, gap = (W - 20 - bw * 7) / 6, Y = v => 120 - v / mx * 104;
   let svg = '<svg viewBox="0 0 ' + W + ' ' + H + '" width="100%" role="img" aria-label="최근 7일 섭취 칼로리">';
-  svg += '<line x1="10" x2="' + (W - 10) + '" y1="' + Y(P.target) + '" y2="' + Y(P.target) + '" stroke="#8fd3a8" stroke-dasharray="5 4"/>';
-  days7.forEach((d, i) => { const x = 10 + i * (bw + gap), v = vals[i]; svg += '<rect x="' + x + '" y="' + Y(v) + '" width="' + bw + '" height="' + (120 - Y(v)) + '" rx="6" fill="' + (v > P.target * 1.1 ? '#e8a07a' : '#d4af77') + '" opacity="' + (d === T ? 1 : .75) + '"/><text x="' + (x + bw / 2) + '" y="138" text-anchor="middle" fill="#a8b0c0" font-size="10.5">' + (+d.split('-')[2]) + '일</text>'; });
+  svg += '<line x1="10" x2="' + (W - 10) + '" y1="' + Y(P.target) + '" y2="' + Y(P.target) + '" stroke="#a9c79a" stroke-dasharray="5 4"/>';
+  days7.forEach((d, i) => { const x = 10 + i * (bw + gap), v = vals[i]; svg += '<rect x="' + x + '" y="' + Y(v) + '" width="' + bw + '" height="' + (120 - Y(v)) + '" rx="6" fill="' + (v > P.target * 1.1 ? '#d9a78a' : '#b4c9a6') + '" opacity="' + (d === T ? 1 : .75) + '"/><text x="' + (x + bw / 2) + '" y="138" text-anchor="middle" fill="#a9b4ac" font-size="10.5">' + (+d.split('-')[2]) + '일</text>'; });
   svg += '</svg>';
   h += '<div class="card"><h3>🍽 최근 7일 섭취</h3>' + svg + '<p class="muted">점선: 목표 ' + comma(P.target) + 'kcal</p></div>';
   // 물 · 운동 7일
@@ -1473,7 +1545,7 @@ function renderHistory() {
   h += '<div class="card"><h3>📋 프로그램</h3><p>' + pr.icon + ' ' + progName() + (S.program.done ? '<span class="badge">🏅 완주</span>' : '') + '</p><div class="bar"><i style="width:' + dc / progLen() * 100 + '%"></i></div><p class="muted">' + dc + ' / ' + progLen() + '일 완료 · 시작 ' + (S.program.start ? fmtMD(S.program.start) : '-') + '</p>' +
     (S.history.length ? '<p class="muted" style="margin-top:6px;">이전: ' + S.history.map(x => (PROGRAMS[x.id] ? progName(x.id, x.len || PROGRAMS[x.id].days) : x.id) + (x.done ? ' 🏅' : '')).join(', ') + '</p>' : '') + '</div>';
   // 건강 기록
-  if (S.health.length) h += '<div class="card"><h3>❤ 혈압 · 혈당</h3>' + S.health.slice(-10).reverse().map(r => { const w = safetyWarnings(r.bp, r.bs).length; return '<div class="row" style="min-height:36px; font-size:15px;"><span class="muted" style="width:70px;">' + fmtMD(r.d) + '</span><span class="grow"' + (w ? ' style="color:#ffb3a3;"' : '') + '>' + (r.bp ? '혈압 ' + r.bp : '') + (r.bp && r.bs ? ' · ' : '') + (r.bs ? '혈당 ' + r.bs : '') + (w ? ' ⚠' : '') + '</span></div>'; }).join('') + '</div>';
+  if (S.health.length) h += '<div class="card"><h3>❤ 혈압 · 혈당</h3>' + S.health.slice(-10).reverse().map(r => { const w = safetyWarnings(r.bp, r.bs).length; return '<div class="row" style="min-height:36px; font-size:15px;"><span class="muted" style="width:70px;">' + fmtMD(r.d) + '</span><span class="grow"' + (w ? ' style="color:#e9b8a8;"' : '') + '>' + (r.bp ? '혈압 ' + r.bp : '') + (r.bp && r.bs ? ' · ' : '') + (r.bs ? '혈당 ' + r.bs : '') + (w ? ' ⚠' : '') + '</span></div>'; }).join('') + '</div>';
   // 돌아보기
   const refl = Object.keys(S.days).sort().reverse().filter(d => S.days[d].refl).slice(0, 10);
   if (refl.length) h += '<div class="card"><h3>🌙 돌아보기 노트</h3>' + refl.map(d => '<p style="font-size:15px; margin:8px 0;"><span class="muted">' + fmtMD(d) + '</span><br>' + esc(S.days[d].refl) + '</p>').join('') + '</div>';
@@ -1486,7 +1558,7 @@ function renderWord() {
   const el = document.getElementById('s-word'); if (!el) return;
   const T = ymd(), ti = idxFor(T, VERSES.length);
   let h = '<h2>말씀</h2>';
-  h += '<button class="opt" onclick="showTab(\'seek\')" style="border-color:rgba(212,175,119,.55);">🌱 <b>말씀이 처음이라면</b><small>하나님, 예수님, 기도가 궁금한 분을 위한 쉬운 안내</small></button>';
+  h += '<button class="opt" onclick="showTab(\'seek\')" style="border-color:rgba(180,201,166,.55);">🌱 <b>말씀이 처음이라면</b><small>하나님, 예수님, 기도가 궁금한 분을 위한 쉬운 안내</small></button>';
   h += '<div class="card hl"><h3>오늘의 말씀 · ' + fmtMD(T) + '</h3>' + verseCard(VERSES[ti], { full:true }) + '</div>';
   h += '<h3 style="margin:18px 0 10px;">말씀 모음 (' + VERSES.length + ')</h3>';
   VERSES.forEach((v, i) => {
@@ -1534,7 +1606,7 @@ function renderMe() {
   h += '<div class="card"><h3>⚕ 안전 안내</h3><details><summary>이 앱은 의학적 조언이 아니에요</summary><p style="font-size:15px;">임신·수유 중, 당뇨, 약 복용 중, 18세 미만, 섭식장애 경험, 심장·신장 질환이 있다면 식단·금식을 바꾸기 전에 반드시 의사와 상담하세요. 칼로리와 기준값은 일반적인 참고값이에요.</p></details>' +
     '<details><summary>🛑 즉시 중단 기준</summary><ul class="l">' + STOP_LIST.map(s => '<li>' + s + '</li>').join('') + '</ul><p class="muted">의료기관에 연락하세요. 응급 시 119.</p></details>' +
     '<details><summary>혈압 · 혈당 참고 기준</summary><p class="muted">수축기 혈압 120 미만 정상 · 140 이상 고혈압 범위 · 90 이하 저혈압 주의<br>공복 혈당 70~99 정상 · 100~125 당뇨 전 단계 · 126 이상 주의 · 70 미만 저혈당</p></details></div>';
-  h += '<div class="card"><div class="sec-title"><h3>🎵 배경 음악</h3><span class="muted" id="musicState">' + (musicOn() ? '켜짐' : '꺼짐') + '</span></div><p class="muted">직접 만든 잔잔한 피아노 음악이에요 (저작권 걱정 없음). 화면을 나가면 자동으로 멈춰요.</p><button class="btn sm sec" id="musicSet" onclick="musicToggle()">' + (musicOn() ? '음악 끄기' : '음악 켜기') + '</button></div>';
+  h += musicCard();
   h += '<button class="btn ghost" onclick="resetAll()" style="opacity:.8;">모든 기록 초기화</button><p class="muted" style="text-align:center; margin-top:12px;">Purify v3 · 성경 본문 개역한글</p>';
   el.innerHTML = h;
 }
@@ -1583,6 +1655,7 @@ function wfToday(T, x, P, n) {
   let h = '';
   if (L > 7 || n > 3) h += '<div class="warn"' + (n > 7 ? ' style="border-width:2px;"' : '') + '>' + (n > 7 || L > 7 ? '⚠ <b>7일을 넘는 물 금식은 의료 감독 하에서만 하세요.</b> 정기적인 진찰과 전해질 검사를 받으세요.' : '⚠ 3일을 넘었어요. 의사와 상담한 대로 진행하고, 조금이라도 이상하면 멈추세요.') + '</div>';
   if (any) h += '<div class="warn" style="border-width:2px;">🚨 <b>증상이 있어요. 지금 바로 단식을 멈추세요.</b> 실신·혼동·가슴 통증이 있거나 증상이 심하면 즉시 <b>119</b>에 연락하세요.<a class="btn stop" href="tel:119" style="text-align:center; text-decoration:none; line-height:28px;">📞 119 전화</a><button class="btn" onclick="stopFast()">단식 중단 → 회복식 시작</button></div>';
+  if (progActive()) { afCheck(true); h += afNoteCard() + '<div class="card"><h3>⏱ 금식 경과 · 자가포식</h3>' + afSwitch(afHours()) + '</div>'; }
   h += '<div class="card"><h3>🫀 오늘의 몸 변화 · ' + n + '일차</h3><p style="font-size:15px;">' + bodyChange(n) + '</p>' +
     '<details class="more"><summary>' + L + '일 금식의 위험과 난이도 다시 보기</summary>' + tierCard(wfTier(L), L) + '</details></div>';
   h += '<div class="card"><h3>🩺 오늘의 증상 체크</h3><p class="muted">하나라도 있으면 즉시 중단하고, 심하면 119.</p>' +
@@ -1647,17 +1720,54 @@ function checkTransitions() {
     setTimeout(() => toast('💧 ' + L + '일 물 금식을 마쳤어요. 이제 회복식을 시작해요.'), 50);
   }
 }
-// ===================== 배경 음악 (직접 합성한 저작권 없는 음악) =====================
-// 파일 구조: [끝 0.5초 | 80초 루프 | 처음 0.5초] → 두 인스턴스를 60ms 크로스페이드로 이어 붙여 끊김·클릭 없이 반복
-const MUSIC_KEY = 'purifyMusic', MUSIC_VOL = 0.35, M_PAD = 0.5, M_LEN = 80, M_XF = 0.06, M_FADE = 2.5;
-const Music = { ctx:null, gain:null, buf:null, loading:null, nextT:0, timer:0, started:false, want:false, el:null, mode:'', srcs:[] };
-function musicOn() { try { return localStorage.getItem(MUSIC_KEY) !== 'off'; } catch(e) { return true; } }
-function musicSetPref(on) { try { localStorage.setItem(MUSIC_KEY, on ? 'on' : 'off'); } catch(e) {} }
+// ===================== 배경 음악 (모두 직접 합성 · 녹음/외부 편곡 사용 없음) =====================
+// 파일 구조: [끝 0.5초 | 루프 본체 | 처음 0.5초]. 한 곡 반복은 60ms 크로스페이드로 끊김 없이, 순서대로 재생은 곡 사이 3초 크로스페이드.
+const MUSIC_KEY = 'purifyMusic', MUSIC_VOL = 0.35, M_PAD = 0.5, M_XF = 0.06, M_FADE = 2.5, M_XT = 3;
+const M_PREF = { list:'purifyMusicList', track:'purifyMusicTrack', mode:'purifyMusicMode' };
+const TRACKS = {
+  piano:{ name:'잔잔한 피아노', sub:'Purify 자작곡 (D장조 피아노·패드)', file:'purify-bgm', len:80 },
+  ave:{ name:'아베 마리아', sub:'슈베르트 「엘렌의 세 번째 노래」 D.839 (1825) · 선율 편곡', file:'ave-maria', len:4831826 / 44100 },
+  salve:{ name:'Salve Regina', ko:'살베 레지나 (단순 선율, 5선법)', file:'chant-salve', len:3883136 / 32000, lyr:[
+    ['Salve, Regína, mater misericórdiæ; vita, dulcédo, et spes nostra, salve.', '안녕하소서, 여왕이시여, 자비의 어머니. 우리의 생명, 기쁨, 소망이시여, 안녕하소서.'],
+    ['Ad te clamámus, éxsules fílii Hevæ.', '귀양살이하는 하와의 자녀들이 당신께 부르짖습니다.'],
+    ['Ad te suspirámus, geméntes et flentes in hac lacrimárum valle.', '이 눈물의 골짜기에서 탄식하며 울며 당신께 한숨짓습니다.'],
+    ['Eia ergo, advocáta nostra, illos tuos misericórdes óculos ad nos convérte.', '그러니 우리를 변호해 주시는 분이여, 그 자비로운 눈길을 우리에게 돌려 주소서.'],
+    ['Et Jesum, benedíctum fructum ventris tui, nobis post hoc exsílium osténde.', '이 귀양살이가 끝나면 당신 태의 복된 열매, 예수님을 우리에게 보여 주소서.'],
+    ['O clemens, O pia, O dulcis Virgo María.', '오 너그러우신, 오 자애로우신, 오 다정하신 동정녀 마리아여.']] },
+  veni:{ name:'Veni Creator Spiritus', ko:'오소서, 창조주 성령이여 (8선법 찬가 · 1~2절)', file:'chant-veni', len:2244224 / 32000, lyr:[
+    ['Veni, Creátor Spíritus, mentes tuórum vísita, imple supérna grátia, quæ tu creásti péctora.', '오소서, 창조주 성령이여. 당신 백성의 마음을 찾아오시고, 당신이 지으신 이 가슴들을 하늘의 은혜로 채우소서.'],
+    ['Qui díceris Paráclitus, altíssimi donum Dei, fons vivus, ignis, cáritas, et spiritális únctio.', '보혜사라 불리시는 분, 지극히 높으신 하나님의 선물, 살아 있는 샘, 불, 사랑, 영의 기름 부음이시여.']] },
+  avemaris:{ name:'Ave maris stella', ko:'바다의 별이여 (1선법 찬가 · 1~2절)', file:'chant-avemaris', len:1877581 / 32000, lyr:[
+    ['Ave maris stella, Dei Mater alma, atque semper Virgo, felix cæli porta.', '안녕하소서, 바다의 별이여. 하나님의 다정하신 어머니, 늘 동정이신 분, 복된 하늘의 문이여.'],
+    ['Sumens illud Ave Gabriélis ore, funda nos in pace, mutans Evæ nomen.', '가브리엘의 입에서 그 “아베” 인사를 받으신 분이여, 하와의 이름을 바꾸어 우리를 평화 안에 굳게 세워 주소서.']] },
+  pange:{ name:'Pange lingua', ko:'노래하라, 혀여 (3선법 찬가 · 1절, 5절 Tantum ergo)', file:'chant-pange', len:2754061 / 32000, lyr:[
+    ['Pange, lingua, gloriósi córporis mystérium, sanguinísque pretiósi, quem in mundi prétium fructus ventris generósi Rex effúdit géntium.', '노래하라, 혀여, 영광스러운 몸의 신비를. 존귀한 피의 신비를. 고귀한 태에서 나신 열매, 만민의 왕께서 세상의 값으로 흘리신 그 피를.'],
+    ['Tantum ergo sacraméntum venerémur cérnui: et antíquum documéntum novo cedat rítui: præstet fides suppleméntum sénsuum deféctui.', '이토록 크신 성례 앞에 엎드려 경배합시다. 옛 가르침은 새 예식에 자리를 내어 주고, 감각이 미치지 못하는 곳을 믿음이 채우게 하소서.']] },
+  ubi:{ name:'Ubi caritas', ko:'사랑이 있는 곳에 (6선법 교송)', file:'chant-ubi', len:1779584 / 32000, lyr:[
+    ['Ubi cáritas et amor, Deus ibi est.', '자비와 사랑이 있는 곳에 하나님께서 계십니다.'],
+    ['Congregávit nos in unum Christi amor.', '그리스도의 사랑이 우리를 하나로 모으셨습니다.'],
+    ['Exsultémus, et in ipso jucundémur.', '그분 안에서 기뻐하고 즐거워합시다.'],
+    ['Ubi cáritas et amor, Deus ibi est.', '자비와 사랑이 있는 곳에 하나님께서 계십니다.']] }
+};
+const PLAYLISTS = {
+  hymn:{ name:'찬송가 경음악', desc:'잔잔한 피아노와 아베 마리아 선율', tracks:['piano', 'ave'] },
+  chant:{ name:'그레고리오 성가', desc:'중세 교회의 라틴어 성가 선율을 악기로만', tracks:['salve', 'veni', 'avemaris', 'pange', 'ubi'] }
+};
+const Music = { ctx:null, gain:null, bufs:{}, loads:{}, nextT:0, nextId:'', timer:0, started:false, want:false, el:null, elId:'', mode:'', srcs:[], plays:[], lastNow:'' };
+function mGet(k, d) { try { const v = localStorage.getItem(k); return v === null ? d : v; } catch(e) { return d; } }
+function mSet(k, v) { try { localStorage.setItem(k, v); } catch(e) {} }
+function musicOn() { return mGet(MUSIC_KEY, 'on') !== 'off'; }
+function musicSetPref(on) { mSet(MUSIC_KEY, on ? 'on' : 'off'); }
+function musicList() { const l = mGet(M_PREF.list, 'hymn'); return PLAYLISTS[l] ? l : 'hymn'; }
+function musicMode() { return mGet(M_PREF.mode, 'seq') === 'one' ? 'one' : 'seq'; }
+function musicTrack() { const L = PLAYLISTS[musicList()].tracks, t = mGet(M_PREF.track, L[0]); return L.includes(t) ? t : L[0]; }
+function musicNextOf(id) { const L = PLAYLISTS[musicList()].tracks, i = L.indexOf(id); return musicMode() === 'one' && i >= 0 ? id : L[(i + 1) % L.length]; }
 function musicUI() {
   const on = musicOn(), b = document.getElementById('musicBtn');
   if (b) { b.classList.toggle('off', !on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); b.setAttribute('aria-label', on ? '배경 음악 끄기' : '배경 음악 켜기'); b.title = on ? '배경 음악 끄기' : '배경 음악 켜기'; }
   const s = document.getElementById('musicSet'); if (s) s.textContent = on ? '음악 끄기' : '음악 켜기';
   const st = document.getElementById('musicState'); if (st) st.textContent = on ? '켜짐' : '꺼짐';
+  musicNowUI(true);
 }
 function musicFade(v, sec) {
   if (Music.mode === 'ctx' && Music.gain) {
@@ -1668,41 +1778,78 @@ function musicFade(v, sec) {
     Music.elFade = setInterval(() => { const k = Math.min(1, (now() - t0) / (sec * 1000)); try { a.volume = from + (v - from) * k; } catch(e) {} if (k >= 1) clearInterval(Music.elFade); }, 50);
   }
 }
-function musicLoad() {
-  if (Music.buf) return Promise.resolve(Music.buf);
-  if (Music.loading) return Music.loading;
-  Music.loading = fetch('audio/purify-bgm.mp3').then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.arrayBuffer(); })
-    .then(ab => new Promise((res, rej) => { const p = Music.ctx.decodeAudioData(ab, res, rej); if (p && p.then) p.then(res, rej); }))
-    .then(b => (Music.buf = b));
-  Music.loading.catch(() => { Music.loading = null; });
-  return Music.loading;
+function musicLoad(id) {
+  if (Music.bufs[id]) return Promise.resolve(Music.bufs[id]);
+  if (Music.loads[id]) return Music.loads[id];
+  const p = Music.loads[id] = fetch('audio/' + TRACKS[id].file + '.mp3').then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.arrayBuffer(); })
+    .then(ab => new Promise((res, rej) => { const q = Music.ctx.decodeAudioData(ab, res, rej); if (q && q.then) q.then(res, rej); }))
+    .then(b => (Music.bufs[id] = b));
+  p.catch(() => { delete Music.loads[id]; });
+  return p;
 }
-function musicInstance(T, first) {
-  const c = Music.ctx, src = c.createBufferSource(), g = c.createGain();
-  src.buffer = Music.buf; src.connect(g); g.connect(Music.gain);
+// 한 곡 재생 인스턴스. seamless=true → 한 곡 반복용 60ms 이음, false → 곡 사이 3초 크로스페이드
+function musicInstance(T, id, opt) {
+  const c = Music.ctx, src = c.createBufferSource(), g = c.createGain(), L = TRACKS[id].len;
+  src.buffer = Music.bufs[id]; src.connect(g); g.connect(Music.gain);
   const h = M_XF / 2;
-  if (first) { g.gain.setValueAtTime(1, T); src.start(T, M_PAD); }
-  else { g.gain.setValueAtTime(0, T - h); g.gain.linearRampToValueAtTime(1, T + h); src.start(T - h, M_PAD - h); }
-  g.gain.setValueAtTime(1, T + M_LEN - h); g.gain.linearRampToValueAtTime(0, T + M_LEN + h);
-  src.stop(T + M_LEN + h + 0.02);
-  Music.srcs.push(src); src.onended = () => { Music.srcs = Music.srcs.filter(s => s !== src); };
+  if (opt.first) { g.gain.setValueAtTime(opt.fadeIn ? 0 : 1, T); if (opt.fadeIn) g.gain.linearRampToValueAtTime(1, T + opt.fadeIn); src.start(T, M_PAD); }
+  else if (opt.seamIn) { g.gain.setValueAtTime(0, T - h); g.gain.linearRampToValueAtTime(1, T + h); src.start(T - h, M_PAD - h); }
+  else { g.gain.setValueAtTime(0, T); g.gain.linearRampToValueAtTime(1, T + M_XT); src.start(T, M_PAD); }
+  let end;
+  if (opt.seamOut) { g.gain.setValueAtTime(1, T + L - h); g.gain.linearRampToValueAtTime(0, T + L + h); end = T + L + h + 0.02; }
+  else { g.gain.setValueAtTime(1, T + L - M_XT); g.gain.linearRampToValueAtTime(0, T + L); end = T + L + 0.02; }
+  src.stop(end);
+  const rec = { src, g, id, T, end }; Music.srcs.push(rec); Music.plays.push({ id, T }); if (Music.plays.length > 12) Music.plays.shift();
+  src.onended = () => { Music.srcs = Music.srcs.filter(s => s !== rec); };
 }
 function musicSchedule() {
   if (Music.mode !== 'ctx' || !Music.started) return;
-  while (Music.nextT - Music.ctx.currentTime < 4) { musicInstance(Music.nextT, false); Music.nextT += M_LEN; }
+  const c = Music.ctx;
+  while (Music.nextT - c.currentTime < 6) {
+    const id = Music.nextId, prev = Music.plays.length ? Music.plays[Music.plays.length - 1].id : '';
+    if (!Music.bufs[id]) { musicLoad(id).then(musicSchedule, () => {}); break; }
+    const one = musicMode() === 'one' && prev === id && !Music.forceXf; Music.forceXf = false;
+    let T = Music.nextT;
+    if (T < c.currentTime + 0.05) T = c.currentTime + 0.1;
+    const next = musicNextOf(id), seamOut = musicMode() === 'one' && next === id;
+    musicInstance(T, id, { seamIn:one, seamOut, first:false });
+    Music.nextT = T + TRACKS[id].len - (seamOut ? 0 : M_XT); Music.nextId = next;
+    if (!Music.bufs[next]) musicLoad(next).catch(() => {});
+  }
+  musicNowUI();
+}
+function musicBeginCtx(fadeIn) {
+  const c = Music.ctx, id = musicTrack();
+  return musicLoad(id).then(() => {
+    if (!Music.want || document.hidden) return;
+    const T = c.currentTime + 0.05, next = musicNextOf(id), seamOut = musicMode() === 'one' && next === id;
+    musicInstance(T, id, { first:true, fadeIn:fadeIn || 0, seamOut });
+    Music.started = true; Music.nextT = T + TRACKS[id].len - (seamOut ? 0 : M_XT); Music.nextId = next;
+    if (!Music.bufs[next]) musicLoad(next).catch(() => {});
+    clearInterval(Music.timer); Music.timer = setInterval(musicSchedule, 1000); musicSchedule();
+  });
+}
+function musicElSrc(id) {
+  const a = Music.el, f = 'audio/' + TRACKS[id].file;
+  a.src = a.canPlayType && a.canPlayType('audio/mp4; codecs="mp4a.40.2"') ? f + '.m4a' : f + '.mp3'; Music.elId = id;
 }
 function musicFallback() {
   Music.mode = 'el';
   if (!Music.el) {
-    const a = document.createElement('audio');
-    a.src = a.canPlayType && a.canPlayType('audio/mp4; codecs="mp4a.40.2"') ? 'audio/purify-bgm.m4a' : 'audio/purify-bgm.mp3';
-    a.preload = 'auto'; a.volume = 0;
-    a.addEventListener('timeupdate', () => { if (a.currentTime >= M_PAD + M_LEN) a.currentTime -= M_LEN; });
-    a.addEventListener('ended', () => { a.currentTime = M_PAD; const p = a.play(); if (p && p.catch) p.catch(() => {}); });
-    Music.el = a;
+    const a = document.createElement('audio'); Music.el = a; a.preload = 'auto'; a.volume = 0; musicElSrc(musicTrack());
+    a.addEventListener('timeupdate', () => {
+      const L = TRACKS[Music.elId].len, nx = musicNextOf(Music.elId);
+      if (nx === Music.elId) { if (a.currentTime >= M_PAD + L) a.currentTime -= L; return; }
+      if (a.currentTime >= M_PAD + L - M_XT && !Music.elSwitch) {
+        Music.elSwitch = true; musicFade(0, M_XT - 0.2);
+        setTimeout(() => { musicElSrc(nx); try { a.currentTime = M_PAD; } catch(e) {} const p = a.play(); if (p && p.catch) p.catch(() => {}); musicFade(MUSIC_VOL, M_XT); Music.elSwitch = false; musicNowUI(); }, (M_XT - 0.1) * 1000);
+      }
+    });
+    a.addEventListener('ended', () => { if (musicNextOf(Music.elId) !== Music.elId) musicElSrc(musicNextOf(Music.elId)); try { a.currentTime = M_PAD; } catch(e) {} const p = a.play(); if (p && p.catch) p.catch(() => {}); });
   }
   const a = Music.el; try { if (a.currentTime < M_PAD) a.currentTime = M_PAD; } catch(e) {}
   const p = a.play(); if (p && p.then) p.then(() => musicFade(MUSIC_VOL, M_FADE), () => {}); else musicFade(MUSIC_VOL, M_FADE);
+  musicNowUI();
 }
 // 사용자 제스처 안에서 호출되어야 함 (자동재생 정책)
 function musicStart() {
@@ -1716,15 +1863,8 @@ function musicStart() {
     const c = Music.ctx;
     try { const s = c.createBufferSource(); s.buffer = c.createBuffer(1, 1, 22050); s.connect(c.destination); s.start(0); } catch(e) {} // iOS 잠금 해제
     if (c.state === 'suspended' && c.resume) c.resume().catch(() => {});
-    musicLoad().then(() => {
-      if (!Music.want || document.hidden) return;
-      if (!Music.started) {
-        Music.started = true; const T = c.currentTime + 0.05;
-        musicInstance(T, true); Music.nextT = T + M_LEN;
-        clearInterval(Music.timer); Music.timer = setInterval(musicSchedule, 1000); musicSchedule();
-      }
-      musicFade(MUSIC_VOL, M_FADE);
-    }).catch(() => { Music.mode = ''; musicFallback(); });
+    (Music.started ? Promise.resolve() : musicBeginCtx(0)).then(() => { if (Music.want && !document.hidden) musicFade(MUSIC_VOL, M_FADE); })
+      .catch(() => { Music.mode = ''; musicFallback(); });
   } catch(e) { musicFallback(); }
 }
 function musicStop(fadeSec) {
@@ -1735,17 +1875,89 @@ function musicStop(fadeSec) {
     if (Music.mode === 'ctx' && Music.ctx && Music.ctx.state === 'running' && Music.ctx.suspend) Music.ctx.suspend().catch(() => {});
     if (Music.mode === 'el' && Music.el) Music.el.pause();
   }, (fadeSec || 0.6) * 1000 + 80);
+  musicNowUI();
+}
+// 목록·곡·재생 방식을 바꾸면 지금 곡을 1.5초에 걸쳐 내리고 고른 곡을 부드럽게 올림
+function musicRestart() {
+  if (Music.mode === 'ctx' && Music.ctx && Music.started) {
+    const c = Music.ctx, t = c.currentTime;
+    Music.srcs.forEach(r => { try { r.g.gain.cancelScheduledValues(t); r.g.gain.setValueAtTime(r.g.gain.value, t); r.g.gain.linearRampToValueAtTime(0, t + 1.5); r.src.stop(t + 1.6); } catch(e) {} });
+    Music.started = false; clearInterval(Music.timer);
+    if (Music.want && musicOn()) musicBeginCtx(1.5).catch(() => {});
+  } else if (Music.mode === 'el' && Music.el) {
+    musicElSrc(musicTrack()); if (Music.want && musicOn()) { try { Music.el.currentTime = M_PAD; } catch(e) {} const p = Music.el.play(); if (p && p.catch) p.catch(() => {}); }
+  }
+  musicNowUI(true);
+}
+function musicPick(kind, v) {
+  if (kind === 'list') { if (!PLAYLISTS[v]) return; mSet(M_PREF.list, v); mSet(M_PREF.track, PLAYLISTS[v].tracks[0]); }
+  else if (kind === 'track') { if (!PLAYLISTS[musicList()].tracks.includes(v)) return; mSet(M_PREF.track, v); }
+  else if (kind === 'mode') mSet(M_PREF.mode, v === 'one' ? 'one' : 'seq');
+  if (kind !== 'mode') musicRestart();
+  else if (Music.mode === 'ctx' && Music.started) { // 재생 중 방식 변경: 지금 곡은 그대로 두고 다음 곡 예약만 다시
+    const c = Music.ctx, t = c.currentTime, cur = Music.srcs.filter(r => r.T <= t).pop();
+    Music.srcs.filter(r => r.T > t).forEach(r => { try { r.src.stop(); } catch(e) {} });
+    Music.srcs = Music.srcs.filter(r => r.T <= t); Music.plays = Music.plays.filter(p => p.T <= t);
+    if (cur) { Music.nextId = musicNextOf(cur.id); Music.nextT = Math.max(t + 0.2, cur.T + TRACKS[cur.id].len - M_XT); Music.forceXf = true; musicSchedule(); }
+  }
+  musicNowUI(true);
+  if (typeof curTab !== 'undefined' && curTab === 'me' && document.getElementById('musicCard')) document.getElementById('musicCard').outerHTML = musicCard();
+}
+// 지금 들리는 곡 (재생 전이면 고른 곡)
+function musicNow() {
+  if (Music.mode === 'ctx' && Music.started && Music.ctx) {
+    const t = Music.ctx.currentTime; let id = '';
+    Music.plays.forEach(p => { if (p.T <= t + M_XT / 2) id = p.id; });
+    if (id) return id;
+  }
+  if (Music.mode === 'el' && Music.elId) return Music.elId;
+  return musicTrack();
+}
+function lyricsHtml(id, open) {
+  const t = TRACKS[id]; if (!t.lyr) return '';
+  return '<details class="lyr"' + (open ? ' open' : '') + '><summary>가사 보기 (라틴어 · 우리말)</summary>' + t.lyr.map(l => '<p class="la">' + l[0] + '</p><p class="ko">' + l[1] + '</p>').join('') +
+    '<p class="muted" style="font-size:12px;">악기 연주만 있어요. 라틴어 원문은 교회의 공용 전례문이고, 우리말은 Purify가 직접 옮긴 번역이에요.</p></details>';
+}
+function musicNowUI(force) {
+  const id = musicNow(), playing = Music.want && musicOn();
+  if (!force && id === Music.lastNow && playing === Music.lastPlaying) return;
+  Music.lastNow = id; Music.lastPlaying = playing;
+  const t = TRACKS[id], mini = document.getElementById('musicMini');
+  if (mini) {
+    const show = playing && !!t.lyr;
+    mini.classList.toggle('hide', !show);
+    if (show) mini.innerHTML = '<details><summary>♪ ' + esc(t.name) + '<span class="la1">' + t.lyr[0][0].split(/[,;:]/)[0] + '…</span></summary><div class="mini-body"><p class="muted" style="margin:2px 0 6px;">' + esc(t.ko) + '</p>' + t.lyr.map(l => '<p class="la">' + l[0] + '</p><p class="ko">' + l[1] + '</p>').join('') + '</div></details>';
+  }
+  const np = document.getElementById('musicNowCard'); if (np) np.outerHTML = musicNowCard();
+}
+function musicNowCard() {
+  const id = musicNow(), t = TRACKS[id], playing = Music.want && musicOn();
+  return '<div id="musicNowCard" class="nowplay"><p><b>' + (playing ? '▶ 지금 재생 중' : '⏸ 선택된 곡') + '</b> · ' + esc(t.name) + '</p><p class="muted" style="margin:2px 0 0;">' + esc(t.ko || t.sub) + '</p>' + lyricsHtml(id) + '</div>';
+}
+function musicCard() {
+  const L = musicList(), T = musicTrack(), M = musicMode(), on = musicOn();
+  return '<div class="card" id="musicCard"><div class="sec-title"><h3>🎵 배경 음악</h3><span class="muted" id="musicState">' + (on ? '켜짐' : '꺼짐') + '</span></div>' +
+    '<p class="muted">모든 곡을 악보의 음표로부터 직접 합성했어요 (녹음·외부 편곡 없음, 저작권 걱정 없음). 화면을 나가면 자동으로 멈춰요.</p>' +
+    '<label class="f">재생 목록</label><div class="seg" id="musicLists">' + Object.keys(PLAYLISTS).map(k => '<button class="opt' + (k === L ? ' sel' : '') + '" data-list="' + k + '" onclick="musicPick(\'list\',\'' + k + '\')">' + PLAYLISTS[k].name + '</button>').join('') + '</div>' +
+    '<p class="muted" style="margin-top:4px;">' + PLAYLISTS[L].desc + '</p>' +
+    '<label class="f">곡 선택</label><div id="musicTracks">' + PLAYLISTS[L].tracks.map((k, i) => '<button class="opt' + (k === T ? ' sel' : '') + '" data-track="' + k + '" onclick="musicPick(\'track\',\'' + k + '\')"><b>' + (i + 1) + '. ' + TRACKS[k].name + '</b><span class="muted" style="display:block;font-size:13px;">' + esc(TRACKS[k].ko || TRACKS[k].sub) + ' · ' + Math.round(TRACKS[k].len) + '초</span></button>').join('') + '</div>' +
+    '<label class="f">재생 방식</label><div class="seg" id="musicModes"><button class="opt' + (M === 'seq' ? ' sel' : '') + '" data-mode="seq" onclick="musicPick(\'mode\',\'seq\')">순서대로 재생</button><button class="opt' + (M === 'one' ? ' sel' : '') + '" data-mode="one" onclick="musicPick(\'mode\',\'one\')">한 곡 반복</button></div>' +
+    '<p class="muted" style="margin-top:4px;">' + (M === 'seq' ? '목록의 곡을 차례로 부드럽게 이어 듣고, 끝나면 처음부터 다시 들어요.' : '고른 곡 하나만 끊김 없이 반복해요.') + '</p>' +
+    musicNowCard() +
+    '<button class="btn sm sec" id="musicSet" onclick="musicToggle()" style="margin-top:10px;">' + (on ? '음악 끄기' : '음악 켜기') + '</button></div>';
 }
 function musicToggle() {
   const on = !musicOn(); musicSetPref(on); musicUI();
   if (on) { musicStart(); toast('🎵 배경 음악을 켰어요.'); } else { musicStop(); toast('배경 음악을 껐어요.'); }
+  musicNowUI(true);
 }
 function musicGesture(e) {
-  if (e && e.target && e.target.closest && e.target.closest('#musicBtn, #musicSet')) return;
+  if (e && e.target && e.target.closest && e.target.closest('#musicBtn, #musicSet, #musicCard button, #musicMini')) { if (!e.target.closest('#musicBtn, #musicSet') && !Music.want && musicOn()) musicStart(); return; }
   if (Music.want || !musicOn()) return;
   musicStart();
 }
 ['click', 'touchend', 'keydown'].forEach(ev => document.addEventListener(ev, musicGesture, true));
+setInterval(() => { if (Music.want) musicNowUI(); }, 2000);
 document.addEventListener('visibilitychange', () => {
   if (document.hidden) {
     if (Music.mode === 'ctx' && Music.ctx && Music.ctx.state === 'running') { Music.gain.gain.cancelScheduledValues(Music.ctx.currentTime); Music.gain.gain.setValueAtTime(0, Music.ctx.currentTime); Music.ctx.suspend().catch(() => {}); }
@@ -1755,11 +1967,302 @@ document.addEventListener('visibilitychange', () => {
     else if (Music.mode === 'el' && Music.el) { Music.el.volume = 0; const p = Music.el.play(); if (p && p.then) p.then(() => musicFade(MUSIC_VOL, 1.5), () => {}); }
   }
 });
+// ===================== 건강 정보 · 자가포식 =====================
+// 모든 카드에 근거 수준(사람/동물/세포 연구)과 출처를 붙임. 과장된 표현(“암 치료” 등) 금지.
+const EVI = { h:'사람 연구', ho:'사람 연구(관찰)', a:'동물 연구', c:'세포 연구', y:'효모 연구', g:'공식 자료', r:'리뷰 논문', n:'역사 기록', x:'근거 제한적' };
+const CITE = {
+  nobel:{ t:'노벨 생리의학상 2016 보도자료 (오스미 요시노리)', u:'https://www.nobelprize.org/prizes/medicine/2016/press-release/' },
+  takeshige:{ t:'Takeshige K et al. (1992) J Cell Biol 119:301-311', d:'10.1083/jcb.119.2.301' },
+  tsukada:{ t:'Tsukada M, Ohsumi Y (1993) FEBS Lett 333:169-174', d:'10.1016/0014-5793(93)80398-E' },
+  miz04:{ t:'Mizushima N et al. (2004) Mol Biol Cell 15:1101-1111 — GFP-LC3 생쥐, 굶김에 따른 조직별 자가포식', d:'10.1091/mbc.e03-09-0704' },
+  alir:{ t:'Alirezaei M et al. (2010) Autophagy 6:702-710 — 단기 금식과 신경세포 자가포식(생쥐)', d:'10.4161/auto.6.6.12376' },
+  bagh:{ t:'Bagherniya M et al. (2018) Ageing Res Rev 47:183-197 — 금식·칼로리 제한과 자가포식 (리뷰)', d:'10.1016/j.arr.2018.08.004' },
+  mizlev:{ t:'Mizushima N, Levine B (2020) N Engl J Med 383:1564-1576 — Autophagy in Human Diseases', d:'10.1056/NEJMra2022774' },
+  jam:{ t:'Jamshed H et al. (2019) Nutrients 11:1234 — 이른 시간제한 식사(18시간 공복)와 LC3A 유전자 발현(사람)', d:'10.3390/nu11061234' },
+  anton:{ t:'Anton SD et al. (2018) Obesity 26:254-268 — Flipping the Metabolic Switch', d:'10.1002/oby.22065' },
+  kim11:{ t:'Kim J et al. (2011) Nat Cell Biol 13:132-141 — AMPK·mTOR와 ULK1', d:'10.1038/ncb2152' },
+  youle:{ t:'Youle RJ, Narendra DP (2011) Nat Rev Mol Cell Biol 12:9-14 — Mechanisms of mitophagy', d:'10.1038/nrm3028' },
+  singh:{ t:'Singh R et al. (2009) Nature 458:1131-1135 — Autophagy regulates lipid metabolism', d:'10.1038/nature07976' },
+  naka:{ t:'Nakagawa I et al. (2004) Science 306:1037-1040 — 자가포식이 A군 연쇄상구균을 막음', d:'10.1126/science.1103966' },
+  gut:{ t:'Gutierrez MG et al. (2004) Cell 119:753-766 — 자가포식과 결핵균', d:'10.1016/j.cell.2004.11.038' },
+  hara:{ t:'Hara T et al. (2006) Nature 441:885-889 — 신경세포 기본 자가포식 억제와 신경퇴행(생쥐)', d:'10.1038/nature04724' },
+  komatsu:{ t:'Komatsu M et al. (2006) Nature 441:880-884 — 중추신경 자가포식 결손과 신경퇴행(생쥐)', d:'10.1038/nature04723' },
+  vion:{ t:'Vion AC et al. (2017) PNAS 114:E8675-E8684 — 내피세포 자가포식과 혈관 보호(생쥐)', d:'10.1073/pnas.1702223114' },
+  razani:{ t:'Razani B et al. (2012) Cell Metab 15:534-544 — 대식세포 자가포식과 죽상경화(생쥐)', d:'10.1016/j.cmet.2012.02.011' },
+  liao:{ t:'Liao X et al. (2012) Cell Metab 15:545-553 — 대식세포 자가포식의 보호 역할(생쥐)', d:'10.1016/j.cmet.2012.01.022' },
+  rubin:{ t:'Rubinsztein DC et al. (2011) Cell 146:682-695 — Autophagy and Aging', d:'10.1016/j.cell.2011.07.030' },
+  levine11:{ t:'Levine B et al. (2011) Nature 469:323-335 — Autophagy in immunity and inflammation', d:'10.1038/nature09782' },
+  kdri:{ t:'2020 한국인 영양소 섭취기준 (보건복지부·한국영양학회)', u:'https://www.mohw.go.kr/board.es?mid=a10411010200&bid=0019&list_no=362385' },
+  kfcdb:{ t:'국가표준식품성분표 (농촌진흥청)', u:'https://koreanfood.rda.go.kr/' },
+  who_diet:{ t:'WHO Healthy diet fact sheet (과일·채소 하루 400g 이상, 유리당 10% 미만)', u:'https://www.who.int/news-room/fact-sheets/detail/healthy-diet' },
+  hsph_fv:{ t:'Harvard T.H. Chan — Vegetables and Fruits', u:'https://nutritionsource.hsph.harvard.edu/what-should-you-eat/vegetables-and-fruits/' },
+  hsph_potato:{ t:'Harvard T.H. Chan — Potatoes', u:'https://nutritionsource.hsph.harvard.edu/food-features/potatoes/' },
+  hsph_tea:{ t:'Harvard T.H. Chan — Tea', u:'https://nutritionsource.hsph.harvard.edu/food-features/tea/' },
+  hsph_nuts:{ t:'Harvard T.H. Chan — Nuts for the heart', u:'https://nutritionsource.hsph.harvard.edu/nuts-for-the-heart/' },
+  nccih_detox:{ t:'NIH NCCIH — Detoxes and Cleanses: What You Need To Know', u:'https://www.nccih.nih.gov/health/detoxes-and-cleanses-what-you-need-to-know' },
+  nccih_brom:{ t:'NIH NCCIH — Bromelain', u:'https://www.nccih.nih.gov/health/bromelain' },
+  nccih_tur:{ t:'NIH NCCIH — Turmeric', u:'https://www.nccih.nih.gov/health/turmeric' },
+  nccih_gin:{ t:'NIH NCCIH — Ginger', u:'https://www.nccih.nih.gov/health/ginger' },
+  nccih_pro:{ t:'NIH NCCIH — Probiotics: What You Need To Know', u:'https://www.nccih.nih.gov/health/probiotics-what-you-need-to-know' },
+  ods_c:{ t:'NIH ODS — Vitamin C Fact Sheet', u:'https://ods.od.nih.gov/factsheets/VitaminC-HealthProfessional/' },
+  ods_d:{ t:'NIH ODS — Vitamin D Fact Sheet', u:'https://ods.od.nih.gov/factsheets/VitaminD-HealthProfessional/' },
+  ods_o3:{ t:'NIH ODS — Omega-3 Fatty Acids Fact Sheet', u:'https://ods.od.nih.gov/factsheets/Omega3FattyAcids-HealthProfessional/' },
+  ods_mg:{ t:'NIH ODS — Magnesium Fact Sheet', u:'https://ods.od.nih.gov/factsheets/Magnesium-HealthProfessional/' },
+  ods_zn:{ t:'NIH ODS — Zinc Fact Sheet', u:'https://ods.od.nih.gov/factsheets/Zinc-HealthProfessional/' },
+  ods_fe:{ t:'NIH ODS — Iron Fact Sheet', u:'https://ods.od.nih.gov/factsheets/Iron-HealthProfessional/' },
+  ods_k:{ t:'NIH ODS — Vitamin K Fact Sheet (와파린 상호작용)', u:'https://ods.od.nih.gov/factsheets/VitaminK-HealthProfessional/' },
+  ods_i:{ t:'NIH ODS — Iodine Fact Sheet', u:'https://ods.od.nih.gov/factsheets/Iodine-HealthProfessional/' },
+  ods_pot:{ t:'NIH ODS — Potassium Fact Sheet', u:'https://ods.od.nih.gov/factsheets/Potassium-HealthProfessional/' },
+  ods_pro:{ t:'NIH ODS — Probiotics Fact Sheet', u:'https://ods.od.nih.gov/factsheets/Probiotics-HealthProfessional/' },
+  fda_gf:{ t:'미국 FDA — Grapefruit Juice and Some Drugs Don’t Mix', u:'https://www.fda.gov/consumers/consumer-updates/grapefruit-juice-and-some-drugs-dont-mix' },
+  fda_fish:{ t:'미국 FDA/EPA — Advice about Eating Fish', u:'https://www.fda.gov/food/consumers/advice-about-eating-fish' },
+  efsa_tea:{ t:'EFSA (2018) 녹차 카테킨 안전성 의견', d:'10.2903/j.efsa.2018.5239' },
+  gartner:{ t:'Gärtner C et al. (1997) Am J Clin Nutr 66:116-122 — 토마토 페이스트의 리코펜 흡수', d:'10.1093/ajcn/66.1.116' },
+  song:{ t:'Song K, Milner JA (2001) J Nutr 131:1054S-1057S — 마늘 가열 전 10분 두기', d:'10.1093/jn/131.3.1054S' },
+  okun:{ t:'Okunade O et al. (2018) Mol Nutr Food Res 62:1700980 — 겨자씨(미로시나제)와 설포라판 흡수', d:'10.1002/mnfr.201700980' },
+  shoba:{ t:'Shoba G et al. (1998) Planta Med 64:353-356 — 피페린과 커큐민 흡수', d:'10.1055/s-2006-957450' },
+  aune:{ t:'Aune D et al. (2016) BMJ 353:i2716 — 통곡물과 심혈관질환·사망 (메타분석)', d:'10.1136/bmj.i2716' },
+  estruch:{ t:'Estruch R et al. (2018) N Engl J Med 378:e34 — 지중해식(올리브유·견과) 심혈관 예방', d:'10.1056/NEJMoa1800389' },
+  siervo:{ t:'Siervo M et al. (2013) J Nutr 143:818-826 — 질산염·비트 주스와 혈압 (메타분석)', d:'10.3945/jn.112.170233' },
+  thomas:{ t:'Thomas LDK et al. (2013) JAMA Intern Med 173:386-388 — 비타민 C 보충제와 신장결석', d:'10.1001/jamainternmed.2013.2296' },
+  hemila_c:{ t:'Hemilä H, Chalker E (2013) Cochrane — 비타민 C와 감기', d:'10.1002/14651858.CD000980.pub4' },
+  vital_d:{ t:'Manson JE et al. (2019) N Engl J Med 380:33-44 — VITAL 비타민 D', d:'10.1056/NEJMoa1809944' },
+  vital_o3:{ t:'Manson JE et al. (2019) N Engl J Med 380:23-32 — VITAL 오메가-3', d:'10.1056/NEJMoa1811403' },
+  gencer:{ t:'Gencer B et al. (2021) Circulation 144:1981-1990 — 오메가-3와 심방세동 (메타분석)', d:'10.1161/CIRCULATIONAHA.121.055654' },
+  hemila_zn:{ t:'Hemilä H (2017) JRSM Open 8:2054270417694291 — 아연 로젠지와 감기', d:'10.1177/2054270417694291' },
+  guo:{ t:'Guo Q et al. (2019) Cochrane — 소아 항생제 연관 설사 예방 유산균', d:'10.1002/14651858.CD004827.pub5' },
+  mfds_fen:{ t:'식약처·대한암학회 (2019) 동물용 구충제 펜벤다졸 암환자 복용 금지 권고', u:'https://www.cancer.go.kr/lay1/bbs/S1T610C611/A/31/view.do?article_seq=21352' },
+  jkma_worm:{ t:'채종일 외 (2018) 대한의사협회지 — 구충제를 매년 복용하여야 하나?', u:'https://jkma.org/journal/view.php?number=184' },
+  brief_worm:{ t:'대한민국 정책브리핑 — 구충제는 누가, 왜 먹어야 할까?', u:'https://www.korea.kr/news/policyNewsView.do?newsId=148828846' },
+  kdca_worm:{ t:'질병관리청 (2025) 2024년 장내기생충 유행지역 감염 조사 (주간 건강과 질병)', u:'https://www.phwr.org/journal/view.html?doi=10.56786%2FPHWR.2025.18.19.1' }
+};
+function citeUrl(k) { const c = CITE[k]; return c.u || ('https://doi.org/' + c.d); }
+function srcLine(keys) { return '<p class="srcl">출처: ' + keys.filter(k => CITE[k]).map(k => '<a href="' + citeUrl(k) + '" target="_blank" rel="noopener">' + esc(CITE[k].t) + '</a>').join(' · ') + '</p>'; }
+function eviTag(e) { return '<span class="evi evi-' + e + '">' + EVI[e] + '</span>'; }
+
+// ---------- 공복 타이머 단계 (자가포식) ----------
+// 사람에서 정확한 시점은 아직 밝혀지지 않았음. 아래 시간은 연구에서 관찰된 대략의 구간.
+const AF_STAGES = [
+  { h:0, icon:'🍽', t:'소화·흡수 중', m:'방금 먹은 음식의 포도당을 쓰고 있어요. 인슐린이 높아 자가포식은 아직 조용해요.', e:'r', c:['anton'] },
+  { h:12, icon:'🔥', t:'지방을 쓰기 시작', m:'간의 글리코겐이 줄면서 몸이 지방과 케톤을 꺼내 쓰는 “대사 전환”이 시작돼요 (보통 12시간 넘어서).', e:'h', c:['anton'] },
+  { h:16, icon:'🔆', t:'자가포식 스위치 ON', m:'연구에 따르면 이 무렵부터 자가포식이 활발해지기 시작해요. 18시간 공복을 지킨 사람의 혈액세포에서 자가포식 유전자(LC3A) 발현이 늘었다는 연구가 있어요.', e:'h', c:['jam', 'bagh'] },
+  { h:24, icon:'✨', t:'자가포식 활발', m:'생쥐 연구에서 24시간 굶김 뒤 간·근육·심장 등 여러 조직에서 자가포식이 뚜렷이 늘었어요.', e:'a', c:['miz04', 'alir'] },
+  { h:48, icon:'🌟', t:'자가포식 더 활발', m:'생쥐 연구에서 48시간에는 뇌 신경세포를 포함해 자가포식이 더 늘었어요. 사람에게 이 정도 금식은 위험이 커서 의료진과 상의가 필요해요.', e:'a', c:['alir', 'miz04'] }
+];
+const AF_ON = 16;
+function afStage(h) { let i = 0; AF_STAGES.forEach((s, k) => { if (h >= s.h) i = k; }); return i; }
+function afHours() {
+  const id = progId(), pr = PROGRAMS[id];
+  if (id === 'waterfast' && progActive()) { const st = +S.program.startTs || (new Date(S.program.start + 'T00:00:00').getTime()); return Math.max(0, (now() - st) / 3600e3); }
+  if (pr.timer) return timerSec() / 3600;
+  return 0;
+}
+function afSid() { const id = progId(); if (id === 'waterfast') return 'wf' + S.program.start; return S.timer && S.timer.sid ? 't' + S.timer.sid : ''; }
+function afSwitch(h) {
+  const i = afStage(h), s = AF_STAGES[i], nx = AF_STAGES[i + 1], on = h >= AF_ON;
+  const pct = nx ? Math.min(100, (h - s.h) / (nx.h - s.h) * 100) : 100;
+  return '<div class="afsw' + (on ? ' on' : '') + '" id="afsw"><div class="row" style="align-items:flex-start;"><div class="knob" role="img" aria-label="자가포식 스위치 ' + (on ? '켜짐' : '꺼짐') + '"><i></i><b>' + (on ? 'ON' : 'OFF') + '</b></div>' +
+    '<div class="grow"><p style="margin:0;"><b>' + s.icon + ' ' + s.t + '</b> ' + eviTag(s.e) + '</p><p class="muted" style="margin:2px 0 0;font-size:13px;">' + s.m + '</p></div></div>' +
+    (nx ? '<div class="bar thin"><i id="afbar" style="width:' + pct.toFixed(1) + '%"></i></div><p class="muted" style="font-size:12px;margin:4px 0 0;">다음 단계 <b>' + nx.icon + ' ' + nx.t + '</b>까지 ' + fmtLeft(nx.h - h) + '</p>' : '') +
+    '<p class="muted" style="font-size:12px;margin:6px 0 0;">※ 사람에게서 정확한 시점은 아직 밝혀지지 않았어요. 노벨상 연구는 효모에서 이루어졌어요. <a href="javascript:void 0" onclick="openHealth(\'auto\')">자가포식이란? →</a></p></div>';
+}
+function fmtLeft(hrs) { const m = Math.max(0, Math.round(hrs * 60)); return (m >= 60 ? Math.floor(m / 60) + '시간 ' : '') + (m % 60) + '분'; }
+function afNoteCard() {
+  const n = S.afNote; if (!n || n.sid !== afSid()) return '';
+  const s = AF_STAGES.find(x => x.h === n.h); if (!s) return '';
+  return '<div class="card afnote" id="afNote"><div class="row" style="align-items:flex-start;"><div class="grow"><p style="margin:0;"><b>🔔 ' + (s.h === AF_ON ? '자가포식 스위치가 켜지기 시작했습니다' : s.t) + '</b></p><p class="muted" style="margin:4px 0 0;">' + s.m + '</p>' +
+    (s.h === AF_ON ? '<p class="vline">“' + vt('고린도후서 4:16') + '” <span>— 고린도후서 4:16</span></p>' : '') + '</div><button class="btn sm sec" style="width:auto;" onclick="S.afNote=null;save();rerender()">닫기</button></div></div>';
+}
+// 단계가 바뀌는 순간 한 번만 알림 (새로고침해도 다시 울리지 않음)
+function afCheck(silent) {
+  const sid = afSid(); if (!sid) return;
+  const h = afHours(), i = afStage(h);
+  if (!S.af || S.af.sid !== sid) S.af = { sid, seen:[] };
+  let fresh = null;
+  AF_STAGES.forEach((s, k) => { if (k > 0 && k <= i && !S.af.seen.includes(s.h)) { S.af.seen.push(s.h); fresh = s; } });
+  if (!fresh) return;
+  S.afNote = { sid, h:fresh.h }; save();
+  if (silent) return;
+  const msg = fresh.h === AF_ON ? '🔆 자가포식 스위치가 켜지기 시작했습니다' : fresh.icon + ' ' + fresh.t;
+  toast(msg, 4200);
+  try { if (window.Notification && Notification.permission === 'granted' && document.hidden) new Notification('Purify', { body:msg, icon:'icons/icon-192.png' }); } catch(e) {}
+  if (curTab === 'today' && document.getElementById('afsw')) rerender();
+}
+function afTick() {
+  const sw = document.getElementById('afsw'); if (!sw) return;
+  const h = afHours(), i = afStage(h), was = +sw.dataset.stage;
+  afCheck();
+  if (sw.dataset.stage === undefined || isNaN(was)) sw.dataset.stage = i;
+  else if (was !== i) { const box = sw.parentNode; sw.outerHTML = afSwitch(h); const n = document.getElementById('afsw'); if (n) { n.dataset.stage = i; n.classList.add('flip'); } return; }
+  const nx = AF_STAGES[i + 1], b = document.getElementById('afbar');
+  if (b && nx) b.style.width = Math.min(100, (h - AF_STAGES[i].h) / (nx.h - AF_STAGES[i].h) * 100).toFixed(1) + '%';
+}
+setInterval(() => { try { if (typeof S !== 'undefined' && S && S.onboarded) { if (curTab === 'today') afTick(); else afCheck(); } } catch(e) {} }, 1000);
+
+// ---------- 자가포식 설명 ----------
+const AUTO = {
+  intro:'자가포식(autophagy)은 그리스어 auto(스스로) + phagein(먹다), 곧 “스스로 먹기”라는 뜻이에요. 세포가 낡거나 망가진 부품을 막으로 감싸(자가포식소체) 리소좀으로 보내 분해하고, 그 재료를 다시 쓰는 세포 안의 청소·재활용 과정이에요.',
+  story:[
+    ['1960년대 크리스티앙 드 뒤브가 “autophagy”라는 말을 만들었지만, 어떻게 일어나는지는 거의 몰랐어요.', 'n', ['nobel']],
+    ['1992년 오스미 요시노리는 분해 효소가 없는 효모를 굶겨, 액포 안에 자가포식소체가 쌓이는 것을 현미경으로 처음 보여 주었어요.', 'y', ['takeshige', 'nobel']],
+    ['1993년에는 자가포식에 꼭 필요한 유전자들을 찾아냈고, 비슷한 장치가 사람 세포에도 있다는 것이 밝혀졌어요. 이 공로로 2016년 노벨 생리의학상을 받았어요.', 'y', ['tsukada', 'nobel']]
+  ],
+  how:[
+    ['영양이 들어오지 않으면 성장 신호를 주는 mTOR가 꺼지고, 에너지 부족을 알리는 AMPK가 켜져 자가포식을 시작하는 ULK1 단백질을 움직여요.', 'c', ['kim11']],
+    ['공복이 길어지면 인슐린이 낮아지고 지방에서 나온 케톤을 쓰는 “대사 전환”이 일어나요 (보통 12시간 이후).', 'h', ['anton']],
+    ['생쥐를 24~48시간 굶기면 간·근육·심장 등 대부분의 조직에서 자가포식이 늘었어요. 조직마다 반응이 달랐어요.', 'a', ['miz04']],
+    ['사람에서는 조직을 직접 보기 어려워, 혈액세포의 유전자 발현 같은 간접 지표로만 연구되고 있어요. 정확히 몇 시간에 켜지는지는 아직 밝혀지지 않았어요.', 'h', ['jam', 'bagh']]
+  ],
+  clean:[
+    ['🔋 손상된 미토콘드리아', '에너지 공장인 미토콘드리아가 망가지면 골라서 분해해요 (미토파지). PINK1·Parkin이라는 단백질이 표시를 붙여요.', 'c', ['youle']],
+    ['🧩 잘못 접히거나 뭉친 단백질', '쌓이면 세포에 해로운 단백질 덩어리를 치워요. 자가포식 유전자를 없앤 생쥐의 신경세포에는 단백질 덩어리가 쌓이고 신경퇴행이 나타났어요.', 'a', ['hara', 'komatsu']],
+    ['🧱 낡은 세포 소기관', '오래된 소포체·퍼옥시좀 등 세포 안 부품을 통째로 분해해 재활용해요.', 'c', ['mizlev']],
+    ['🦠 세포 안에 들어온 병원체', '세포 속에 침입한 일부 세균(연쇄상구균, 결핵균)을 감싸 없애는 방어 역할을 해요 (제노파지).', 'c', ['naka', 'gut']],
+    ['💧 지방 방울', '간세포 안의 지방 방울을 분해해 에너지로 써요 (리포파지). 생쥐 간에서 처음 밝혀졌어요.', 'a', ['singh']]
+  ],
+  vessel:[
+    ['혈관 안쪽을 덮는 내피세포는 혈류에 맞춰 정렬하는 데 자가포식이 필요해요. 내피세포 자가포식을 없앤 생쥐는 동맥경화 병변이 더 많이 생겼어요.', 'a', ['vion']],
+    ['동맥경화 판(플라크) 속 대식세포의 자가포식을 없앤 생쥐는 염증이 커지고 판이 더 나빠졌어요. 즉 자가포식은 판이 커지는 것을 늦추는 보호 역할로 보여요.', 'a', ['razani', 'liao']],
+    ['다만 금식으로 사람의 혈관 판이 줄어든다는 직접 증거는 아직 없어요.', 'r', ['mizlev']]
+  ],
+  more:[
+    ['🧠 뇌·신경', '생쥐를 24~48시간 굶기자 뇌 신경세포의 자가포식이 크게 늘었어요. 사람에서는 확인되지 않았어요.', 'a', ['alir']],
+    ['🛡 면역·염증', '자가포식은 병원체 제거, 염증 조절, 면역세포 기능에 두루 관여해요.', 'c', ['levine11']],
+    ['⏳ 노화', '여러 동물에서 자가포식을 높이면 수명이 늘고, 막으면 노화가 빨라졌어요. 칼로리 제한의 효과 일부도 자가포식과 관련 있어요.', 'a', ['rubin', 'bagh']],
+    ['🏥 사람의 질병', '자가포식 유전자 이상은 일부 신경질환·염증성 장질환 등과 관련이 있어요. 자가포식을 겨냥한 치료는 연구 단계예요.', 'h', ['mizlev']]
+  ],
+  caution:'자가포식은 몸에 꼭 필요한 과정이지만 “많을수록 좋다”는 뜻은 아니에요. 금식으로 질병을 고친다는 근거는 없고, 긴 금식은 저혈당·전해질 이상 같은 위험이 있어요. 지병이 있거나 약을 먹고 있다면 의사와 먼저 상의하세요.'
+};
+// ---------- 항산화·건강 식품 ----------
+const HF_TAGS = ['전체', '항산화', '심장·혈관', '장 건강', '뼈·근육', '두뇌', '혈당'];
+const HFOODS = [
+  { id:'sweetpotato', n:'고구마', kw:['고구마'], tags:['항산화', '장 건강', '혈당'], comp:'베타카로틴(주황색 속), 식이섬유, 칼륨, 안토시아닌(자색고구마)', ben:[['베타카로틴은 몸에서 비타민 A로 바뀌어 눈·피부·면역에 쓰여요.', 'g'], ['식이섬유가 많아 포만감이 오래가요.', 'g']], how:'껍질째 찌거나 구워 드세요. 베타카로틴은 지용성이라 들기름 나물·견과와 함께 먹으면 흡수가 좋아져요. 구운 것보다 찐 것이 혈당을 덜 올려요.', care:'당뇨가 있다면 한 번에 중간 크기 반 개~1개 정도로. 신장질환으로 칼륨 제한 중이면 양을 의사와 상의하세요.', src:['kfcdb', 'hsph_fv'] },
+  { id:'carrot', n:'당근', kw:['당근'], tags:['항산화'], comp:'베타카로틴, 알파카로틴, 식이섬유', ben:[['카로티노이드가 비타민 A의 좋은 원천이에요.', 'g']], how:'기름과 함께 익히면 베타카로틴 흡수가 날것보다 좋아져요 (당근볶음, 들기름 무침).', care:'많이 먹으면 손바닥이 노래질 수 있지만(카로틴혈증) 해롭지 않고 줄이면 돌아와요.', src:['kfcdb', 'hsph_fv'] },
+  { id:'garlic', n:'마늘', kw:['마늘'], tags:['항산화', '심장·혈관'], comp:'알리인 → 알리신(다지거나 으깰 때 효소 작용으로 생김), 유황화합물', ben:[['마늘을 다진 뒤 10분 두었다가 가열하면 유익 성분이 덜 줄어든다는 실험 결과가 있어요.', 'a', ['song']], ['혈압·콜레스테롤을 조금 낮춘다는 보고가 있으나 효과는 작아요.', 'h']], how:'다지거나 으깬 뒤 10분 기다렸다가 요리하세요.', care:'항응고제(와파린 등)를 먹는다면 마늘 보충제는 의사와 상의하세요. 생마늘을 많이 먹으면 위가 쓰릴 수 있어요.', src:['song', 'kfcdb'] },
+  { id:'greenonion', n:'파', kw:['파'], tags:['항산화'], comp:'케르세틴, 비타민 K, 유황화합물', ben:[['파·양파 같은 파속 채소는 플라보노이드와 유황화합물이 많아요.', 'g']], how:'국·볶음에 넉넉히. 흰 부분과 초록 부분을 모두 쓰세요.', care:'와파린 복용 중이면 비타민 K가 많은 초록 채소는 “매일 비슷한 양”으로 드세요.', src:['kfcdb', 'ods_k'] },
+  { id:'onion', n:'양파', kw:['양파'], tags:['항산화', '심장·혈관'], comp:'케르세틴(특히 바깥쪽 껍질 가까이와 붉은 양파), 프럭탄(프리바이오틱)', ben:[['케르세틴은 대표적인 항산화 플라보노이드예요. 사람의 질병 예방 효과는 아직 분명하지 않아요.', 'c']], how:'바깥 껍질 바로 안쪽 층을 버리지 마세요. 볶거나 익혀도 케르세틴이 비교적 남아요.', care:'과민성 장증후군(저포드맵 식단)이라면 배가 불편할 수 있어요.', src:['kfcdb'] },
+  { id:'broccoli', n:'브로콜리', kw:['브로콜리'], tags:['항산화', '뼈·근육'], comp:'설포라판(글루코라파닌 → 미로시나제 효소로 생성), 비타민 C·K, 엽산', ben:[['익힌 브로콜리에 겨자씨 가루를 조금 더하면 설포라판 흡수가 늘었다는 사람 연구가 있어요.', 'h', ['okun']]], how:'살짝 찌거나(3~4분) 데치세요. 오래 삶으면 효소가 망가져요. 겨자·무순 같은 생 십자화과 채소를 곁들이면 좋아요.', care:'갑상선 질환이 있어도 보통 양은 괜찮아요. 와파린 복용 중이면 섭취량을 일정하게.', src:['okun', 'kfcdb', 'ods_k'] },
+  { id:'tomato', n:'토마토', kw:['토마토'], tags:['항산화', '심장·혈관'], comp:'리코펜, 비타민 C, 칼륨', ben:[['리코펜은 생토마토보다 익히거나 페이스트로 만든 토마토에서 훨씬 잘 흡수됐어요.', 'h', ['gartner']]], how:'올리브유·들기름에 살짝 익혀 드세요 (토마토 달걀볶음 등). 방울토마토는 간식으로 좋아요.', care:'역류성 식도염이 있으면 신맛 때문에 불편할 수 있어요.', src:['gartner', 'kfcdb'] },
+  { id:'blueberry', n:'블루베리', kw:['블루베리'], tags:['항산화', '두뇌'], comp:'안토시아닌, 식이섬유, 비타민 C', ben:[['베리류를 자주 먹는 사람들에서 심혈관·당뇨 위험이 낮았다는 관찰 연구가 있어요.', 'ho']], how:'생으로 또는 냉동으로 요거트·오트밀에 한 줌. 냉동도 영양이 잘 보존돼요.', care:'잼·주스는 당이 많아요.', src:['hsph_fv'] },
+  { id:'spinach', n:'시금치', kw:['시금치'], tags:['뼈·근육', '두뇌'], comp:'엽산, 비타민 K, 루테인, 마그네슘, 질산염', ben:[['루테인은 눈의 황반에 모이는 색소예요.', 'g'], ['질산염이 많은 채소는 혈압을 조금 낮춘다는 연구가 있어요.', 'h', ['siervo']]], how:'살짝 데쳐 들기름에 무치면 수산(옥살산)이 줄고 루테인 흡수가 좋아져요.', care:'신장결석(수산칼슘) 병력이 있으면 데쳐서 적당히. 와파린 복용 중이면 섭취량을 일정하게.', src:['kfcdb', 'ods_k', 'siervo'] },
+  { id:'perilla', n:'들기름·들깨', kw:['들기름', '들깨'], tags:['심장·혈관', '두뇌'], comp:'알파리놀렌산(식물성 오메가-3, 들기름 지방의 약 60%), 비타민 E', ben:[['식물성 오메가-3의 좋은 원천이에요. 몸에서 EPA·DHA로 바뀌는 비율은 낮아요.', 'g', ['ods_o3']]], how:'가열하면 쉽게 산화되니 나물·국에 마지막에 두르세요. 개봉 후 냉장 보관하고 빨리 드세요.', care:'기름이라 1큰술에 약 120kcal예요.', src:['kfcdb', 'ods_o3'] },
+  { id:'greentea', n:'녹차', kw:['녹차'], tags:['항산화', '심장·혈관'], comp:'카테킨(EGCG), 카페인, 테아닌', ben:[['차를 자주 마시는 사람들에서 심혈관질환 위험이 낮았다는 관찰 연구가 있어요.', 'ho', ['hsph_tea']]], how:'80℃ 정도 물에 2~3분. 식사 직후보다는 식간에 드세요 (철분 흡수 방해).', care:'녹차 추출물 보충제를 고용량으로 먹으면 간 손상 사례가 있어요(차로 마시는 것은 대체로 안전). 빈혈이 있으면 식사와 1시간 떨어져서.', src:['hsph_tea', 'efsa_tea'] },
+  { id:'turmeric', n:'강황', kw:['강황', '카레'], tags:['항산화'], comp:'커큐민', ben:[['커큐민은 흡수율이 매우 낮아요. 후추의 피페린과 함께 먹으면 사람에서 흡수가 크게 늘었어요.', 'h', ['shoba']], ['염증·관절 효과는 연구마다 결과가 엇갈려요.', 'h', ['nccih_tur']]], how:'카레·볶음에 후추와 기름을 함께.', care:'담석·담도질환, 항응고제 복용 중이면 보충제는 피하거나 의사와 상의하세요. 고용량 보충제로 간 손상 보고가 있어요.', src:['shoba', 'nccih_tur'] },
+  { id:'ginger', n:'생강', kw:['생강'], tags:['장 건강'], comp:'진저롤, 쇼가올', ben:[['임신 중 입덧이나 멀미의 메스꺼움을 줄이는 데 도움이 될 수 있어요.', 'h', ['nccih_gin']]], how:'생강차(얇게 저며 끓이기)나 요리에 조금씩.', care:'항응고제 복용 중이면 많은 양은 피하세요. 속쓰림이 있을 수 있어요.', src:['nccih_gin'] },
+  { id:'soy', n:'콩·두부', kw:['두부', '두유', '콩', '병아리콩', '렌틸'], tags:['심장·혈관', '뼈·근육'], comp:'식물성 단백질, 이소플라본, 식이섬유, 칼슘(두부)', ben:[['고기 대신 콩 단백질을 먹으면 LDL 콜레스테롤이 조금 낮아질 수 있어요.', 'h']], how:'두부·된장·청국장·두유(무가당)로 매일 한 번. 다니엘 금식의 좋은 단백질원이에요.', care:'통풍·고요산혈증이 있으면 양을 조절하세요(두부는 비교적 괜찮아요). 콩 알레르기 주의.', src:['kfcdb', 'hsph_fv'] },
+  { id:'seaweed', n:'다시마·미역', kw:['미역', '다시마'], tags:['장 건강'], comp:'요오드, 알긴산(수용성 식이섬유), 칼슘, 후코이단', ben:[['요오드는 갑상선 호르몬에 꼭 필요해요. 한국인은 해조류로 이미 충분히 먹는 편이에요.', 'g', ['ods_i']]], how:'미역국·미역줄기볶음으로 적당히. 다시마는 국물 우릴 때 한 조각이면 충분해요.', care:'갑상선 질환이 있거나 다시마환·미역 분말을 매일 많이 먹으면 요오드 과잉이 될 수 있어요.', src:['ods_i', 'kfcdb'] },
+  { id:'mushroom', n:'버섯', kw:['버섯'], tags:['장 건강', '뼈·근육'], comp:'베타글루칸, 에르고티오네인, 비타민 D(햇볕에 말린 버섯)', ben:[['햇빛·자외선을 쬔 버섯은 비타민 D가 늘어요.', 'g', ['ods_d']]], how:'요리 전 갓을 위로 30분쯤 햇볕에 두면 비타민 D가 늘어요. 볶음·국에.', care:'야생 버섯은 독버섯 위험 때문에 따서 먹지 마세요.', src:['ods_d', 'kfcdb'] },
+  { id:'brownrice', n:'현미·통곡물', kw:['현미', '잡곡', '통밀', '오트밀', '메밀'], tags:['장 건강', '혈당', '심장·혈관'], comp:'식이섬유, 마그네슘, 비타민 B군', ben:[['통곡물을 하루 90g 먹는 사람들에서 심혈관질환·사망 위험이 낮았어요 (메타분석).', 'ho', ['aune']]], how:'흰쌀에 현미·잡곡을 1/3부터 섞어 시작하세요. 충분히 불려 지으면 소화가 편해요.', care:'소화가 약하거나 신장질환(인·칼륨 제한)이 있으면 양을 조절하세요.', src:['aune', 'kfcdb'] },
+  { id:'nuts', n:'견과류', kw:['견과', '호두', '아몬드'], tags:['심장·혈관', '두뇌'], comp:'불포화지방, 비타민 E, 마그네슘, 폴리페놀', ben:[['견과를 곁들인 지중해식 식단이 심혈관 사건을 줄였어요 (무작위 임상).', 'h', ['estruch', 'hsph_nuts']]], how:'하루 한 줌(약 25~30g), 무염·무가당으로.', care:'칼로리가 높아요(한 줌 약 170kcal). 견과 알레르기 주의.', src:['estruch', 'hsph_nuts'] },
+  { id:'fish', n:'등푸른생선', kw:['고등어', '연어', '꽁치', '삼치'], tags:['심장·혈관', '두뇌'], comp:'EPA·DHA(오메가-3), 비타민 D, 단백질', ben:[['생선을 주 2회 정도 먹는 사람들에서 심장병 사망이 적었어요.', 'ho', ['ods_o3']]], how:'구이·조림으로 주 2회. 튀김보다 굽거나 찌세요.', care:'임신·수유 중이거나 어린이는 수은이 많은 큰 생선(황새치·참치 큰 것)을 줄이세요. 통풍이 있으면 양 조절.', src:['ods_o3', 'fda_fish'] },
+  { id:'natto', n:'낫또·청국장', kw:['낫토', '낫또', '청국장'], tags:['장 건강', '뼈·근육'], comp:'비타민 K2(메나퀴논-7), 나토키나아제, 발효균', ben:[['비타민 K는 혈액 응고와 뼈 단백질에 필요해요.', 'g', ['ods_k']]], how:'아침에 밥·김과 함께 한 팩. 너무 뜨겁게 데우지 마세요.', care:'와파린 복용 중이면 낫또는 비타민 K가 매우 많아 약효를 떨어뜨려요. 반드시 의사와 상의하세요.', src:['ods_k', 'kfcdb'] },
+  { id:'berries', n:'베리류 (딸기·아로니아·오디)', kw:['딸기', '아로니아', '베리'], tags:['항산화'], comp:'안토시아닌, 비타민 C, 엘라그산', ben:[['색이 진한 과일일수록 폴리페놀이 많아요.', 'g', ['hsph_fv']]], how:'제철 생과로. 아로니아는 떫어서 요거트에 조금씩.', care:'시럽·잼·가당 주스는 피하세요.', src:['hsph_fv'] },
+  { id:'apple', n:'사과', kw:['사과'], tags:['장 건강', '심장·혈관'], comp:'펙틴(수용성 식이섬유), 케르세틴(껍질)', ben:[['통과일을 많이 먹을수록 제2형 당뇨 위험이 낮았지만, 과일 주스는 반대였어요.', 'ho', ['hsph_fv']]], how:'깨끗이 씻어 껍질째. 주스보다 통째로 씹어 드세요.', care:'혈당이 높다면 한 번에 반 개~1개.', src:['hsph_fv', 'kfcdb'] },
+  { id:'citrus', n:'레몬·자몽·귤', kw:['레몬', '자몽', '귤', '오렌지'], tags:['항산화'], comp:'비타민 C, 헤스페리딘, 나린진(자몽)', ben:[['비타민 C는 식물성 철분 흡수를 도와요.', 'g', ['ods_c']]], how:'시금치·콩 요리에 레몬즙을 뿌리면 철분 흡수에 좋아요. 귤은 하얀 속껍질째.', care:'⚠ 자몽(주스)은 일부 고지혈증약(심바스타틴 등)·혈압약·면역억제제의 혈중 농도를 높여요. 약을 먹는다면 약사에게 확인하세요.', src:['fda_gf', 'ods_c'] },
+  { id:'potato', n:'감자', kw:['감자'], tags:['혈당'], comp:'칼륨, 비타민 C, 저항성 전분(식힌 감자)', ben:[['삶아서 식힌 감자는 저항성 전분이 늘어 혈당이 덜 올라요.', 'h']], how:'튀김 대신 찌거나 삶아서, 껍질째. 밥 대신 주식으로 바꿔 드세요 (함께 먹지 말고).', care:'싹이 나거나 껍질이 초록색인 부분(솔라닌)은 깊게 도려내세요. 신장질환은 칼륨 주의.', src:['hsph_potato', 'kfcdb', 'ods_pot'] }
+];
+// ---------- 해독 주스·효소 ----------
+const JUICE = {
+  science:[
+    ['우리 몸의 해독은 간과 신장, 장, 폐, 피부가 늘 하고 있어요. “디톡스 주스”가 독소를 빼 준다는 연구 근거는 거의 없어요.', 'g', ['nccih_detox']],
+    ['주스로 갈면 비타민·폴리페놀은 얻지만 식이섬유(특히 착즙)가 줄고 당이 빨리 흡수돼요. WHO는 과일 주스의 당을 “유리당”으로 보고 줄이라고 권해요.', 'g', ['who_diet', 'hsph_fv']],
+    ['통과일을 먹을수록 당뇨 위험이 낮았지만, 과일 주스를 많이 마실수록 위험이 높았어요.', 'ho', ['hsph_fv']],
+    ['비트 주스(질산염)는 혈압을 조금 낮춘다는 임상 연구 메타분석이 있어요.', 'h', ['siervo']]
+  ],
+  enzymes:[
+    ['🍍 파인애플 — 브로멜라인', '단백질 분해 효소라 고기를 연하게 해요. 보충제로서 염증·소화 효과의 근거는 제한적이에요. 항응고제와 함께 쓰면 출혈 위험이 있을 수 있어요.', 'h', ['nccih_brom']],
+    ['🥝 키위 — 액티니딘', '단백질 분해 효소로 고기 재울 때 쓰여요. 키위 섭취가 변비에 도움이 된다는 연구가 있지만, 효소 자체의 효과인지는 분명하지 않아요.', 'x', []],
+    ['🥢 무 — 아밀라아제', '생무에는 전분 분해 효소가 있어요. 위산에서 대부분 힘을 잃기 때문에 “효소를 먹어서 소화를 돕는다”는 효과는 작다고 봐요.', 'x', []],
+    ['💊 효소 제품', '시판 “효소” 식품의 체중 감량·해독 효과는 근거가 부족해요. 당이 많이 든 제품도 있으니 성분표를 확인하세요.', 'x', ['nccih_detox']]
+  ],
+  recipes:[
+    { n:'ABC 주스 (사과·비트·당근)', r:'사과 1/2개, 비트 1/4개, 당근 1/2개, 물 150ml를 껍질째 갈아 찌꺼기째 마셔요 (착즙보다 블렌더).', tip:'당근의 베타카로틴은 견과 몇 알과 함께 먹으면 흡수가 좋아요. 비트는 소변이 붉어질 수 있어요(무해).', care:'당뇨가 있으면 사과를 빼고 채소 비율을 높이세요. 신장질환은 비트(칼륨·수산) 주의.' },
+    { n:'양배추 주스', r:'양배추 2장을 살짝 데쳐 사과 1/4개, 물 150ml와 갈아요.', tip:'양배추는 비타민 C·K, 식이섬유가 많아요. 데치면 비린 맛과 가스가 줄어요.', care:'와파린 복용 중이면 매일 양을 일정하게. 갑상선약 복용 중이면 약과 시간 간격을 두세요.' },
+    { n:'그린 스무디', r:'시금치 한 줌, 바나나 1/2개, 무가당 두유 200ml, 들깨가루 1작은술.', tip:'단백질(두유)과 지방(들깨)이 있어 한 끼 간식으로 든든해요.', care:'혈당이 높다면 바나나를 키위 1개로 바꾸세요.' }
+  ],
+  daily:'WHO는 과일·채소를 하루 400g 이상(감자·고구마 제외) 먹도록 권해요. 쉽게는 매 끼니 채소 반찬 2가지 이상, 과일은 하루 1~2번(주먹 하나 크기)이면 돼요. 접시의 절반을 채소·과일로 채우세요(하버드 건강 식단 접시).',
+  dailySrc:['who_diet', 'hsph_fv', 'kdri']
+};
+// ---------- 일상 약품·영양제 ----------
+const SUPPS = [
+  { id:'vitc', n:'비타민 C', ben:[['결핍(괴혈병)을 막고 철분 흡수를 도와요.', 'g'], ['꾸준히 먹으면 감기 기간이 조금(성인 약 8%) 짧아지지만, 감기를 예방하지는 못했어요.', 'h', ['hemila_c']], ['고용량(메가도스)이 암이나 만성질환을 막는다는 근거는 부족해요.', 'h', ['ods_c']]], dose:'권장 성인 100mg/일 · 상한 2,000mg/일 (2020 한국인 영양소 섭취기준). 과일·채소로 충분히 채울 수 있어요 (귤 2개 ≈ 60mg, 키위 1개 ≈ 70mg).', tip:'수용성이라 나누어 먹는 것이 좋아요.', care:'남성이 비타민 C 보충제를 먹을 때 신장결석 위험이 약 2배였다는 연구가 있어요. 신장결석·신장질환, 혈색소증이 있으면 고용량을 피하세요. 고용량은 설사를 일으킬 수 있어요.', src:['kdri', 'ods_c', 'thomas', 'hemila_c'] },
+  { id:'worm', n:'구충제 (알벤다졸·플루벤다졸)', ben:[['약국에서 사는 구충제는 회충·요충 등 장내 기생충을 없애는 약이에요. 예방 효과는 없어요 (몸에 오래 남지 않음).', 'g', ['jkma_worm']], ['우리나라 회충·편충 감염률은 0.5% 미만이라 “봄·가을 온 가족 정기 복용”은 더 이상 권장되지 않아요. 증상이나 위험 요인이 있으면 대변 검사 후 복용하세요.', 'g', ['jkma_worm', 'brief_worm']], ['간흡충(간디스토마)은 약국 구충제로 치료되지 않아요. 자연산 민물고기를 날로 먹은 적이 있다면 보건소 검사를 받으세요.', 'g', ['kdca_worm']]], dose:'성인 1회 1정 (제품 설명서 따르기). 알벤다졸은 요충 재감염 방지를 위해 2주 뒤 한 번 더 먹기도 해요.', tip:'항문 가려움(요충), 날음식·민물고기 생식, 반려동물, 위생이 좋지 않은 지역 여행 후라면 복용을 고려하세요. 요충은 가족이 함께 치료해요.', care:'임신 중(또는 가능성), 수유 중, 2세 미만은 복용하지 마세요. 간질환이 있으면 의사와 상의하세요. ⚠ 동물용 구충제 펜벤다졸이 암을 치료한다는 주장은 사람 근거가 없고, 식약처와 대한암학회가 복용하지 말라고 권고했어요.', src:['jkma_worm', 'brief_worm', 'kdca_worm', 'mfds_fen'] },
+  { id:'vitd', n:'비타민 D', ben:[['뼈 건강과 칼슘 흡수에 필요해요. 결핍이 흔해요(실내 생활).', 'g'], ['결핍이 없는 성인에게 고용량을 주었을 때 암·심혈관질환 예방 효과는 없었어요 (VITAL 임상).', 'h', ['vital_d']]], dose:'충분섭취 성인 10μg(400IU)/일, 65세 이상 15μg · 상한 100μg(4,000IU)/일.', tip:'지용성이라 식사와 함께. 하루 15~30분 팔다리에 햇볕 쬐기, 등푸른생선·햇볕 말린 버섯도 좋아요.', care:'고용량을 오래 먹으면 고칼슘혈증이 생길 수 있어요. 신장결석·부갑상선 질환이 있으면 의사와 상의하세요.', src:['kdri', 'ods_d', 'vital_d'] },
+  { id:'omega3', n:'오메가-3 (EPA·DHA)', ben:[['중성지방이 높은 사람의 수치를 낮춰요.', 'h', ['ods_o3']], ['건강한 사람의 심혈관 사건·암 예방 효과는 뚜렷하지 않았어요 (VITAL).', 'h', ['vital_o3']]], dose:'정해진 권장 보충량은 없어요. 식약처 건강기능식품 기준 EPA+DHA 하루 0.5~2g. 주 2회 생선으로 대신할 수 있어요.', tip:'식사와 함께 먹으면 비린 트림이 줄어요. 산패된 제품(역한 냄새)은 버리세요.', care:'하루 1g 넘게 먹으면 심방세동 위험이 조금 늘었다는 메타분석이 있어요. 항응고제·항혈소판제 복용 중, 수술 전에는 의사와 상의하세요.', src:['ods_o3', 'vital_o3', 'gencer'] },
+  { id:'mg', n:'마그네슘', ben:[['근육·신경·혈당 조절에 필요한 무기질이에요. 부족하면 근육 경련이 생길 수 있어요.', 'g']], dose:'권장 성인 남 360~370mg, 여 280mg/일 (음식 포함) · 보충제 상한 350mg/일.', tip:'견과·통곡물·시금치·두부에 많아요. 잠들기 전에 먹는 경우가 많아요.', care:'보충제는 설사를 일으킬 수 있어요. 신장질환이 있으면 쌓일 수 있어 의사와 상의하세요. 일부 항생제(테트라사이클린·퀴놀론)·골다공증약과는 2시간 이상 떨어뜨리세요.', src:['kdri', 'ods_mg'] },
+  { id:'probiotic', n:'유산균 (프로바이오틱스)', ben:[['항생제를 먹는 동안 생기는 설사를 줄이는 데 도움이 된다는 근거가 있어요 (특히 소아).', 'h', ['guo']], ['균주마다 효과가 달라 “모든 유산균이 장에 좋다”고 말하기는 어려워요.', 'g', ['nccih_pro']]], dose:'식약처 건강기능식품 기준 1억~100억 CFU/일 (제품 표시 확인).', tip:'김치·요거트·청국장 같은 발효식품도 좋아요. 항생제와는 2시간 이상 떨어뜨려 드세요.', care:'면역이 크게 떨어진 분(항암 치료 중, 중환자, 중심정맥관)은 감염 위험이 있어 의사와 상의하세요.', src:['ods_pro', 'nccih_pro', 'guo'] },
+  { id:'zinc', n:'아연', ben:[['면역·상처 회복·미각에 필요해요.', 'g'], ['감기 초기에 아연 로젠지를 먹으면 기간이 짧아졌다는 메타분석이 있어요.', 'h', ['hemila_zn']]], dose:'권장 성인 남 10mg, 여 8mg/일 · 상한 35mg/일.', tip:'굴·소고기·콩·견과에 많아요.', care:'오래 고용량을 먹으면 구리 결핍(빈혈·신경 이상)이 생길 수 있어요. 일부 항생제와 2시간 이상 간격. 코에 뿌리는 아연은 후각 상실 보고가 있어 피하세요.', src:['kdri', 'ods_zn', 'hemila_zn'] },
+  { id:'iron', n:'철분', ben:[['철결핍성 빈혈의 치료·예방에 효과가 분명해요. 가임기 여성·임신부에게 흔히 필요해요.', 'h', ['ods_fe']]], dose:'권장 성인 남 10mg, 여(19~49세) 14mg/일 · 상한 45mg/일.', tip:'빈혈 검사 후 필요한 경우에 드세요. 비타민 C와 함께 먹으면 흡수가 좋고, 차·커피·칼슘·제산제와는 2시간 떨어뜨리세요.', care:'변비·속쓰림이 흔해요. 빈혈이 없는 남성·폐경 여성이 오래 먹으면 철 과잉이 될 수 있어요. 어린이에게는 과량 복용이 위험하니 손이 닿지 않는 곳에 보관하세요.', src:['kdri', 'ods_fe'] }
+];
+const SUPP_FAST = '단식 중·후 주의: 물 금식 중에는 의사가 권한 전해질 외의 영양제는 쉬는 것이 좋아요. 지용성 비타민(D·오메가-3)은 음식과 함께여야 흡수되고, 빈속의 철분·아연·마그네슘은 메스꺼움·설사를 일으킬 수 있어요. 회복식 기간에는 음식이 안정된 뒤 하나씩 다시 시작하세요.';
+const HEALTH_VERSES = ['창세기 1:29', '다니엘 1:12', '다니엘 1:15', '고린도후서 4:16', '고린도전서 6:19'];
+
+// ---------- 화면 ----------
+const HV = { sec:'auto', q:'', tag:'전체', open:'' };
+function openHealth(sec, id) { HV.sec = sec || 'auto'; HV.open = id || ''; HV.q = ''; HV.tag = '전체'; showTab('health'); if (id) setTimeout(() => { const el = document.getElementById('hf-' + id); if (el) el.scrollIntoView({ block:'start' }); }, 30); }
+function hvl(r) { return okRefs([r]).length ? '<p class="vline">“' + vt(r) + '” <span>— ' + r + '</span></p>' : ''; }
+function claimList(arr) { return arr.map(c => '<li>' + c[0] + ' ' + eviTag(c[1]) + (c[2] && c[2].length ? ' <span class="cite">[' + c[2].map(k => '<a href="' + citeUrl(k) + '" target="_blank" rel="noopener">' + (CITE[k].t.split(' (')[0].split(' — ')[0]) + '</a>').join(', ') + ']</span>' : '') + '</li>').join(''); }
+function hfMatch(f, q) { q = q.trim(); if (!q) return true; return (f.n + ' ' + f.comp + ' ' + f.kw.join(' ') + ' ' + f.tags.join(' ')).toLowerCase().includes(q.toLowerCase()); }
+function hfCard(f) {
+  return '<details class="hcard" id="hf-' + f.id + '"' + (HV.open === f.id ? ' open' : '') + '><summary><b>' + f.n + '</b><span class="muted"> · ' + f.comp.split(',')[0] + '</span></summary>' +
+    '<p><b>주요 성분</b> ' + f.comp + '</p><p><b>근거로 본 효과</b></p><ul class="claims">' + claimList(f.ben) + '</ul>' +
+    '<p><b>이렇게 드세요</b> ' + f.how + '</p><p class="care"><b>주의</b> ' + f.care + '</p>' + srcLine(f.src) + '</details>';
+}
+function renderHealthFoods() {
+  const list = HFOODS.filter(f => (HV.tag === '전체' || f.tags.includes(HV.tag)) && hfMatch(f, HV.q));
+  return '<div class="card"><h3>🥕 항산화·건강 식품</h3><input class="inp" id="hfQ" type="search" placeholder="식품·성분 검색 (예: 리코펜, 마늘)" value="' + esc(HV.q) + '" oninput="HV.q=this.value;hfRefresh()">' +
+    '<div class="chips" style="margin-top:8px;">' + HF_TAGS.map(t => '<button class="chip' + (HV.tag === t ? ' on' : '') + '" onclick="HV.tag=\'' + t + '\';hfRefresh()">' + t + '</button>').join('') + '</div>' +
+    '<p class="muted" id="hfCount">' + list.length + '개 식품</p><div id="hfList">' + (list.length ? list.map(hfCard).join('') : '<p class="muted">찾는 식품이 없어요. 다른 이름으로 검색해 보세요.</p>') + '</div>' + hvl('창세기 1:29') + '</div>';
+}
+function hfRefresh() {
+  const list = HFOODS.filter(f => (HV.tag === '전체' || f.tags.includes(HV.tag)) && hfMatch(f, HV.q));
+  const L = document.getElementById('hfList'); if (!L) return;
+  L.innerHTML = list.length ? list.map(hfCard).join('') : '<p class="muted">찾는 식품이 없어요. 다른 이름으로 검색해 보세요.</p>';
+  document.getElementById('hfCount').textContent = list.length + '개 식품';
+  document.querySelectorAll('#s-health .chips .chip').forEach(b => b.classList.toggle('on', b.textContent === HV.tag));
+}
+function renderAuto() {
+  const s = (t, arr) => '<div class="isec"><h4>' + t + '</h4><ul class="claims">' + claimList(arr) + '</ul></div>';
+  return '<div class="card"><h3>🔆 자가포식 (Autophagy)</h3><p>' + AUTO.intro + '</p>' + hvl('고린도후서 4:16') +
+    s('🏅 오스미 요시노리의 발견', AUTO.story) + s('⏱ 금식이 자가포식을 켜는 방법', AUTO.how) +
+    '<div class="isec"><h4>⏱ 공복 시간에 따른 단계 (앱의 스위치 기준)</h4><ul class="claims">' + AF_STAGES.slice(1).map(x => '<li><b>' + x.h + '시간 ' + x.icon + ' ' + x.t + '</b> — ' + x.m + ' ' + eviTag(x.e) + '</li>').join('') + '</ul><p class="muted" style="font-size:13px;">사람에서 정확한 시점은 아직 밝혀지지 않았어요. 16시간은 사람 연구(18시간 공복)와 동물 연구를 바탕으로 정한 “시작 무렵”의 대략적인 기준이에요.</p></div>' +
+    '<div class="isec"><h4>🧹 무엇을 청소하나요?</h4><ul class="claims">' + AUTO.clean.map(c => '<li><b>' + c[0] + '</b> — ' + c[1] + ' ' + eviTag(c[2]) + ' <span class="cite">[' + c[3].map(k => '<a href="' + citeUrl(k) + '" target="_blank" rel="noopener">' + CITE[k].t.split(' (')[0] + '</a>').join(', ') + ']</span></li>').join('') + '</ul></div>' +
+    s('🫀 혈관과 자가포식', AUTO.vessel) +
+    '<div class="isec"><h4>🧠 뇌·면역·노화</h4><ul class="claims">' + AUTO.more.map(c => '<li><b>' + c[0] + '</b> — ' + c[1] + ' ' + eviTag(c[2]) + '</li>').join('') + '</ul></div>' +
+    '<div class="warn" style="margin-top:10px;">' + AUTO.caution + '</div>' +
+    '<details class="more"><summary>참고 문헌 전체 보기</summary><ol class="refs">' + ['nobel', 'takeshige', 'tsukada', 'miz04', 'alir', 'bagh', 'mizlev', 'jam', 'anton', 'kim11', 'youle', 'singh', 'naka', 'gut', 'hara', 'komatsu', 'vion', 'razani', 'liao', 'rubin', 'levine11'].map(k => '<li>' + esc(CITE[k].t) + ' — <a href="' + citeUrl(k) + '" target="_blank" rel="noopener">' + (CITE[k].d ? 'doi:' + CITE[k].d : CITE[k].u) + '</a></li>').join('') + '</ol></details></div>';
+}
+function renderJuice() {
+  return '<div class="card"><h3>🥤 해독 주스·효소·채소·과일</h3><div class="isec"><h4>정직한 과학</h4><ul class="claims">' + claimList(JUICE.science) + '</ul></div>' +
+    '<div class="isec"><h4>🥗 하루에 얼마나?</h4><p>' + JUICE.daily + '</p>' + srcLine(JUICE.dailySrc) + '</div>' +
+    '<div class="isec"><h4>🍹 레시피</h4>' + JUICE.recipes.map(r => '<details class="hcard"><summary><b>' + r.n + '</b></summary><p>' + r.r + '</p><p><b>팁</b> ' + r.tip + '</p><p class="care"><b>주의</b> ' + r.care + '</p></details>').join('') +
+    '<div class="warn" style="margin-top:8px;">당뇨가 있다면 과일 주스 대신 채소 위주로, 한 번에 한 컵(150~200ml) 이하로, 식사와 함께 드세요. 주스로 식사를 대신하지 마세요.</div>' + srcLine(['who_diet', 'hsph_fv']) + '</div>' +
+    '<div class="isec"><h4>🧪 날음식 속 효소, 정말 효과가 있을까?</h4><ul class="claims">' + JUICE.enzymes.map(e => '<li><b>' + e[0] + '</b> — ' + e[1] + ' ' + eviTag(e[2]) + '</li>').join('') + '</ul>' + srcLine(['nccih_brom', 'nccih_detox']) + '</div>' + hvl('다니엘 1:12') + hvl('다니엘 1:15') + '</div>';
+}
+function renderSupps() {
+  return '<div class="card"><h3>💊 일상 약품·영양제</h3><p class="muted">특정 제품을 추천하지 않아요. 복용 전에는 <b>의사·약사와 상담</b>하세요. 특히 다른 약을 먹고 있거나 임신·수유 중이라면 꼭 확인하세요.</p>' +
+    SUPPS.map(s => '<details class="hcard" id="hf-' + s.id + '"' + (HV.open === s.id ? ' open' : '') + '><summary><b>' + s.n + '</b></summary><p><b>효능 (근거 수준)</b></p><ul class="claims">' + claimList(s.ben) + '</ul><p><b>권장량·상한</b> ' + s.dose + '</p><p><b>복용 팁</b> ' + s.tip + '</p><p class="care"><b>주의·상호작용</b> ' + s.care + '</p><p class="muted" style="font-size:13px;">💬 복용 전 의사·약사와 상담하세요.</p>' + srcLine(s.src) + '</details>').join('') +
+    '<div class="warn" style="margin-top:10px;">' + SUPP_FAST + '</div>' + hvl('고린도전서 6:19') + '</div>';
+}
+function renderHealth() {
+  const tabs = [['auto', '🔆 자가포식'], ['food', '🥕 식품'], ['juice', '🥤 주스·효소'], ['supp', '💊 영양제']];
+  let h = '<h2 class="ttl">건강 정보</h2><p class="muted" style="margin-top:-6px;">연구로 확인된 만큼만, 출처와 함께 알려 드려요. 의학적 진단·치료를 대신하지 않아요.</p>' +
+    '<div class="seg htabs">' + tabs.map(t => '<button class="opt' + (HV.sec === t[0] ? ' sel' : '') + '" data-sec="' + t[0] + '" onclick="HV.sec=\'' + t[0] + '\';HV.open=\'\';rerender()">' + t[1] + '</button>').join('') + '</div>';
+  h += HV.sec === 'food' ? renderHealthFoods() : HV.sec === 'juice' ? renderJuice() : HV.sec === 'supp' ? renderSupps() : renderAuto();
+  document.getElementById('s-health').innerHTML = h;
+}
+// 식단 음식 → 건강 정보 카드 연결
+function hfFor(name) { return HFOODS.find(f => f.kw.some(k => name.includes(k))); }
+function hfLinks(items) {
+  const seen = {}, fs = [];
+  items.forEach(i => { const f = hfFor(i.n || ''); if (f && !seen[f.id]) { seen[f.id] = 1; fs.push(f); } });
+  return fs.length ? '<p class="hlinks">🌿 ' + fs.map(f => '<a href="javascript:void 0" onclick="openHealth(\'food\',\'' + f.id + '\')">' + f.n.split(' ')[0] + '</a>').join(' · ') + '</p>' : '';
+}
 // ===================== 소그룹 (이 기기에만 저장) =====================
 function groupCard() {
   const g = S.group, T = ymd(), t = g.notes[T] || {};
   return '<div class="card"><h3>👥 소그룹 <span class="tag">이 기기에만 저장</span></h3>' +
-    '<p style="font-size:14px; color:#ffcabf; margin:4px 0 8px;">서버가 없어 다른 사람과 동기화되지 않아요. 공유 버튼으로 요약을 보내 주세요.</p>' +
+    '<p style="font-size:14px; color:#efcdbf; margin:4px 0 8px;">서버가 없어 다른 사람과 동기화되지 않아요. 공유 버튼으로 요약을 보내 주세요.</p>' +
     '<div class="row"><input class="inp grow" id="grpName" placeholder="그룹 이름" value="' + esc(g.name) + '"><button class="btn sec" style="width:80px;" onclick="saveGroupName()">저장</button></div>' +
     '<div class="row" style="margin-top:8px;"><input class="inp grow" id="memName" placeholder="멤버 이름"><button class="btn sec" style="width:80px;" onclick="addMember()">추가</button></div>' +
     (g.members.length ? '<p class="muted" style="margin-top:10px;">오늘(' + fmtMD(T) + ')의 응원 · 기도 제목</p>' : '') +

@@ -1,5 +1,5 @@
 // Purify service worker — 오프라인 캐시 (사용자 데이터는 localStorage에 있으며 SW는 건드리지 않음)
-const CACHE = 'purify-v3-2';
+const CACHE = 'purify-v3-3';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './favicon.png',
   './icons/icon-192.png', './icons/icon-512.png', './icons/icon-512-maskable.png', './icons/apple-touch-icon.png',
   './audio/purify-bgm.mp3'];

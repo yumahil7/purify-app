@@ -113,6 +113,9 @@
   .share-pre { white-space:pre-wrap; font-size:14px; background:rgba(0,0,0,.25); border-radius:14px; padding:12px; color:#e8e2d6; max-height:240px; overflow:auto; }
   .member { border-top:1px solid rgba(255,255,255,.07); padding:10px 0; }
   .member .inp { margin-top:8px; min-height:48px; font-size:15.5px; }
+  .musicbtn { position:absolute; top:calc(14px + env(safe-area-inset-top)); right:10px; z-index:60; width:44px; height:44px; border-radius:22px; border:1px solid rgba(212,175,119,.45); background:rgba(10,22,40,.75); color:var(--p); font-size:20px; cursor:pointer; display:flex; align-items:center; justify-content:center; font-family:inherit; -webkit-backdrop-filter:blur(6px); backdrop-filter:blur(6px); }
+  .musicbtn.off { color:var(--m); opacity:.7; }
+  .musicbtn.off::after { content:''; position:absolute; width:26px; height:2px; background:var(--m); transform:rotate(-45deg); border-radius:1px; }
 </style>
 </head>
 <body>
@@ -133,6 +136,7 @@
       <button class="iconbtn hide" id="mainBack" onclick="goBack()" aria-label="뒤로">‹</button>
       <div class="brand">PURIFY</div>
       <button class="iconbtn sm" onclick="shareToday()" aria-label="오늘 요약 공유">⤴</button>
+      <div style="width:46px"></div>
     </div>
     <div class="body" id="mainBody">
       <div class="screen" id="s-today"></div>
@@ -150,6 +154,7 @@
   </div>
 
   <div id="toast" class="toast"></div>
+  <button id="musicBtn" class="musicbtn" onclick="musicToggle()" aria-pressed="true" aria-label="배경 음악 끄기" title="배경 음악 끄기">♪</button>
 </div>
 <script>
 'use strict';
@@ -970,9 +975,118 @@ function renderMe() {
   h += '<div class="card"><h3>⚕ 안전 안내</h3><details><summary>이 앱은 의학적 조언이 아니에요</summary><p style="font-size:15px;">임신·수유 중, 당뇨, 약 복용 중, 18세 미만, 섭식장애 경험, 심장·신장 질환이 있다면 식단·금식을 바꾸기 전에 반드시 의사와 상담하세요. 칼로리와 기준값은 일반적인 참고값이에요.</p></details>' +
     '<details><summary>🛑 즉시 중단 기준</summary><ul class="l">' + STOP_LIST.map(s => '<li>' + s + '</li>').join('') + '</ul><p class="muted">의료기관에 연락하세요. 응급 시 119.</p></details>' +
     '<details><summary>혈압 · 혈당 참고 기준</summary><p class="muted">수축기 혈압 120 미만 정상 · 140 이상 고혈압 범위 · 90 이하 저혈압 주의<br>공복 혈당 70~99 정상 · 100~125 당뇨 전 단계 · 126 이상 주의 · 70 미만 저혈당</p></details></div>';
+  h += '<div class="card"><div class="sec-title"><h3>🎵 배경 음악</h3><span class="muted" id="musicState">' + (musicOn() ? '켜짐' : '꺼짐') + '</span></div><p class="muted">직접 만든 잔잔한 피아노 음악이에요 (저작권 걱정 없음). 화면을 나가면 자동으로 멈춰요.</p><button class="btn sm sec" id="musicSet" onclick="musicToggle()">' + (musicOn() ? '음악 끄기' : '음악 켜기') + '</button></div>';
   h += '<button class="btn ghost" onclick="resetAll()" style="opacity:.8;">모든 기록 초기화</button><p class="muted" style="text-align:center; margin-top:12px;">Purify v3 · 성경 본문 개역한글</p>';
   el.innerHTML = h;
 }
+// ===================== 배경 음악 (직접 합성한 저작권 없는 음악) =====================
+// 파일 구조: [끝 0.5초 | 80초 루프 | 처음 0.5초] → 두 인스턴스를 60ms 크로스페이드로 이어 붙여 끊김·클릭 없이 반복
+const MUSIC_KEY = 'purifyMusic', MUSIC_VOL = 0.35, M_PAD = 0.5, M_LEN = 80, M_XF = 0.06, M_FADE = 2.5;
+const Music = { ctx:null, gain:null, buf:null, loading:null, nextT:0, timer:0, started:false, want:false, el:null, mode:'', srcs:[] };
+function musicOn() { try { return localStorage.getItem(MUSIC_KEY) !== 'off'; } catch(e) { return true; } }
+function musicSetPref(on) { try { localStorage.setItem(MUSIC_KEY, on ? 'on' : 'off'); } catch(e) {} }
+function musicUI() {
+  const on = musicOn(), b = document.getElementById('musicBtn');
+  if (b) { b.classList.toggle('off', !on); b.setAttribute('aria-pressed', on ? 'true' : 'false'); b.setAttribute('aria-label', on ? '배경 음악 끄기' : '배경 음악 켜기'); b.title = on ? '배경 음악 끄기' : '배경 음악 켜기'; }
+  const s = document.getElementById('musicSet'); if (s) s.textContent = on ? '음악 끄기' : '음악 켜기';
+  const st = document.getElementById('musicState'); if (st) st.textContent = on ? '켜짐' : '꺼짐';
+}
+function musicFade(v, sec) {
+  if (Music.mode === 'ctx' && Music.gain) {
+    const g = Music.gain.gain, t = Music.ctx.currentTime;
+    g.cancelScheduledValues(t); g.setValueAtTime(g.value, t); g.linearRampToValueAtTime(v, t + sec);
+  } else if (Music.mode === 'el' && Music.el) {
+    const a = Music.el, from = a.volume, t0 = now(); clearInterval(Music.elFade);
+    Music.elFade = setInterval(() => { const k = Math.min(1, (now() - t0) / (sec * 1000)); try { a.volume = from + (v - from) * k; } catch(e) {} if (k >= 1) clearInterval(Music.elFade); }, 50);
+  }
+}
+function musicLoad() {
+  if (Music.buf) return Promise.resolve(Music.buf);
+  if (Music.loading) return Music.loading;
+  Music.loading = fetch('audio/purify-bgm.mp3').then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.arrayBuffer(); })
+    .then(ab => new Promise((res, rej) => { const p = Music.ctx.decodeAudioData(ab, res, rej); if (p && p.then) p.then(res, rej); }))
+    .then(b => (Music.buf = b));
+  Music.loading.catch(() => { Music.loading = null; });
+  return Music.loading;
+}
+function musicInstance(T, first) {
+  const c = Music.ctx, src = c.createBufferSource(), g = c.createGain();
+  src.buffer = Music.buf; src.connect(g); g.connect(Music.gain);
+  const h = M_XF / 2;
+  if (first) { g.gain.setValueAtTime(1, T); src.start(T, M_PAD); }
+  else { g.gain.setValueAtTime(0, T - h); g.gain.linearRampToValueAtTime(1, T + h); src.start(T - h, M_PAD - h); }
+  g.gain.setValueAtTime(1, T + M_LEN - h); g.gain.linearRampToValueAtTime(0, T + M_LEN + h);
+  src.stop(T + M_LEN + h + 0.02);
+  Music.srcs.push(src); src.onended = () => { Music.srcs = Music.srcs.filter(s => s !== src); };
+}
+function musicSchedule() {
+  if (Music.mode !== 'ctx' || !Music.started) return;
+  while (Music.nextT - Music.ctx.currentTime < 4) { musicInstance(Music.nextT, false); Music.nextT += M_LEN; }
+}
+function musicFallback() {
+  Music.mode = 'el';
+  if (!Music.el) {
+    const a = document.createElement('audio');
+    a.src = a.canPlayType && a.canPlayType('audio/mp4; codecs="mp4a.40.2"') ? 'audio/purify-bgm.m4a' : 'audio/purify-bgm.mp3';
+    a.preload = 'auto'; a.volume = 0;
+    a.addEventListener('timeupdate', () => { if (a.currentTime >= M_PAD + M_LEN) a.currentTime -= M_LEN; });
+    a.addEventListener('ended', () => { a.currentTime = M_PAD; const p = a.play(); if (p && p.catch) p.catch(() => {}); });
+    Music.el = a;
+  }
+  const a = Music.el; try { if (a.currentTime < M_PAD) a.currentTime = M_PAD; } catch(e) {}
+  const p = a.play(); if (p && p.then) p.then(() => musicFade(MUSIC_VOL, M_FADE), () => {}); else musicFade(MUSIC_VOL, M_FADE);
+}
+// 사용자 제스처 안에서 호출되어야 함 (자동재생 정책)
+function musicStart() {
+  if (!musicOn()) return;
+  Music.want = true;
+  const AC = window.AudioContext || window.webkitAudioContext;
+  if (!AC || Music.mode === 'el') return musicFallback();
+  try {
+    if (!Music.ctx) { Music.ctx = new AC(); Music.gain = Music.ctx.createGain(); Music.gain.gain.value = 0; Music.gain.connect(Music.ctx.destination); }
+    Music.mode = 'ctx';
+    const c = Music.ctx;
+    try { const s = c.createBufferSource(); s.buffer = c.createBuffer(1, 1, 22050); s.connect(c.destination); s.start(0); } catch(e) {} // iOS 잠금 해제
+    if (c.state === 'suspended' && c.resume) c.resume().catch(() => {});
+    musicLoad().then(() => {
+      if (!Music.want || document.hidden) return;
+      if (!Music.started) {
+        Music.started = true; const T = c.currentTime + 0.05;
+        musicInstance(T, true); Music.nextT = T + M_LEN;
+        clearInterval(Music.timer); Music.timer = setInterval(musicSchedule, 1000); musicSchedule();
+      }
+      musicFade(MUSIC_VOL, M_FADE);
+    }).catch(() => { Music.mode = ''; musicFallback(); });
+  } catch(e) { musicFallback(); }
+}
+function musicStop(fadeSec) {
+  Music.want = false;
+  musicFade(0, fadeSec || 0.6);
+  setTimeout(() => {
+    if (Music.want) return;
+    if (Music.mode === 'ctx' && Music.ctx && Music.ctx.state === 'running' && Music.ctx.suspend) Music.ctx.suspend().catch(() => {});
+    if (Music.mode === 'el' && Music.el) Music.el.pause();
+  }, (fadeSec || 0.6) * 1000 + 80);
+}
+function musicToggle() {
+  const on = !musicOn(); musicSetPref(on); musicUI();
+  if (on) { musicStart(); toast('🎵 배경 음악을 켰어요.'); } else { musicStop(); toast('배경 음악을 껐어요.'); }
+}
+function musicGesture(e) {
+  if (e && e.target && e.target.closest && e.target.closest('#musicBtn, #musicSet')) return;
+  if (Music.want || !musicOn()) return;
+  musicStart();
+}
+['click', 'touchend', 'keydown'].forEach(ev => document.addEventListener(ev, musicGesture, true));
+document.addEventListener('visibilitychange', () => {
+  if (document.hidden) {
+    if (Music.mode === 'ctx' && Music.ctx && Music.ctx.state === 'running') { Music.gain.gain.cancelScheduledValues(Music.ctx.currentTime); Music.gain.gain.setValueAtTime(0, Music.ctx.currentTime); Music.ctx.suspend().catch(() => {}); }
+    if (Music.mode === 'el' && Music.el) Music.el.pause();
+  } else if (Music.want && musicOn()) {
+    if (Music.mode === 'ctx' && Music.ctx) { Music.ctx.resume().then(() => musicFade(MUSIC_VOL, 1.5)).catch(() => {}); }
+    else if (Music.mode === 'el' && Music.el) { Music.el.volume = 0; const p = Music.el.play(); if (p && p.then) p.then(() => musicFade(MUSIC_VOL, 1.5), () => {}); }
+  }
+});
 // ===================== 소그룹 (이 기기에만 저장) =====================
 function groupCard() {
   const g = S.group, T = ymd(), t = g.notes[T] || {};
@@ -1074,7 +1188,7 @@ function importFromFile(input) {
 }
 function resetAll() {
   if (!confirm('모든 기록(프로필, 식단, 체중, 프로그램, 그룹 등)을 지울까요? 되돌릴 수 없어요.')) return;
-  lsDel(KEY); LEGACY.forEach(lsDel);
+  lsDel(KEY); LEGACY.forEach(lsDel); lsDel('purifyMusic');
   try { location.reload(); } catch(e) {}
 }
 
@@ -1083,6 +1197,7 @@ let lastDate = '';
 function init() {
   load();
   lastDate = ymd();
+  musicUI();
   if (S.onboarded && S.profile.height && S.disclaimerAt) showMain('today');
   else startOnboarding('intro', 'new');
   setInterval(() => {

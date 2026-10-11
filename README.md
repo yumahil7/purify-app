@@ -8,4 +8,4 @@
 - Cloudflare Pages: Workers & Pages → Create → Pages → Upload assets
 
 HTTPS에서 열어야 설치(홈 화면에 추가)와 오프라인이 동작합니다.
-앱을 수정하면 sw.js의 CACHE 이름(purify-v3-1)을 올려 주세요.
+앱을 수정하면 sw.js의 CACHE 이름(purify-v3-2)을 올려 주세요.

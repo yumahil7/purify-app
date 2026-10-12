@@ -1,5 +1,5 @@
 // Purify service worker — 오프라인 캐시 (사용자 데이터는 localStorage에 있으며 SW는 건드리지 않음)
-const CACHE = 'purify-v3-6';
+const CACHE = 'purify-v3-7';
 const ASSETS = ['./', './index.html', './manifest.webmanifest', './favicon.png',
   './icons/icon-192.png', './icons/icon-512.png', './icons/icon-512-maskable.png', './icons/apple-touch-icon.png',
   './audio/purify-bgm.mp3', './audio/ave-maria.mp3',
@@ -8,7 +8,7 @@ self.addEventListener('install', e => {
   e.waitUntil(caches.open(CACHE).then(c => c.addAll(ASSETS)).then(() => self.skipWaiting()));
 });
 self.addEventListener('activate', e => {
-  e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k.startsWith('purify-') && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
+  e.waitUntil(caches.keys().then(keys => Promise.all(keys.filter(k => k.startsWith('purify-') && !k.startsWith('purify-en-') && k !== CACHE).map(k => caches.delete(k)))).then(() => self.clients.claim()));
 });
 // <audio>가 보내는 Range 요청에 캐시된 파일로 206 응답 (iOS Safari 호환)
 async function rangeResponse(req, res) {

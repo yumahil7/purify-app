@@ -1676,6 +1676,7 @@ function renderMe() {
   h += groupCard();
   h += '<div class="card"><h3>💾 백업</h3><p class="muted">모든 기록을 파일로 저장하거나 불러와요. 기기를 바꿀 때 사용하세요.</p><button class="btn sm sec" onclick="downloadBackup()">⬇ 백업 내보내기</button><button class="btn sm sec" onclick="document.getElementById(\'importFile\').click()">⬆ 백업 가져오기</button><input type="file" id="importFile" accept="application/json,.json" style="display:none;" onchange="importFromFile(this)"></div>';
   h += '<div class="card"><h3>✦ Purify 이야기</h3><p class="muted">' + TAGLINE + ' — ' + TAGSUB + '</p><button class="btn sm sec" id="introAgain" onclick="showIntroTour()">첫 화면 다시 보기</button></div>';
+  h += '<div class="card" id="langCard"><h3>🌐 Language</h3><a class="btn sm sec" id="langLink" href="https://yumahil7.github.io/purify-app-en/" hreflang="en" lang="en">English version</a></div>';
   h += '<div class="card"><h3>⚕ 안전 안내</h3><details><summary>이 앱은 의학적 조언이 아니에요</summary><p style="font-size:15px;">임신·수유 중, 당뇨, 약 복용 중, 18세 미만, 섭식장애 경험, 심장·신장 질환이 있다면 식단·금식을 바꾸기 전에 반드시 의사와 상담하세요. 칼로리와 기준값은 일반적인 참고값이에요.</p></details>' +
     '<details><summary>🛑 즉시 중단 기준</summary><ul class="l">' + STOP_LIST.map(s => '<li>' + s + '</li>').join('') + '</ul><p class="muted">의료기관에 연락하세요. 응급 시 119.</p></details>' +
     '<details><summary>혈압 · 혈당 참고 기준</summary><p class="muted">수축기 혈압 120 미만 정상 · 140 이상 고혈압 범위 · 90 이하 저혈압 주의<br>공복 혈당 70~99 정상 · 100~125 당뇨 전 단계 · 126 이상 주의 · 70 미만 저혈당</p></details></div>';

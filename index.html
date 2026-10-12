@@ -2335,6 +2335,450 @@ function hfLinks(items) {
   items.forEach(i => { const f = hfFor(i.n || ''); if (f && !seen[f.id]) { seen[f.id] = 1; fs.push(f); } });
   return fs.length ? '<p class="hlinks">🌿 ' + fs.map(f => '<a href="javascript:void 0" onclick="openHealth(\'food\',\'' + f.id + '\')">' + f.n.split(' ')[0] + '</a>').join(' · ') + '</p>' : '';
 }
+
+// ===================== v3-8 simple UX =====================
+const TX = {
+  core:'오늘의 세 가지',
+  coreSub:'이것만 하면 충분해요. 나머지는 자동으로 기록돼요.',
+  cVerse:'말씀 읽기',
+  cVerseHint:'말씀 카드를 열거나 읽으면 자동 체크',
+  cFast:'공복 지키기',
+  cFastHint:'목표 {0}시간 · 타이머가 채우면 자동 체크',
+  cFastWf:'물 금식 중 · 자동으로 기록돼요',
+  cFastRf:'회복식 천천히 · 식단을 체크하면 완료',
+  cWater:'물 마시기',
+  tStart:'공복 시작',
+  tPause:'멈춤',
+  cup:'+ 한 컵',
+  undoCup:'한 컵 빼기',
+  allDone:'오늘의 세 가지를 모두 마쳤어요. 잘하셨어요!',
+  doneOf:'{0}/3 완료',
+  more:'더보기 · 선택 기록',
+  moreSub:'운동, 체크리스트, 칼로리, 돌아보기, 자가포식 단계',
+  autoTick:'자동',
+  checklist:'{0}일차 체크리스트 (자동으로 채워져요)',
+  dietT:'오늘 식사',
+  dietSub:'먹은 양만 한 번 눌러 주세요. 칼로리는 자동 계산돼요.',
+  pLight:'가볍게',
+  pNormal:'보통',
+  pFull:'든든하게',
+  dietOkQ:'오늘 식단 잘 지켰어요?',
+  yes:'네',
+  notQuite:'조금 못 지켰어요',
+  dietOkYes:'잘하셨어요! 오늘 식단 완료로 기록했어요.',
+  dietOkNo:'괜찮아요. 내일 다시, 한 끼씩.',
+  menuRef:'추천 메뉴 보기 (참고용)',
+  kcalAdv:'칼로리 직접 기록 (선택)',
+  weighT:'체중',
+  weighSub:'지난 기록에서 ± 로 맞추고 한 번 저장하세요.',
+  weighDaily:'🩺 오늘의 측정',
+  weighDailySub:'금식·회복식 중에는 매일 아침 재요. 혈당 70 미만이면 즉시 중단.',
+  save:'저장',
+  bpbs:'혈압 · 혈당 (선택)',
+  bpPh:'수축기 혈압',
+  bsPh:'공복 혈당',
+  savedToday:'오늘 기록함',
+  nextIn:'다음 체크인 {0}일 후',
+  height:'키',
+  weight:'현재 체중',
+  goal:'목표 체중',
+  age:'나이',
+  ageU:'세',
+  pickHint:'밀거나 ± 를 눌러 고르세요. 입력할 필요 없어요.',
+  bodyT:'키와 체중',
+  bodyLead:'현재 상태와 바라는 목표를 골라 주세요.',
+  pWho:'누구에게',
+  pLen:'기간',
+  pKey:'핵심 3가지',
+  tabs:'개요|하는 방법|안전|회복식|말씀',
+  sfEasy:'🟢 누구나 시작 가능',
+  sfCare:'🟡 주의하며 진행',
+  sfDoc:'🟠 의사 상담 권장',
+  sfMed:'🔴 의료 감독 필요',
+  rfNone:'이 프로그램은 금식이 아니어서 따로 회복식이 필요 없어요. 평소처럼 천천히, 골고루 드세요.',
+  rfFast:'금식을 마친 뒤에는 죽·채소처럼 부드러운 음식으로 조금씩 시작하세요. 과식하면 배탈이나 부종이 올 수 있어요.',
+  rfWf:'물 금식이 끝나면 회복식이 자동으로 이어져요 (금식 기간의 약 절반). 첫날은 미음·죽으로, 아주 조금씩 자주 드세요.',
+  sfCommon:'어지럼, 실신, 가슴 두근거림, 혈당 70 미만 등이 나타나면 즉시 중단하고 의료기관에 연락하세요.',
+  noVerse:'이 프로그램의 말씀은 매일 오늘 화면에서 함께 읽어요.',
+  details:'자세히 보기 (단계별)',
+  meMenu:'⚙ 설정 · 백업 · 안내',
+  meEdit:'다른 설정',
+  slideHint:'{0}~{1}',
+  stopFast:'🛑 오늘 중단하기 (회복식으로)',
+  stopT:'🛑 이럴 땐 즉시 중단하세요',
+  stopCall:'의료기관에 연락하세요. 응급 시 119.',
+  eatenOf:'섭취 / {0}',
+  exK:'운동 kcal',
+  waterOf:'물 / {0}',
+  exT:'🏃 오늘의 운동',
+  exHow:'방법 보기',
+  exAbout:'약 {0}kcal',
+  exFastNote:'공복 중 고강도 운동은 피하고, 식사 시간대에 해요.',
+  shuffle:'↻ 다른 메뉴',
+  foodName:'음식 이름',
+  logBtn:'기록',
+  del:'삭제',
+  share:'📤 오늘 요약과 말씀 공유하기',
+  basicT:'기본 정보',
+  basicLead:'맞춤 칼로리를 계산하는 데 필요해요.',
+  nameL:'이름 또는 별명 (선택)',
+  namePh:'예: 은혜',
+  sexL:'성별',
+  female:'여성',
+  male:'남성',
+  ringDay:'{0}일차',
+  ringDone:'완료',
+  ringOf:'/ {0}일',
+  badgeDone:'🏅 완주',
+  portionToast:'기록했어요: {0} · {1}',
+  cupToast:'물 {0}',
+  waterGoal:'오늘 물 목표 달성! 💧',
+  fastDone:'공복 목표 달성! 오늘의 공복을 자동으로 기록했어요.',
+  verseDone:'말씀 읽기 완료 ✓',
+  progDone:'🏅 {0} 완주! 축하해요.',
+  dayDoneT:'{0}일차 완료! 잘하셨어요.',
+  whoSfx:'님, ',
+  perMeal:'끼니별로 양 기록 (선택)',
+  wfVerseT:'🕯 {0}일차 · 오늘의 말씀과 격려',
+  rfVerseT:'🥣 회복식 {0}일차 · 오늘의 말씀',
+  wOpt:' (체중은 선택)',
+  prayerL:'오늘의 기도 · ',
+  mpPlant:' · 채소·곡물·콩 중심',
+  mpWin:' · 식사 시간 12시~8시',
+  mpHp:' · 고단백',
+  mpRf:' · 조금씩 자주',
+  mpNs:' · 간식 절제 중',
+  mpFd:' · 금식일',
+  seek:'성경이 처음이라면 ›',
+  prayerL1:'오늘의 기도 한 줄 · ',
+  exDone:' 완료',
+};
+function txf(k) { let s = TX[k]; for (let i = 1; i < arguments.length; i++) s = s.split('{' + (i - 1) + '}').join(arguments[i]); return s; }
+function isUS() { return typeof uMode === 'function' && uMode() === 'us'; }
+function volS(ml) { return typeof volTxt === 'function' ? volTxt(ml, true) : comma(ml) + 'ml'; }
+function fastGoal() { const pr = PROGRAMS[progId()]; return progActive() && pr.timer ? pr.timer : 12; }
+(function () {
+  const st = document.createElement('style');
+  st.textContent = '.core .crow{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);}' +
+    '.core .crow:first-of-type{border-top:none;} .core .cic{width:40px;height:40px;border-radius:20px;border:2px solid rgba(180,201,166,.5);display:flex;align-items:center;justify-content:center;font-size:20px;flex:none;}' +
+    '.core .crow.done .cic{background:var(--p);color:#17241f;border-color:var(--p);} .core .ctx{flex:1;min-width:0;cursor:pointer;} .core .ctx b{font-size:17px;} .core .ctx small{display:block;color:var(--m);font-size:13.5px;}' +
+    '.core .cbtn{width:auto;min-width:96px;min-height:48px;padding:8px 14px;margin:0;} .corecount{color:var(--p);} .core .bar{margin:6px 0 0;}' +
+    '.pk{display:flex;align-items:center;gap:10px;margin:4px 0 6px;} .pkb{width:56px;height:56px;border-radius:28px;border:1.5px solid rgba(180,201,166,.6);background:transparent;color:var(--p);font-size:26px;flex:none;}' +
+    '.pkv{flex:1;text-align:center;font-size:30px;font-weight:700;color:var(--t);} .pkr{width:100%;accent-color:#b4c9a6;height:32px;margin-bottom:10px;}' +
+    '.wstep{display:flex;align-items:center;gap:10px;margin:8px 0;} .wstep .pkv{font-size:32px;}' +
+    '.mealrow{display:flex;align-items:center;gap:8px;padding:8px 0;border-top:1px solid var(--line);} .mealrow>b{width:52px;flex:none;} .seg3{display:flex;gap:6px;flex:1;}' +
+    '.pchip{flex:1;min-height:44px;border-radius:12px;border:1.5px solid var(--line);background:rgba(255,255,255,.04);color:var(--t);font-size:14.5px;} .pchip.on{border-color:var(--p);background:rgba(180,201,166,.2);color:var(--p);font-weight:700;}' +
+    '.okrow{display:flex;align-items:center;gap:8px;margin-top:10px;flex-wrap:wrap;} .okrow span{flex:1 1 100%;font-weight:600;} .okrow .pchip{flex:1;}' +
+    '.psum{padding:0 4px 6px;font-size:14.5px;} .psum p{margin:2px 0;} .psum ul{margin:2px 0 0;} .sfb{display:inline-block;font-size:13px;padding:3px 9px;border-radius:10px;background:rgba(255,255,255,.07);margin-bottom:4px;}' +
+    '.steps .stabs{display:flex;gap:4px;overflow-x:auto;margin:6px 0 8px;} .steps .stabs button{flex:none;min-height:40px;padding:6px 11px;border-radius:12px;border:1px solid var(--line);background:transparent;color:var(--m);font-size:14px;}' +
+    '.steps .stabs button.on{color:#17241f;background:var(--p);border-color:var(--p);font-weight:700;} .steps .spane{display:none;font-size:15px;} .steps .spane.on{display:block;} .steps .spane p{margin:4px 0;}' +
+    '.autot{font-size:11px;color:var(--p);border:1px solid rgba(180,201,166,.5);border-radius:8px;padding:0 5px;margin-left:6px;}';
+  document.head.appendChild(st);
+})();
+
+// ---------- core three ----------
+function coreState(T) {
+  T = T || ymd();
+  const x = day(T), c = x.core || (x.core = {}), pid = progId(), act = progActive(T);
+  if (pid === 'waterfast' && act) c.fast = true;
+  else if (pid === 'refeed' && act) { if (x.dietOk === true) c.fast = true; }
+  else if (T === ymd() && timerSec() >= fastGoal() * 3600) c.fast = true;
+  c.water = x.water >= plan().water;
+  return c;
+}
+const AUTOMAP = { basic:['diet', 'water', 'ex', 'verse'], if168:['fast', 'fast', 'water', 'verse'], daniel:['diet', 'diet', 'diet', 'verse'], lent:['verse', '', '', ''],
+  oneday:['fast', 'water', '', 'diet'], intensive:['fast', 'diet', 'ex', ''], waterfast:['water', '', 'weigh', 'verse'], refeed:['diet', 'water', '', ''],
+  maintain:['diet', 'weigh', 'ex', 'verse'], companion:['diet', 'ex', '', 'verse'] };
+function autoKinds(T) {
+  const x = day(T), c = x.core || {};
+  return { verse:!!c.verse, fast:!!c.fast, water:!!c.water, diet:x.dietOk === true, ex:Object.keys(x.ex).length > 0,
+    weigh:S.weights.some(w => w.d === T) || S.health.some(r => r.d === T) };
+}
+function autoSync(T) {
+  T = T || ymd(); if (!progActive(T)) return;
+  const n = progDay(T), map = AUTOMAP[progId()] || [], k = autoKinds(T), ch = S.program.checks[n] || (S.program.checks[n] = []);
+  let changed = false;
+  map.forEach((m, i) => { if (m && k[m] && !ch[i]) { ch[i] = true; changed = true; } });
+  if (!changed) return;
+  if (!S.program.done && doneCount() === progLen()) { S.program.done = true; S.program.doneAt = now(); setTimeout(() => toast(txf('progDone', progName()), 4500), 50); }
+  else if (dayDone(n)) setTimeout(() => toast(txf('dayDoneT', n)), 50);
+}
+function markVerse() {
+  const x = day(), c = x.core || (x.core = {}); if (c.verse) return;
+  c.verse = true; c.at = now(); autoSync(); save(); toast(TX.verseDone);
+  if (curTab === 'today') rerender();
+}
+let verseObs = null, verseT = 0;
+function observeVerse() {
+  const el = document.getElementById('todayVerse'); if (!el) return;
+  el.addEventListener('toggle', markVerse, true);
+  el.addEventListener('click', markVerse);
+  if (verseObs) verseObs.disconnect();
+  if (!window.IntersectionObserver || (day().core || {}).verse) return;
+  verseObs = new IntersectionObserver(es => { es.forEach(e => { clearTimeout(verseT); if (e.isIntersecting) verseT = setTimeout(markVerse, 1800); }); }, { threshold:.6 });
+  verseObs.observe(el);
+}
+function coreVerseGo() { const el = document.getElementById('todayVerse'); if (el) el.scrollIntoView({ block:'center', behavior:'smooth' }); markVerse(); }
+function cupTap(ml) {
+  const x = day(), g = plan().water, was = x.water;
+  x.water = Math.max(0, x.water + ml); coreState(); autoSync(); save(); rerender();
+  if (ml > 0) { if (x.water >= g && was < g) ktoast(TX.waterGoal, 'water'); else toast(txf('cupToast', volS(x.water))); }
+}
+function coreRow(id, icon, title, sub, done, right, onTxt) {
+  return '<div class="crow' + (done ? ' done' : '') + '" id="core-' + id + '" data-done="' + (done ? 1 : 0) + '"><span class="cic">' + (done ? '✓' : icon) + '</span>' +
+    '<div class="ctx"' + (onTxt ? ' onclick="' + onTxt + '"' : '') + '><b>' + title + '</b>' + sub + '</div>' + (right || '') + '</div>';
+}
+function coreCard(T, x, P, pid, active) {
+  const c = coreState(T), k = [c.verse, c.fast, c.water].filter(Boolean).length, wf = pid === 'waterfast' && active, rf = pid === 'refeed' && active;
+  let h = '<div class="card core hl" id="coreCard"><div class="sec-title"><h3>✨ ' + TX.core + '</h3><b class="corecount">' + txf('doneOf', k) + '</b></div><p class="muted" style="margin-bottom:4px;">' + TX.coreSub + '</p>';
+  h += coreRow('verse', '📖', TX.cVerse, '<small>' + verseFor(T).r + ' · ' + TX.cVerseHint + '</small>', c.verse, '', 'coreVerseGo()');
+  if (wf) h += coreRow('fast', '⏱', TX.cFast, '<small>' + TX.cFastWf + '</small>', c.fast);
+  else if (rf) h += coreRow('fast', '🥣', TX.cFast, '<small>' + TX.cFastRf + '</small>', c.fast);
+  else {
+    const g = fastGoal(), s = timerSec();
+    h += coreRow('fast', '⏱', TX.cFast, '<small><span id="tmv">' + fmtHMS(s) + '</span> · ' + txf('cFastHint', g) + '</small><div class="bar"><i id="tmbar" style="width:' + Math.min(100, s / (g * 3600) * 100) + '%"></i></div>', c.fast,
+      '<button class="btn sm cbtn' + (S.timer.running ? ' sec' : '') + '" id="timerBtn" onclick="toggleTimer()">' + (S.timer.running ? TX.tPause : TX.tStart) + '</button>');
+  }
+  h += coreRow('water', '💧', TX.cWater, '<small>' + volS(x.water) + ' / ' + volS(P.water) + (x.water > 0 ? ' · <a href="javascript:void 0" onclick="cupTap(-250)">' + TX.undoCup + '</a>' : '') + '</small><div class="bar"><i style="width:' + Math.min(100, x.water / P.water * 100) + '%"></i></div>', c.water,
+    '<button class="btn sm cbtn" id="cupBtn" onclick="cupTap(250)">' + TX.cup + '</button>');
+  if (k === 3) h += '<p class="good" style="margin-top:8px;">' + TX.allDone + '</p>';
+  h += vline('water', T);
+  return h + '</div>';
+}
+const _tickTimer0 = tickTimer;
+tickTimer = function () {
+  _tickTimer0();
+  const b = document.getElementById('tmbar'); if (b) b.style.width = Math.min(100, timerSec() / (fastGoal() * 3600) * 100) + '%';
+  if (curTab === 'today' && document.getElementById('core-fast') && S.timer.running) {
+    const x = day(), c = x.core || (x.core = {});
+    if (!c.fast && timerSec() >= fastGoal() * 3600) { coreState(); autoSync(); save(); rerender(); ktoast(TX.fastDone, 'toast'); }
+  }
+};
+
+// ---------- diet one-tap ----------
+function setPortion(k, i, kcal) {
+  const x = day(); x.por = x.por || {};
+  if (x.por[k] === i) { delete x.por[k]; delete x.meals[k]; }
+  else { x.por[k] = i; x.meals[k] = Math.round(kcal * [0.7, 1, 1.3][i]); ktoast(txf('portionToast', (MEAL_META[k] || {}).n || k, [TX.pLight, TX.pNormal, TX.pFull][i]), 'toast'); }
+  save(); rerender();
+}
+function setDietOk(v) {
+  const x = day(); x.dietOk = v; x.por = x.por || {};
+  if (v) mealPlan(ymd()).meals.forEach(m => { if (!m.fast && x.meals[m.key] === undefined) { x.meals[m.key] = m.k; x.por[m.key] = 1; } });
+  coreState(); autoSync(); save(); rerender();
+  if (v) ktoast(TX.dietOkYes, 'toast'); else ktoast(TX.dietOkNo, 'slip');
+}
+function dietCard(T, x, mp) {
+  const por = x.por || {};
+  const anyPor = mp.meals.some(m => por[m.key] !== undefined || x.meals[m.key] !== undefined);
+  let h = '<div class="card" id="dietCard"><h3>🍽 ' + TX.dietT + '</h3><p class="muted">' + comma(mp.total) + ' kcal' + (mp.plant ? TX.mpPlant : '') + (mp.win ? TX.mpWin : '') + (mp.hp ? TX.mpHp : '') + (mp.refeed ? TX.mpRf : '') + (mp.noSnack ? TX.mpNs : '') + (mp.fastDay ? TX.mpFd : '') + '</p>';
+  h += '<div class="okrow"><span>' + TX.dietOkQ + '</span><button class="pchip' + (x.dietOk === true ? ' on' : '') + '" id="dietYes" onclick="setDietOk(true)">' + TX.yes + '</button><button class="pchip' + (x.dietOk === false ? ' on' : '') + '" id="dietNo" onclick="setDietOk(false)">' + TX.notQuite + '</button></div>';
+  h += '<details id="perMeal" style="margin-top:10px;"' + (anyPor && x.dietOk === undefined ? ' open' : '') + '><summary>' + TX.perMeal + '</summary><p class="muted">' + TX.dietSub + '</p>';
+  mp.meals.forEach(m => {
+    if (m.fast) { h += '<div class="mealrow"><b>' + m.n + '</b><span class="muted">💧</span></div>'; return; }
+    const cur = por[m.key] !== undefined ? por[m.key] : x.meals[m.key] !== undefined ? 1 : -1;
+    h += '<div class="mealrow"><b>' + m.n + '</b><div class="seg3">' + [0, 1, 2].map(i => '<button class="pchip' + (cur === i ? ' on' : '') + '" data-meal="' + m.key + '" data-por="' + i + '" onclick="setPortion(\'' + m.key + '\',' + i + ',' + m.k + ')">' + [TX.pLight, TX.pNormal, TX.pFull][i] + '</button>').join('') + '</div></div>';
+  });
+  h += '</details>';
+  h += '<details><summary>' + TX.menuRef + '</summary>' + vline('meal', T);
+  mp.meals.forEach(m => { h += '<div class="item"><div class="txt"><b>' + m.n + '</b> <small>' + m.time + (m.fast ? '' : ' · ' + comma(m.k) + ' kcal') + '</small><div>' + m.items.map(i => esc(i.n) + (i.amt ? ' ' + i.amt : '')).join(' · ') + '</div>' + hfLinks(m.items) + '</div></div>'; });
+  h += '<button class="link" onclick="shuffleMeals()">' + TX.shuffle + '</button></details>';
+  h += '<details><summary>' + TX.kcalAdv + '</summary><div style="margin-top:4px;">' + QUICK_FOODS.map((q, i) => '<button class="chip" onclick="addQuick(' + i + ')">' + q[0] + ' <small>' + q[1] + '</small></button>').join('') +
+    '<div class="row" style="margin-top:4px;"><input class="inp grow" id="exName" placeholder="' + TX.foodName + '"><input class="inp" id="exKcal" type="number" inputmode="numeric" placeholder="kcal" style="width:96px;"></div><button class="btn sm sec" onclick="addCustomFood()">' + TX.logBtn + '</button>' +
+    (x.extras.length ? '<div class="muted" style="margin-top:6px;">' + x.extras.map((e, i) => esc(e.n) + ' ' + comma(e.k) + ' kcal <button class="link" onclick="delExtra(' + i + ')" aria-label="' + TX.del + '">✕</button>').join('<br>') + '</div>' : '') + '</div></details>';
+  return h + '</div>';
+}
+
+// ---------- weigh-in stepper ----------
+let WV = 0;
+function wUnitS() { return isUS() ? 'lb' : 'kg'; }
+function weighForm(daily) {
+  const ws = S.weights.slice().sort((a, b) => a.d < b.d ? -1 : 1), last = ws[ws.length - 1], kg = last ? +last.kg : (+S.profile.weight || 65);
+  WV = isUS() ? Math.round(kg2lb(kg) * 5) / 5 : Math.round(kg * 10) / 10;
+  return '<div class="wstep"><button class="pkb" id="wMinus" aria-label="−" onclick="wStep(-1)">−</button><div class="pkv"><b id="wDisp">' + WV.toFixed(1) + '</b> <small>' + wUnitS() + '</small></div><button class="pkb" id="wPlus" aria-label="+" onclick="wStep(1)">+</button></div>' +
+    '<input type="hidden" id="wIn" value="' + WV + '">' +
+    '<details' + (daily ? ' open' : '') + '><summary>' + TX.bpbs + '</summary><div class="row" style="margin-top:6px;"><input class="inp grow" id="bpIn" type="number" inputmode="numeric" placeholder="' + TX.bpPh + '"><input class="inp grow" id="bsIn" type="number" inputmode="numeric" placeholder="' + TX.bsPh + '"></div></details>' +
+    '<button class="btn sm" id="wSave" onclick="saveCheckin()">' + TX.save + '</button>';
+}
+function wStep(d) {
+  const st = isUS() ? 0.2 : 0.1; WV = Math.round((WV + d * st) * 10) / 10;
+  const a = document.getElementById('wDisp'), b = document.getElementById('wIn'); if (a) a.textContent = WV.toFixed(1); if (b) b.value = WV;
+}
+function weighCard(T, daily) {
+  const ws = S.weights.slice().sort((a, b) => a.d < b.d ? -1 : 1), last = ws[ws.length - 1];
+  const done = (last && last.d === T) || S.health.some(r => r.d === T), due = !last || diffDays(last.d, T) >= 7;
+  if (daily) return '<div class="card" id="weighCard"><h3>' + TX.weighDaily + (progId() === 'waterfast' ? TX.wOpt : '') + '</h3><p class="muted">' + TX.weighDailySub + '</p>' + (done ? '<p class="good">✓ ' + TX.savedToday + '</p>' : '') + weighForm(true) + '</div>';
+  const head = '<div class="sec-title"><h3>⚖ ' + TX.weighT + '</h3>' + (done ? '<span class="good">✓ ' + TX.savedToday + '</span>' : !due ? '<span class="muted">' + txf('nextIn', 7 - diffDays(last.d, T)) + '</span>' : '') + '</div>';
+  if (due && !done) return '<div class="card" id="weighCard">' + head + '<p class="muted">' + TX.weighSub + '</p>' + weighForm(false) + vline('weight', T) + '</div>';
+  return '<details class="card" id="weighCard"><summary>⚖ ' + TX.weighT + (done ? ' · ✓ ' + TX.savedToday : !due ? ' · ' + txf('nextIn', 7 - diffDays(last.d, T)) : '') + '</summary>' + weightChart(340, 150) + weighForm(false) + '</details>';
+}
+
+// ---------- Today ----------
+renderToday = function () {
+  const el = document.getElementById('s-today'); if (!el) return;
+  checkTransitions();
+  const T = ymd(), x = day(T), P = plan(), pid = progId(), pr = PROGRAMS[pid], n = progDay(T), active = progActive(T);
+  const wf = pid === 'waterfast' && active, mp = mealPlan(T);
+  coreState(T); autoSync(T); save();
+  const who = S.name ? esc(S.name) + TX.whoSfx : '';
+  let h = '<h2 style="margin-bottom:2px;">' + who + greet() + '</h2><p class="muted" style="margin-bottom:14px;">' + fmtMD(T) + ' · ' + tone().greet + '</p>';
+  h += coreCard(T, x, P, pid, active);
+  const dc = doneCount();
+  h += '<div class="card"><div class="ringwrap">' + ring(dc / progLen(), active ? txf('ringDay', n) : TX.ringDone, txf('ringOf', progLen())) +
+    '<div class="grow"><b>' + pr.icon + ' ' + progName() + '</b>' + (S.program.done ? '<span class="badge">' + TX.badgeDone + '</span>' : '') +
+    (active ? '<p style="font-size:14.5px; margin-top:4px;">' + pr.guide(n) + '</p>' : finishedCard(pid)) + '</div></div>' +
+    (wf ? '<button class="btn stop" onclick="stopFast()">' + TX.stopFast + '</button>' : '') + '</div>';
+  const v = verseFor(T);
+  if (v.wf || v.rf) {
+    const w = v.wf ? wfDay(n) : null;
+    h += '<div class="card ' + (v.wf ? 'devo-today' : '') + '" id="todayVerse"><h3>' + (v.wf ? txf('wfVerseT', n) : txf('rfVerseT', n)) + '</h3><div class="verse">“' + v.t + '”</div><div class="ref">— ' + v.r + '</div><div class="apply">' + (w && w.milestone ? '🌟 ' : '💛 ') + v.e + '</div>' +
+      '<div class="prayer">🙏 ' + TX.prayerL + (w ? w.pray : prayerFor(T)) + '</div></div>';
+  } else h += '<div class="card" id="todayVerse"><div class="sec-title"><h3>📖 ' + tone().vt + '</h3><button class="link" onclick="showTab(\'seek\')">' + TX.seek + '</button></div>' + verseCard(v) + '<div class="prayer">🙏 ' + TX.prayerL1 + prayerFor(T) + '</div></div>';
+  if (wf) h += wfToday(T, x, P, n);
+  else h += dietCard(T, x, mp);
+  h += weighCard(T, (wf || pid === 'refeed') && active);
+  h += '<details class="card" style="margin-top:14px;"' + ((pr.fasting || pid === 'refeed') && active ? ' open' : '') + '><summary>' + TX.stopT + '</summary><ul class="l">' + STOP_LIST.map(s => '<li>' + s + '</li>').join('') + '</ul><p class="muted">' + TX.stopCall + '</p></details>';
+  // ----- more (optional) -----
+  let m = afStoryCard();
+  if (!wf && (pr.timer && active || S.timer.running || timerSec() > 0)) { if (pr.timer && active) afCheck(true); m += afNoteCard() + '<div class="card">' + afSwitch(timerSec() / 3600) + '</div>'; }
+  if (active) {
+    const ch = S.program.checks[n] || [], map = AUTOMAP[pid] || [];
+    m += '<div class="card" id="checkCard"><h3>✅ ' + txf('checklist', n) + '</h3>' + progItems().map((it, i) => '<label class="chk"><input type="checkbox" ' + (ch[i] ? 'checked' : '') + ' onchange="toggleCheck(' + i + ',this.checked)">' + esc(it) + (map[i] ? '<span class="autot">' + TX.autoTick + '</span>' : '') + '</label>').join('') + '</div>';
+  }
+  if (!wf) {
+    const eaten = eatenKcal(T), burned = burnedKcal(T);
+    m += '<div class="stats"><div class="stat"><b>' + comma(eaten) + '</b><span>' + txf('eatenOf', comma(mp.target)) + '</span></div><div class="stat"><b>' + comma(burned) + '</b><span>' + TX.exK + '</span></div><div class="stat"><b>' + volS(x.water) + '</b><span>' + txf('waterOf', volS(P.water)) + '</span></div></div>' +
+      '<div class="bar"><i style="width:' + Math.min(100, eaten / mp.target * 100) + '%"></i></div><div style="height:10px"></div>';
+    if (pid === 'refeed' && active) m += refeedNotice(n, mp);
+    m += slipCard(T, x, mp, n, active);
+    if (pid === 'intensive' && active) m += intensiveTips();
+    if (pid === 'companion' && active) m += companionCard(S.profile, true);
+    const R = exRoutine(T);
+    m += '<div class="card"><h3>' + TX.exT + ' <span class="tag">' + EX_LEVEL[R.lvl].n + '</span></h3>' + ((pid === 'if168' || pid === 'intensive') && active ? '<p class="muted">' + TX.exFastNote + '</p>' : '') + vline('exercise', T);
+    R.ids.forEach(id => {
+      const e = EX[id], on = x.ex[id] !== undefined, k = exKcal(id);
+      m += '<div class="item"><span class="ic">' + e.a + '</span><div class="txt"><b>' + e.t + '</b><div>' + e.rx + ' · ' + txf('exAbout', k) + '</div><details><summary style="min-height:36px; font-size:14px;">' + TX.exHow + '</summary><div class="explain" style="font-size:14.5px;">' + e.d + '</div></details></div>' +
+        '<button class="tick' + (on ? ' on' : '') + '" aria-label="' + esc(e.t) + TX.exDone + '" onclick="toggleEx(\'' + id + '\',' + k + ')">✓</button></div>';
+    });
+    m += '</div>';
+  }
+  m += '<div class="card"><h3>🌙 ' + tone().rt + '</h3><textarea class="inp" id="refl" placeholder="' + tone().rp + '" onchange="saveRefl(this.value)">' + esc(x.refl) + '</textarea>' + vline('evening', T) + '</div>';
+  m += '<button class="btn sec" onclick="shareToday()">' + TX.share + '</button>';
+  h += '<details class="morebox" id="todayMore"><summary>＋ ' + TX.more + ' <small class="muted">· ' + TX.moreSub + '</small></summary>' + m + '</details>';
+  el.innerHTML = h;
+  observeVerse();
+};
+const _toggleEx0 = toggleEx; toggleEx = function (id, k) { _toggleEx0(id, k); autoSync(); save(); };
+const _saveCheckin0 = saveCheckin; saveCheckin = function () { const r = _saveCheckin0(); autoSync(); save(); if (curTab === 'today') rerender(); return r; };
+const _renderWord0 = renderWord; renderWord = function () { _renderWord0(); const x = day(), c = x.core || (x.core = {}); if (!c.verse) { c.verse = true; c.at = now(); autoSync(); save(); } };
+
+// ---------- History: weigh-in stepper instead of typing ----------
+const _renderHistory0 = renderHistory;
+renderHistory = function () {
+  _renderHistory0();
+  const el = document.getElementById('s-history'), w = el && el.querySelector('#wIn'); if (!w) return;
+  const det = w.closest('details'); if (det) det.innerHTML = '<summary>⚖ ' + TX.weighT + '</summary>' + weighForm(false);
+};
+
+// ---------- Me: one primary action per card, rare things in one menu ----------
+const _renderMe0 = renderMe;
+renderMe = function () {
+  _renderMe0();
+  const el = document.getElementById('s-me'); if (!el) return;
+  const q = s => el.querySelector(s), card = n => n && n.closest('.card');
+  const prof = card(q('button[onclick*="startOnboarding(\'basic\'"]'));
+  const extra = [q('button[onclick*="startOnboarding(\'path\'"]'), q('button[onclick*="startOnboarding(\'goal\'"]')].filter(Boolean);
+  if (prof && extra.length) {
+    const d = document.createElement('details'); d.innerHTML = '<summary>' + TX.meEdit + '</summary>';
+    extra.forEach(b => { const c = card(b); if (c) { c.classList.remove('card'); c.style.margin = '10px 0'; d.appendChild(c); } });
+    prof.appendChild(d);
+  }
+  const menu = document.createElement('details'); menu.className = 'card'; menu.id = 'meMenu'; menu.innerHTML = '<summary>' + TX.meMenu + '</summary>';
+  [card(q('#sharePre')), card(q('button[onclick*="downloadBackup"]')), card(q('#introAgain')), q('#langCard'),
+    [...el.querySelectorAll('.card')].find(c => /^\s*⚕/.test((c.querySelector('h3') || {}).textContent || ''))].filter(Boolean).forEach(c => { c.classList.remove('card'); c.style.margin = '12px 0'; menu.appendChild(c); });
+  const rs = q('button[onclick*="resetAll"]'); if (rs) { const nx = rs.nextElementSibling; menu.appendChild(rs); if (nx && nx.tagName === 'P') el.appendChild(nx); }
+  el.insertBefore(menu, el.lastElementChild && el.lastElementChild.tagName === 'P' ? el.lastElementChild : null);
+};
+
+// ---------- Onboarding: pickers instead of typing ----------
+const PKS = {};
+function pk(id, label, min, max, step, val, fmt, onset, bstep) {
+  PKS[id] = { min, max, step, fmt, onset, bstep:bstep || step };
+  return '<label class="f" for="' + id + '">' + label + '</label><div class="pk"><button type="button" class="pkb" aria-label="−" onclick="pkStep(\'' + id + '\',-1)">−</button><output class="pkv" id="' + id + 'V">' + fmt(val) + '</output>' +
+    '<button type="button" class="pkb" aria-label="+" onclick="pkStep(\'' + id + '\',1)">+</button></div><input type="range" class="pkr" id="' + id + '" min="' + min + '" max="' + max + '" step="' + step + '" value="' + val + '" oninput="pkSet(\'' + id + '\',this.value)">';
+}
+function pkSet(id, v) {
+  const p = PKS[id]; v = +clamp(Math.round(+v / p.step) * p.step, p.min, p.max).toFixed(2);
+  const r = document.getElementById(id), o = document.getElementById(id + 'V'); if (r) r.value = v; if (o) o.textContent = p.fmt(v);
+  p.onset(v);
+}
+function pkStep(id, d) { const r = document.getElementById(id); pkSet(id, +r.value + d * PKS[id].bstep); }
+function obDefaults() {
+  const p = D.profile, m = p.sex === 'M';
+  if (!(+p.height > 0)) p.height = m ? 172 : 160;
+  if (!(+p.weight > 0)) p.weight = m ? 72 : 60;
+  if (!(+p.goal > 0)) p.goal = Math.max(healthyMin(+p.height), Math.round((+p.weight - 3) * 2) / 2);
+}
+OB_RENDER.basic = () => {
+  if (!(+D.profile.age > 0)) D.profile.age = 40;
+  return '<h2>' + TX.basicT + '</h2><p class="lead">' + TX.basicLead + '</p>' +
+    '<label class="f">' + TX.nameL + '</label><input class="inp" id="obName" maxlength="12" placeholder="' + TX.namePh + '" value="' + esc(D.name) + '" oninput="obInput(\'name\',this)">' +
+    '<label class="f">' + TX.sexL + '</label><div class="seg">' + [['F', TX.female], ['M', TX.male]].map(o => '<button class="opt' + (D.profile.sex === o[0] ? ' sel' : '') + '" onclick="obPick(\'profile.sex\',\'' + o[0] + '\')">' + o[1] + '</button>').join('') + '</div>' +
+    pk('obAge', TX.age, 10, 100, 1, +D.profile.age, v => v + TX.ageU, v => { D.profile.age = v; updateAgeNote(); }) + '<div id="ageNote"></div><p class="muted">' + TX.pickHint + '</p>';
+};
+OB_RENDER.body = () => {
+  obDefaults();
+  const p = D.profile, us = isUS(), live = () => updateBodyLive();
+  const wpk = (id, label, key) => us
+    ? pk(id, label, 66, 550, 0.2, Math.round(kg2lb(+p[key]) * 5) / 5, v => (+v.toFixed(1)) + ' lb', v => { p[key] = lb2kg(v); live(); }, 1)
+    : pk(id, label, 30, 250, 0.1, Math.round(+p[key] * 10) / 10, v => v.toFixed(1) + ' kg', v => { p[key] = v; live(); }, 0.5);
+  let h = '<h2>' + TX.bodyT + '</h2><p class="lead">' + TX.bodyLead + '</p>';
+  if (typeof obSetUnits === 'function') h += '<div class="seg" id="unitSeg">' + [['us', 'lb · ft/in'], ['metric', 'kg · cm']].map(o => '<button class="opt' + ((us ? 'us' : 'metric') === o[0] ? ' sel' : '') + '" data-units="' + o[0] + '" onclick="obSetUnits(\'' + o[0] + '\')">' + o[1] + '</button>').join('') + '</div>';
+  h += us ? pk('obH', TX.height, 48, 84, 0.5, Math.round(+p.height / 2.54 * 2) / 2, v => { const f = Math.floor(v / 12); return f + '′ ' + (v - f * 12) + '″'; }, v => { p.height = v * 2.54; live(); })
+    : pk('obH', TX.height, 120, 220, 0.1, Math.round(+p.height * 10) / 10, v => (+v.toFixed(1)) + ' cm', v => { p.height = v; live(); }, 1);
+  return h + wpk('obW', TX.weight, 'weight') + wpk('obG', TX.goal, 'goal') + '<p class="muted">' + TX.pickHint + '</p><div id="bodyLive"></div>';
+};
+
+// ---------- Programs: short summary card + step pages ----------
+function safetyBadge(id) {
+  const st = (PINFO[id] || {}).stars || 3, a = typeof D !== 'undefined' && D ? access(id, D.profile) : {};
+  if (id === 'waterfast') return TX.sfMed;
+  if (a.needDoctor || st >= 4 || id === 'oneday' || id === 'intensive') return TX.sfDoc;
+  return st >= 3 ? TX.sfCare : TX.sfEasy;
+}
+function spTab(btn, i) {
+  const root = btn.closest('.steps');
+  root.querySelectorAll('.stabs button').forEach((b, k) => b.classList.toggle('on', k === i));
+  root.querySelectorAll('.spane').forEach((p, k) => p.classList.toggle('on', k === i));
+}
+function progSteps(id) {
+  const I = PINFO[id] || {}, p = PROGRAMS[id], a = access(id, D.profile), names = TX.tabs.split('|');
+  const fast = id === 'waterfast' ? TX.rfWf : (p.fasting || id === 'oneday' || id === 'if168') ? TX.rfFast : TX.rfNone;
+  const refs = okRefs(I.refs || []);
+  const ib = (infoBody(id) || '').replace(/^<div class="info">/, '').replace(/<\/div>$/, '');
+  const secs = ib.split('<div class="isec">').slice(1).map(x => '<div class="isec">' + x);
+  const has = k => secs.filter(x => x.indexOf(k) >= 0);
+  const pick = (...ks) => ks.map(k => k && I[k] ? has(I[k].slice(0, 20))[0] || '' : '').join('');
+  const ov = secs.length ? [secs[0]].concat(secs.filter(x => (I.who && x.indexOf(I.who.slice(0, 20)) >= 0) || (I.period && x.indexOf(I.period.slice(0, 15)) >= 0) || x.indexOf('class="stars"') >= 0 || (I.effect && x.indexOf(I.effect.slice(0, 20)) >= 0))).join('') : '<p>' + p.desc + '</p>';
+  const how = (secs.filter(x => (I.eat && x.indexOf(I.eat.slice(0, 20)) >= 0) || (I.day && I.day[0] && x.indexOf(I.day[0].slice(0, 20)) >= 0)).join('')) + '<ul class="l">' + p.items.map(x => '<li>✓ ' + x + '</li>').join('') + '</ul>';
+  const bgSec = I.bg ? secs.filter(x => x.indexOf(I.bg.slice(0, 20)) >= 0).join('') : '';
+  const panes = [ov, how,
+    '<p><span class="sfb">' + safetyBadge(id) + '</span></p>' + (!a.ok ? '<p>🔒 ' + a.reason + '</p>' : a.needDoctor ? '<p>🔒 ' + a.reason + '</p>' : a.caution ? '<p>⚠ ' + a.caution + '</p>' : '') + '<p>' + TX.sfCommon + '</p><ul class="l">' + STOP_LIST.map(s => '<li>' + s + '</li>').join('') + '</ul>',
+    '<p>' + fast + '</p>',
+    bgSec || (refs.length ? refs.map(r => '<p class="vline">“' + vt(r) + '” <span>— ' + r + '</span></p>').join('') : '<p>' + TX.noVerse + '</p>')
+  ];
+  return '<div class="steps" data-steps="' + id + '"><div class="stabs" role="tablist">' + names.map((n, i) => '<button type="button" role="tab" class="' + (i ? '' : 'on') + '" onclick="spTab(this,' + i + ')">' + n + '</button>').join('') + '</div>' +
+    panes.map((x, i) => '<div class="spane' + (i ? '' : ' on') + '" data-pane="' + i + '">' + x + '</div>').join('') + '</div>';
+}
+progCard = function (id, rec) {
+  const sel = D.progId === id, p = PROGRAMS[id];
+  return '<div class="pcard' + (sel ? ' sel' : '') + (id === 'waterfast' ? ' devo-card' : '') + '">' + progOpt(id, rec) +
+    '<div class="psum" data-sum="' + id + '"><span class="sfb">' + safetyBadge(id) + '</span>' + (p.who ? '<p><b>' + TX.pWho + '</b> ' + p.who + '</p>' : '') +
+    '<p><b>' + TX.pKey + '</b></p><ul class="l">' + progItemsFor(id).slice(0, 3).map(x => '<li>' + esc(x) + '</li>').join('') + '</ul></div>' +
+    '<details class="more" data-more="' + id + '"' + (sel ? ' open' : '') + '><summary>' + TX.details + '</summary>' + progSteps(id) + '</details>' + progExtra(id) + '</div>';
+};
+function progItemsFor(id) { const p = PROGRAMS[id]; return p.items.map((it, i) => (p.hasOpt && i === 2) ? it.replace(/:.*$/, '') : it); }
+const _compareTable0 = compareTable; compareTable = function () { return _compareTable0().replace('cmpwrap" open', 'cmpwrap"'); };
 // ===================== 소그룹 (이 기기에만 저장) =====================
 function groupCard() {
   const g = S.group, T = ymd(), t = g.notes[T] || {};

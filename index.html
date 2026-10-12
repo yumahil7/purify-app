@@ -2452,6 +2452,13 @@ const TX = {
   seek:'성경이 처음이라면 ›',
   prayerL1:'오늘의 기도 한 줄 · ',
   exDone:' 완료',
+  afIdle:'비울 때 몸은 스스로를 청소해요',
+  afHrs:'공복 {0}시간',
+  afS0:'몸이 청소를 준비하고 있어요',
+  afS1:'지방을 쓰기 시작할 수 있어요',
+  afS2:'자가포식이 켜지기 시작할 수 있어요',
+  afS3:'자가포식이 활발해질 수 있어요',
+  afAria:'자가포식 이야기 자세히 보기',
 };
 function txf(k) { let s = TX[k]; for (let i = 1; i < arguments.length; i++) s = s.split('{' + (i - 1) + '}').join(arguments[i]); return s; }
 function isUS() { return typeof uMode === 'function' && uMode() === 'us'; }
@@ -2459,7 +2466,8 @@ function volS(ml) { return typeof volTxt === 'function' ? volTxt(ml, true) : com
 function fastGoal() { const pr = PROGRAMS[progId()]; return progActive() && pr.timer ? pr.timer : 12; }
 (function () {
   const st = document.createElement('style');
-  st.textContent = '.core .crow{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);}' +
+  st.textContent = '.afline{display:flex;align-items:center;gap:8px;margin:0 0 10px;padding:9px 12px;border-radius:12px;background:rgba(180,201,166,.10);color:var(--fg,#ebe5d6);font-size:14px;cursor:pointer;white-space:nowrap;overflow:hidden;}.afline span{flex:1;min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;}.afline i{font-style:normal;opacity:.6;}' +
+    '.core .crow{display:flex;align-items:center;gap:12px;padding:12px 0;border-top:1px solid var(--line);}' +
     '.core .crow:first-of-type{border-top:none;} .core .cic{width:40px;height:40px;border-radius:20px;border:2px solid rgba(180,201,166,.5);display:flex;align-items:center;justify-content:center;font-size:20px;flex:none;}' +
     '.core .crow.done .cic{background:var(--p);color:#17241f;border-color:var(--p);} .core .ctx{flex:1;min-width:0;cursor:pointer;} .core .ctx b{font-size:17px;} .core .ctx small{display:block;color:var(--m);font-size:13.5px;}' +
     '.core .cbtn{width:auto;min-width:96px;min-height:48px;padding:8px 14px;margin:0;} .corecount{color:var(--p);} .core .bar{margin:6px 0 0;}' +
@@ -2614,6 +2622,14 @@ function weighCard(T, daily) {
 }
 
 // ---------- Today ----------
+function afFasting() { const id = progId(); return (id === 'waterfast' && progActive()) || !!(S.timer && S.timer.running); }
+function afLineText() {
+  if (!afFasting()) return '🔆 ' + TX.afIdle;
+  const h = afHours(), i = h >= 24 ? 3 : h >= 16 ? 2 : h >= 12 ? 1 : 0;
+  return '🔆 ' + txf('afHrs', Math.floor(h)) + ' · ' + TX['afS' + i];
+}
+function afLine() { return '<div class="afline" id="afLine" role="button" tabindex="0" aria-label="' + TX.afAria + '" onclick="openHealth(\'auto\')" onkeydown="if(event.key===\'Enter\')openHealth(\'auto\')"><span id="afLineT">' + afLineText() + '</span><i>›</i></div>'; }
+setInterval(() => { try { const t = document.getElementById('afLineT'); if (t) { const v = afLineText(); if (t.textContent !== v) t.textContent = v; } } catch(e) {} }, 15000);
 renderToday = function () {
   const el = document.getElementById('s-today'); if (!el) return;
   checkTransitions();
@@ -2622,6 +2638,7 @@ renderToday = function () {
   coreState(T); autoSync(T); save();
   const who = S.name ? esc(S.name) + TX.whoSfx : '';
   let h = '<h2 style="margin-bottom:2px;">' + who + greet() + '</h2><p class="muted" style="margin-bottom:14px;">' + fmtMD(T) + ' · ' + tone().greet + '</p>';
+  h += afLine();
   h += coreCard(T, x, P, pid, active);
   const dc = doneCount();
   h += '<div class="card"><div class="ringwrap">' + ring(dc / progLen(), active ? txf('ringDay', n) : TX.ringDone, txf('ringOf', progLen())) +

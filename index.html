@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover">
 <meta name="theme-color" content="#1e2c31">
-<meta name="description" content="말씀과 함께 건강하게 먹고 움직이는 습관을 만드는 앱">
+<meta name="description" content="Purify · 다이어트가 아닌, 치유의 길 — 비우고, 쉬고, 다시 새로워지는 몸">
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
@@ -201,6 +201,30 @@
   .devo-today h3 { color:#e6e0f2; }
   .devo-today .verse { color:#efeaf6; }
   .card.soft { border-color:rgba(205,183,135,.3); background:rgba(205,183,135,.05); }
+  /* v3-6 미션 인트로 */
+  .skip { display:block; margin:6px auto 0; min-width:120px; min-height:44px; border:none; background:transparent; color:var(--m); font-size:14.5px; cursor:pointer; font-family:inherit; border-radius:22px; }
+  .skip.hide { display:none; }
+  .islide { word-break:keep-all; text-align:center; padding-top:7vh; animation:ifade .35s ease; }
+  @keyframes ifade { from { opacity:0; transform:translateY(6px); } to { opacity:1; transform:none; } }
+  .islide .mark { font-size:46px; color:var(--p); margin-bottom:10px; opacity:.9; }
+  .islide .tagline { color:var(--g); font-size:15px; letter-spacing:1px; margin-bottom:2px; }
+  .islide .tagsub { color:var(--m); font-size:13.5px; margin-bottom:18px; }
+  .islide h1 { font-size:26px; margin:6px 0 16px; }
+  .islide p { font-size:17px; line-height:1.85; margin:12px 0; }
+  .islide p b { color:var(--p); }
+  .islide .note { font-size:13.5px; color:var(--m); line-height:1.6; margin-top:18px; }
+  .islide .vline { text-align:left; margin-top:20px; }
+  .srcbox { text-align:left; margin-top:14px; }
+  .srcbox summary { justify-content:center; font-size:14.5px; min-height:44px; }
+  .srcbox summary::after { margin-left:6px; }
+  .srcbox .fn, .srcbox li { font-size:13px; color:var(--m); line-height:1.6; }
+  .srcbox ul { margin:8px 0 0 18px; } .srcbox li { margin:5px 0; }
+  .obnote { font-size:12.5px; color:var(--m); text-align:center; line-height:1.55; margin-top:10px; }
+  .obnote.hide { display:none; }
+  .afstory { word-break:keep-all; }
+  .afstory p { font-size:15.5px; line-height:1.7; margin:6px 0; }
+  .afstory .note { font-size:13px; color:var(--m); margin-top:8px; }
+  .afstory .btn { margin-top:10px; }
 </style>
 </head>
 <body>
@@ -213,7 +237,7 @@
       <div style="width:48px"></div>
     </div>
     <div class="body" id="obBody"></div>
-    <div class="foot"><button class="btn" id="obNext" onclick="obNextStep()">다음</button></div>
+    <div class="foot"><button class="btn" id="obNext" onclick="obNextStep()">다음</button><button class="skip hide" id="obSkip" onclick="introSkip()">건너뛰기</button><p class="obnote hide" id="obNote">Purify는 의학적 치료를 대신하지 않아요. 치료 중이거나 약을 드신다면 의사와 먼저 상의하세요.</p></div>
   </div>
 
   <div id="main" class="view">
@@ -462,8 +486,8 @@ const KRV = {
 "이사야 40:31": "오직 여호와를 앙망하는 자는 새 힘을 얻으리니 독수리의 날개치며 올라감 같을 것이요 달음박질하여도 곤비치 아니하겠고 걸어가도 피곤치 아니하리로다",
 "이사야 41:10": "두려워 말라 내가 너와 함께 함이니라 놀라지 말라 나는 네 하나님이 됨이니라 내가 너를 굳세게 하리라 참으로 너를 도와 주리라 참으로 나의 의로운 오른손으로 너를 붙들리라",
 "이사야 55:1": "너희 목마른 자들아 물로 나아오라 돈 없는 자도 오라 너희는 와서 사 먹되 돈 없이, 값 없이 와서 포도주와 젖을 사라",
-"이사야 58:6": "나의 기뻐하는 금식은 흉악의 결박을 풀어 주며 멍에의 줄을 끌러주며 압제 당하는 자를 자유케 하며 모든 멍에를 꺾는 것이 아니겠느냐",
 "이사야 58:6-8": "나의 기뻐하는 금식은 흉악의 결박을 풀어 주며 멍에의 줄을 끌러주며 압제 당하는 자를 자유케 하며 모든 멍에를 꺾는 것이 아니겠느냐 또 주린 자에게 네 식물을 나눠 주며 유리하는 빈민을 네 집에 들이며 벗은 자를 보면 입히며 또 네 골육을 피하여 스스로 숨지 아니하는 것이 아니겠느냐 그리하면 네 빛이 아침 같이 비췰 것이며 네 치료가 급속할 것이며 네 의가 네 앞에 행하고 여호와의 영광이 네 뒤에 호위하리니",
+"이사야 58:6": "나의 기뻐하는 금식은 흉악의 결박을 풀어 주며 멍에의 줄을 끌러주며 압제 당하는 자를 자유케 하며 모든 멍에를 꺾는 것이 아니겠느냐",
 "이사야 58:8": "그리하면 네 빛이 아침 같이 비췰 것이며 네 치료가 급속할 것이며 네 의가 네 앞에 행하고 여호와의 영광이 네 뒤에 호위하리니",
 "예레미야 29:12-13": "너희는 내게 부르짖으며 와서 내게 기도하면 내가 너희를 들을 것이요 너희가 전심으로 나를 찾고 찾으면 나를 만나리라",
 "예레미야 33:3": "너는 내게 부르짖으라 내가 네게 응답하겠고 네가 알지 못하는 크고 비밀한 일을 네게 보이리라",
@@ -476,8 +500,8 @@ const KRV = {
 "다니엘 10:12": "그가 내게 이르되 다니엘아 두려워하지 말라 네가 깨달으려 하여 네 하나님 앞에 스스로 겸비케 하기로 결심하던 첫날부터 네 말이 들으신바 되었으므로 내가 네 말로 인하여 왔느니라",
 "요엘 2:12": "여호와의 말씀에 너희는 이제라도 금식하며 울며 애통하고 마음을 다하여 내게로 돌아오라 하셨나니",
 "미가 7:8": "나의 대적이여 나로 인하여 기뻐하지 말찌어다 나는 엎드러질찌라도 일어날 것이요 어두운데 앉을찌라도 여호와께서 나의 빛이 되실 것임이로다",
-"마태복음 4:1-4": "그 때에 예수께서 성령에게 이끌리어 마귀에게 시험을 받으러 광야로 가사 사십 일을 밤낮으로 금식하신 후에 주리신지라 시험하는 자가 예수께 나아와서 가로되 네가 만일 하나님의 아들이어든 명하여 이 돌들이 떡덩이가 되게 하라 예수께서 대답하여 가라사대 기록되었으되 사람이 떡으로만 살것이 아니요 하나님의 입으로 나오는 모든 말씀으로 살 것이라 하였느니라 하시니",
 "마태복음 4:1-2": "그 때에 예수께서 성령에게 이끌리어 마귀에게 시험을 받으러 광야로 가사 사십 일을 밤낮으로 금식하신 후에 주리신지라",
+"마태복음 4:1-4": "그 때에 예수께서 성령에게 이끌리어 마귀에게 시험을 받으러 광야로 가사 사십 일을 밤낮으로 금식하신 후에 주리신지라 시험하는 자가 예수께 나아와서 가로되 네가 만일 하나님의 아들이어든 명하여 이 돌들이 떡덩이가 되게 하라 예수께서 대답하여 가라사대 기록되었으되 사람이 떡으로만 살것이 아니요 하나님의 입으로 나오는 모든 말씀으로 살 것이라 하였느니라 하시니",
 "마태복음 4:2": "사십 일을 밤낮으로 금식하신 후에 주리신지라",
 "마태복음 4:4": "예수께서 대답하여 가라사대 기록되었으되 사람이 떡으로만 살것이 아니요 하나님의 입으로 나오는 모든 말씀으로 살 것이라 하였느니라 하시니",
 "마태복음 4:11": "이에 마귀는 예수를 떠나고 천사들이 나아와서 수종드니라",
@@ -499,16 +523,16 @@ const KRV = {
 "요한복음 14:27": "평안을 너희에게 끼치노니 곧 나의 평안을 너희에게 주노라 내가 너희에게 주는 것은 세상이 주는 것 같지 아니하니라 너희는 마음에 근심도 말고 두려워하지도 말라",
 "요한복음 15:5": "나는 포도나무요 너희는 가지니 저가 내 안에, 내가 저 안에 있으면 이 사람은 과실을 많이 맺나니 나를 떠나서는 너희가 아무 것도 할 수 없음이라",
 "요한복음 21:12": "예수께서 가라사대 와서 조반을 먹으라 하시니 제자들이 주신 줄 아는 고로 당신이 누구냐 감히 묻는 자가 없더라",
-"사도행전 13:2-3": "주를 섬겨 금식할 때에 성령이 가라사대 내가 불러 시키는 일을 위하여 바나바와 사울을 따로 세우라 하시니 이에 금식하며 기도하고 두 사람에게 안수하여 보내니라",
 "사도행전 13:2": "주를 섬겨 금식할 때에 성령이 가라사대 내가 불러 시키는 일을 위하여 바나바와 사울을 따로 세우라 하시니",
+"사도행전 13:2-3": "주를 섬겨 금식할 때에 성령이 가라사대 내가 불러 시키는 일을 위하여 바나바와 사울을 따로 세우라 하시니 이에 금식하며 기도하고 두 사람에게 안수하여 보내니라",
 "사도행전 27:33": "날이 새어가매 바울이 여러 사람을 음식 먹으라 권하여 가로되 너희가 기다리고 기다리며 먹지 못하고 주린 지가 오늘까지 열 나흘인즉",
 "사도행전 27:34": "음식 먹으라 권하노니 이것이 너희 구원을 위하는 것이요 너희 중 머리터럭 하나라도 잃을 자가 없느니라 하고",
 "로마서 8:26": "이와 같이 성령도 우리 연약함을 도우시나니 우리가 마땅히 빌바를 알지 못하나 오직 성령이 말할 수 없는 탄식으로 우리를 위하여 친히 간구하시느니라",
 "로마서 12:1": "그러므로 형제들아 내가 하나님의 모든 자비하심으로 너희를 권하노니 너희 몸을 하나님이 기뻐하시는 거룩한 산 제사로 드리라 이는 너희의 드릴 영적 예배니라",
 "로마서 12:2": "너희는 이 세대를 본받지 말고 오직 마음을 새롭게 함으로 변화를 받아 하나님의 선하시고 기뻐하시고 온전하신 뜻이 무엇인지 분별하도록 하라",
 "로마서 15:13": "소망의 하나님이 모든 기쁨과 평강을 믿음 안에서 너희에게 충만케 하사 성령의 능력으로 소망이 넘치게 하시기를 원하노라",
-"고린도전서 6:19-20": "너희 몸은 너희가 하나님께로부터 받은바 너희 가운데 계신 성령의 전인 줄을 알지 못하느냐 너희는 너희의 것이 아니라 값으로 산 것이 되었으니 그런즉 너희 몸으로 하나님께 영광을 돌리라",
 "고린도전서 6:19": "너희 몸은 너희가 하나님께로부터 받은바 너희 가운데 계신 성령의 전인 줄을 알지 못하느냐 너희는 너희의 것이 아니라",
+"고린도전서 6:19-20": "너희 몸은 너희가 하나님께로부터 받은바 너희 가운데 계신 성령의 전인 줄을 알지 못하느냐 너희는 너희의 것이 아니라 값으로 산 것이 되었으니 그런즉 너희 몸으로 하나님께 영광을 돌리라",
 "고린도전서 9:24": "운동장에서 달음질하는 자들이 다 달아날찌라도 오직 상 얻는 자는 하나인 줄을 너희가 알지 못하느냐 너희도 얻도록 이와 같이 달음질하라",
 "고린도전서 9:25": "이기기를 다투는 자마다 모든 일에 절제하나니 저희는 썩을 면류관을 얻고자 하되 우리는 썩지 아니할 것을 얻고자 하노라",
 "고린도전서 9:26": "그러므로 내가 달음질하기를 향방 없는것 같이 아니하고 싸우기를 허공을 치는것 같이 아니하여",
@@ -522,8 +546,8 @@ const KRV = {
 "빌립보서 3:13-14": "형제들아 나는 아직 내가 잡은 줄로 여기지 아니하고 오직 한 일 즉 뒤에 있는 것은 잊어버리고 앞에 있는 것을 잡으려고 푯대를 향하여 그리스도 예수 안에서 하나님이 위에서 부르신 부름의 상을 위하여 좇아가노라",
 "빌립보서 4:6": "아무 것도 염려하지 말고 오직 모든 일에 기도와 간구로, 너희 구할 것을 감사함으로 하나님께 아뢰라",
 "빌립보서 4:13": "내게 능력 주시는 자 안에서 내가 모든 것을 할 수 있느니라",
-"데살로니가전서 5:16": "항상 기뻐하라",
 "데살로니가전서 5:16-18": "항상 기뻐하라 쉬지 말고 기도하라 범사에 감사하라 이는 그리스도 예수 안에서 너희를 향하신 하나님의 뜻이니라",
+"데살로니가전서 5:16": "항상 기뻐하라",
 "데살로니가전서 5:18": "범사에 감사하라 이는 그리스도 예수 안에서 너희를 향하신 하나님의 뜻이니라",
 "디모데전서 4:4": "하나님의 지으신 모든 것이 선하매 감사함으로 받으면 버릴 것이 없나니",
 "디모데전서 4:8": "육체의 연습은 약간의 유익이 있으나 경건은 범사에 유익하니 금생과 내생에 약속이 있느니라",
@@ -1041,13 +1065,47 @@ function tickTimer() {
 }
 // ===================== 온보딩 (한 페이지에 한 가지 결정) =====================
 const STEPS = ['intro', 'goal', 'basic', 'body', 'path', 'activity', 'health', 'program', 'summary'];
-let D = null, obStep = 0, obEntry = 0, obMode = 'new';
+let D = null, obStep = 0, obEntry = 0, obMode = 'new', introIdx = 0;
+// 미션 인트로 5화면 (문안: research/autophagy-video/intro-copy.md, 사용자 승인본 그대로)
+const TAGLINE = '다이어트가 아닌, 치유의 길', TAGSUB = '비우고, 쉬고, 다시 새로워지는 몸';
+const INTRO_REFS = ['nobel', 'mizlev', 'nixon', 'hotam', 'decabo', 'hara', 'komatsu'];
+const INTRO = [
+  () => '<div class="mark">✦</div><div class="tagline">' + TAGLINE + '</div><div class="tagsub">' + TAGSUB + '</div>' +
+    '<h1>다이어트가 아닙니다.</h1><p>덜 먹고 더 빼는 이야기가 아니에요.<br>몸을 쉬게 하고, 비우고, 다시 세우는<br><b>건강과 회복의 길</b>이에요.</p>',
+  () => '<div class="mark">🔆</div><h1>우리 몸에는 청소부가 있어요</h1><p>세포는 낡고 망가진 부품을 스스로 감싸 분해하고, 다시 씁니다.</p>' +
+    '<p>이것을 <b>자가포식(autophagy)</b>이라고 해요.</p><p>이 원리를 밝힌 오스미 요시노리 교수는 2016년 노벨 생리의학상을 받았어요.</p>',
+  () => '<div class="mark">🧠</div><h1>청소가 멈추면, 쌓입니다</h1><p>알츠하이머와 파킨슨병의 뇌에는 망가진 단백질이 쌓이고, 그것을 치우는 자가포식이 약해져 있는 모습이 관찰돼요.</p>' +
+    '<p>과학자들은 지금 이 청소 시스템을 다시 살리는 길을 찾고 있어요.</p><p class="note">대부분 세포·동물 연구 단계이며, 금식으로 이 병을 막거나 고친다는 뜻은 아니에요.</p>',
+  () => '<div class="mark">🍽</div><h1>쉴 틈 없이 먹는 시대</h1><p>늘 넘치게 먹는 생활은 비만·당뇨 같은 대사 질환,<br>그리고 몸속에 오래 남는 <b>만성 염증</b>과 깊이 연결되어 있어요.</p>' +
+    '<p>배부른 몸은 짓느라 바쁘고, 비운 몸은 치우고 고칠 틈을 얻어요.</p>',
+  () => '<div class="mark">🕊</div><h1>우리는 믿습니다</h1><p>먹어서 생기는 병이 있다면,<br>멈추고 비우는 것으로 몸을 돌보는 길도 있다고.</p>' +
+    '<p>금식은 몸에게는 쉼과 청소의 시간, 영혼에게는 하나님께 돌아가는 시간이라고.</p>' +
+    (vt('고린도전서 6:19-20') ? '<p class="vline">“' + vt('고린도전서 6:19-20') + '” <span>— 고린도전서 6:19-20</span></p>' : '') +
+    '<details class="srcbox" id="introSrc"><summary>출처</summary><p class="fn">출처: 노벨위원회 2016 생리의학상 발표 · Mizushima &amp; Levine, NEJM 2020 (자가포식과 사람의 질병) · Nixon, Nat Med 2013 (신경퇴행 질환과 자가포식) · Hotamisligil, Nature 2017 (과잉 영양과 만성 염증) · de Cabo &amp; Mattson, NEJM 2019 (간헐적 금식 리뷰). 뇌 질환 관련 내용은 대부분 세포·동물 연구예요. <b>Purify는 의학적 치료를 대신하지 않아요.</b></p>' +
+    '<ul>' + INTRO_REFS.map(k => '<li><a href="' + citeUrl(k) + '" target="_blank" rel="noopener">' + CITE[k].t + '</a></li>').join('') + '</ul></details>'
+];
+function introSkip() { if (obMode === 'tour') return showMain('me'); introIdx = INTRO.length - 1; obStep = STEPS.indexOf('goal'); renderOb(); }
+function introGo(dir) {
+  if (STEPS[obStep] !== 'intro') return;
+  if (dir > 0) obNextStep(); else if (introIdx > 0) obPrev();
+}
+(function () {
+  const b = document.getElementById('obBody'); let x0 = null, y0 = 0;
+  b.addEventListener('touchstart', e => { const t = e.touches[0]; x0 = t.clientX; y0 = t.clientY; }, { passive:true });
+  b.addEventListener('touchend', e => {
+    if (x0 === null) return; const t = e.changedTouches[0], dx = t.clientX - x0, dy = t.clientY - y0; x0 = null;
+    if (Math.abs(dx) > 50 && Math.abs(dx) > Math.abs(dy) * 1.5) introGo(dx < 0 ? 1 : -1);
+  }, { passive:true });
+})();
+// 나 탭에서 다시 보기
+function showIntroTour() { startOnboarding('intro', 'tour'); }
 function startOnboarding(from, mode) {
   obMode = mode || 'new';
   const sp = S.program, spr = PROGRAMS[sp.id] || {};
   D = JSON.parse(JSON.stringify({ name:S.name, profile:S.profile, progId:sp.id && !spr.system ? sp.id : '', opt:sp.opt || LENT_OPTS[0], discOk:obMode === 'edit' && !!S.disclaimerAt,
     len:(spr.lens || spr.custom) && +sp.len ? +sp.len : 0, wf:Object.assign({ ack:false, typed:'', sup:false }, sp.wf || {}) }));
   obStep = obEntry = Math.max(0, STEPS.indexOf(from || 'intro'));
+  if (STEPS[obStep] === 'intro') introIdx = 0;
   document.getElementById('main').classList.remove('on');
   document.getElementById('ob').classList.add('on');
   renderOb();
@@ -1055,6 +1113,8 @@ function startOnboarding(from, mode) {
 // '나에게 맞는 길'은 BMI 30 이상일 때 (또는 '나'에서 직접 열었을 때) 보여요
 function stepShown(i) { return STEPS[i] !== 'path' || (obMode === 'edit' && obEntry === i) || bmiOf(+D.profile.weight, +D.profile.height) >= 30; }
 function obPrev() {
+  if (STEPS[obStep] === 'intro' && introIdx > 0) { introIdx--; renderOb(); return; }
+  if (STEPS[obStep] === 'intro' && obMode === 'tour') return showMain('me');
   if (obStep <= obEntry) { if (obMode === 'edit') { showMain(); } return; }
   do obStep--; while (obStep > obEntry && !stepShown(obStep));
   renderOb();
@@ -1070,25 +1130,24 @@ function renderOb() {
   const step = STEPS[obStep], b = document.getElementById('obBody'), next = document.getElementById('obNext');
   const dots = document.getElementById('obDots');
   const vis = STEPS.map((_, i) => i).filter(i => i > 0 && stepShown(i));
-  dots.innerHTML = step === 'intro' ? '' : vis.map(i => '<span class="dot' + (i === obStep ? ' on' : i < obStep ? ' done' : '') + '"></span>').join('');
-  document.getElementById('obBack').classList.toggle('hide', obStep === 0 || (obStep <= obEntry && obMode !== 'edit'));
+  dots.innerHTML = step === 'intro' ? INTRO.map((_, i) => '<span class="dot' + (i === introIdx ? ' on' : i < introIdx ? ' done' : '') + '"></span>').join('') : vis.map(i => '<span class="dot' + (i === obStep ? ' on' : i < obStep ? ' done' : '') + '"></span>').join('');
+  const last = introIdx === INTRO.length - 1;
+  document.getElementById('obBack').classList.toggle('hide', step === 'intro' ? (introIdx === 0 && obMode !== 'tour') : (obStep === 0 || (obStep <= obEntry && obMode !== 'edit')));
+  document.getElementById('obSkip').classList.toggle('hide', !(step === 'intro' && !last));
+  document.getElementById('obNote').classList.toggle('hide', !(step === 'intro' && last));
   next.textContent = '다음'; next.disabled = false;
   b.innerHTML = OB_RENDER[step]();
   if (step === 'body') updateBodyLive();
   if (step === 'basic') updateAgeNote();
-  if (step === 'intro') next.textContent = '시작하기';
+  if (step === 'intro') next.textContent = !last ? '다음' : obMode === 'tour' ? '돌아가기' : '정화의 길 시작하기';
   if (step === 'summary') next.textContent = obMode === 'edit' ? '저장하기' : '시작하기';
-  if (lastObStep !== step + obStep) b.scrollTop = 0;
-  lastObStep = step + obStep;
+  const key = step + obStep + (step === 'intro' ? '-' + introIdx : '');
+  if (lastObStep !== key) b.scrollTop = 0;
+  lastObStep = key;
 }
 let lastObStep = '';
 const OB_RENDER = {
-  intro: () => '<div class="hero"><div class="mark">✦</div><h1>정화의 길</h1>' +
-    '<p>말씀에 귀 기울이며<br>건강하게 먹고, 즐겁게 움직이는 습관을.</p>' +
-    '<p>몸도 마음도 새롭게,<br><b style="color:var(--p)">다시 태어나는 여정</b>을 함께해요.</p>' +
-    '<p>이것은 다이어트가 아니라,<br><b style="color:var(--p)">말씀을 살아 내는 연습</b>이에요.</p>' +
-    '<p class="vline" style="text-align:left;">“' + vt('고린도전서 10:31') + '” <span>— 고린도전서 10:31</span></p>' +
-    '<p class="muted" style="font-size:15px;">성경이 처음이어도 괜찮아요. 누구나 환영해요.</p></div>',
+  intro: () => '<div class="islide" data-slide="' + (introIdx + 1) + '">' + INTRO[introIdx]() + '</div>',
   goal: () => '<h2>당신에 대해<br>알고 싶어요</h2><p class="lead">어떤 마음으로 시작하는지 알려 주시면 맞는 계획을 추천해 드릴게요.</p>' +
     '<h3 style="margin:4px 0 10px;">어떻게 감량하고 싶으세요?</h3>' +
     PACES.map(o => '<button class="opt' + (D.profile.pace === o[0] ? ' sel' : '') + '" data-pace="' + o[0] + '" onclick="obPick(\'profile.pace\',\'' + o[0] + '\')">' + o[1] + '<small>' + o[2] + '</small></button>').join('') +
@@ -1300,6 +1359,10 @@ function obValidate() {
 function obNextStep() {
   const err = obValidate();
   if (err) { alert(err); return false; }
+  if (STEPS[obStep] === 'intro') {
+    if (introIdx < INTRO.length - 1) { introIdx++; renderOb(); return true; }
+    if (obMode === 'tour') { showMain('me'); return true; }
+  }
   if (STEPS[obStep] === 'summary') { obCommit(); return true; }
   do obStep++; while (obStep < STEPS.length - 1 && !stepShown(obStep));
   renderOb(); return true;
@@ -1361,6 +1424,14 @@ function verseCard(v, opts) {
 }
 
 // ---------- 오늘 ----------
+function afStoryCard() {
+  return '<div class="card afstory" id="afStory"><h3>🔆 자가포식 이야기</h3>' +
+    '<p>배가 비면 세포는 청소를 시작해요. 낡은 단백질과 지친 미토콘드리아를 모아 분해하고, 새 재료로 다시 써요.</p>' +
+    '<p>나이가 들수록 이 청소는 느려지고, 알츠하이머 같은 뇌 질환에서는 청소가 약해진 모습이 관찰돼요.</p>' +
+    '<p>오늘의 공복은 몸에게 치울 틈을 주는 시간이에요.</p>' +
+    '<p class="note">정확히 몇 시간째에 켜지는지는 사람에서 아직 밝혀지지 않았어요.</p>' +
+    '<button class="btn sm sec" onclick="openHealth(\'auto\')">더 알아보기 →</button></div>';
+}
 function renderToday() {
   const el = document.getElementById('s-today'); if (!el) return;
   checkTransitions();
@@ -1368,6 +1439,7 @@ function renderToday() {
   const who = S.name ? esc(S.name) + '님, ' : '';
   const mp = mealPlan(T), eaten = eatenKcal(T), burned = burnedKcal(T);
   let h = '<h2 style="margin-bottom:2px;">' + who + greet() + '</h2><p class="muted" style="margin-bottom:14px;">' + fmtMD(T) + ' · ' + tone().greet + '</p>';
+  h += afStoryCard();
   // 프로그램 진행
   const dc = doneCount(), checks = S.program.checks[n] || [];
   const todayDone = pr.items.filter((_, i) => checks[i]).length;
@@ -1603,6 +1675,7 @@ function renderMe() {
   h += '<div class="card"><h3>📤 공유 카드</h3><p class="muted">오늘의 요약과 말씀을 카카오톡 등으로 나눠 보세요.</p><div class="share-pre" id="sharePre">' + esc(buildShareText()) + '</div><button class="btn" onclick="shareToday()">공유하기</button></div>';
   h += groupCard();
   h += '<div class="card"><h3>💾 백업</h3><p class="muted">모든 기록을 파일로 저장하거나 불러와요. 기기를 바꿀 때 사용하세요.</p><button class="btn sm sec" onclick="downloadBackup()">⬇ 백업 내보내기</button><button class="btn sm sec" onclick="document.getElementById(\'importFile\').click()">⬆ 백업 가져오기</button><input type="file" id="importFile" accept="application/json,.json" style="display:none;" onchange="importFromFile(this)"></div>';
+  h += '<div class="card"><h3>✦ Purify 이야기</h3><p class="muted">' + TAGLINE + ' — ' + TAGSUB + '</p><button class="btn sm sec" id="introAgain" onclick="showIntroTour()">첫 화면 다시 보기</button></div>';
   h += '<div class="card"><h3>⚕ 안전 안내</h3><details><summary>이 앱은 의학적 조언이 아니에요</summary><p style="font-size:15px;">임신·수유 중, 당뇨, 약 복용 중, 18세 미만, 섭식장애 경험, 심장·신장 질환이 있다면 식단·금식을 바꾸기 전에 반드시 의사와 상담하세요. 칼로리와 기준값은 일반적인 참고값이에요.</p></details>' +
     '<details><summary>🛑 즉시 중단 기준</summary><ul class="l">' + STOP_LIST.map(s => '<li>' + s + '</li>').join('') + '</ul><p class="muted">의료기관에 연락하세요. 응급 시 119.</p></details>' +
     '<details><summary>혈압 · 혈당 참고 기준</summary><p class="muted">수축기 혈압 120 미만 정상 · 140 이상 고혈압 범위 · 90 이하 저혈압 주의<br>공복 혈당 70~99 정상 · 100~125 당뇨 전 단계 · 126 이상 주의 · 70 미만 저혈당</p></details></div>';
@@ -1977,6 +2050,9 @@ const CITE = {
   miz04:{ t:'Mizushima N et al. (2004) Mol Biol Cell 15:1101-1111 — GFP-LC3 생쥐, 굶김에 따른 조직별 자가포식', d:'10.1091/mbc.e03-09-0704' },
   alir:{ t:'Alirezaei M et al. (2010) Autophagy 6:702-710 — 단기 금식과 신경세포 자가포식(생쥐)', d:'10.4161/auto.6.6.12376' },
   bagh:{ t:'Bagherniya M et al. (2018) Ageing Res Rev 47:183-197 — 금식·칼로리 제한과 자가포식 (리뷰)', d:'10.1016/j.arr.2018.08.004' },
+  nixon:{ t:'Nixon RA (2013) Nat Med 19:983-997 — The role of autophagy in neurodegenerative disease', d:'10.1038/nm.3232' },
+  hotam:{ t:'Hotamisligil GS (2017) Nature 542:177-185 — Inflammation, metaflammation and immunometabolic disorders', d:'10.1038/nature21363' },
+  decabo:{ t:'de Cabo R, Mattson MP (2019) N Engl J Med 381:2541-2551 — Effects of Intermittent Fasting on Health, Aging, and Disease', d:'10.1056/NEJMra1905136' },
   mizlev:{ t:'Mizushima N, Levine B (2020) N Engl J Med 383:1564-1576 — Autophagy in Human Diseases', d:'10.1056/NEJMra2022774' },
   jam:{ t:'Jamshed H et al. (2019) Nutrients 11:1234 — 이른 시간제한 식사(18시간 공복)와 LC3A 유전자 발현(사람)', d:'10.3390/nu11061234' },
   anton:{ t:'Anton SD et al. (2018) Obesity 26:254-268 — Flipping the Metabolic Switch', d:'10.1002/oby.22065' },
